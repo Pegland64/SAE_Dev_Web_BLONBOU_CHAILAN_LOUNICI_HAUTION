@@ -1,0 +1,54 @@
+Pour concevoir la base de données pour l'application NRV.net, voici comment procéder étape par étape en fonction des exigences :
+
+1. Dictionnaire des données
+
+Liste des données principales pour NRV.net :
+
+Soiree : représente chaque soirée de festival
+
+id_soiree : Identifiant unique de la soirée INT
+date : Date de la soirée DATE
+lieu : Lieu où la soirée a lieu VARCHAR(100)
+
+Spectacle : représente chaque spectacle programmé 
+
+id_spectacle : Identifiant unique du spectacle INT
+nom_spectacle : Nom du spectacle VARCHAR(100)
+style : Style de musique du spectacle (e.g., classic rock, blues rock, metal, chanson) VARCHAR(50)
+
+Programme : représente le lien entre les soirées et les spectacles
+
+id_soiree : Référence à la soirée INT
+id_spectacle : Référence au spectacle INT
+
+2. Dépendances fonctionnelles
+
+Les dépendances fonctionnelles (DF) basées sur les données sont les suivantes :
+
+id_soiree → date, lieu
+L'identifiant de la soirée détermine son lieu et sa date, qui sont uniques par soirée.
+id_spectacle → nom_spectacle, style
+L'identifiant du spectacle détermine son nom et son style musical.
+(id_soiree, id_spectacle) → Programme
+Une combinaison unique de id_soiree et id_spectacle identifie un enregistrement de programme, représentant la présence d’un spectacle dans une soirée.
+
+3. Clés minimales
+
+Pour chaque table :
+
+Soiree : La clé minimale est id_soiree.
+Spectacle : La clé minimale est id_spectacle.
+Programme : La clé minimale est la combinaison (id_soiree, id_spectacle).
+
+4. Vérification de la 3NF
+
+Pour que chaque table soit en 3NF, chaque attribut non clé doit dépendre directement de la clé primaire. Vérification par table :
+
+Soiree et Spectacle : Ces tables satisfont la 3NF car tous les attributs non clés dépendent directement et uniquement de la clé primaire.
+Programme : Cette table est également en 3NF car elle se compose uniquement des clés primaires de Soiree et Spectacle.
+Ainsi, la relation universelle pour NRV.net satisfait la 3NF.
+
+5. Décomposition en relations (si nécessaire)
+
+Dans ce cas, aucune décomposition supplémentaire n'est requise, car chaque table est déjà en 3NF.
+
