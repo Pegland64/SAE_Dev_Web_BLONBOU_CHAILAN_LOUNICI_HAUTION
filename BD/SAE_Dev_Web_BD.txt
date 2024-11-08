@@ -35,6 +35,7 @@ description (TEXT) : Description du spectacle.
 video_url (VARCHAR) : URL vers une vidéo du spectacle.
 horaire_previsionnel (TIME) : Heure prévisionnelle de début du spectacle.
 id_soiree(INT FK) :  Identifiant de la soirée
+Etat (VARCHAR) : Etat du spectacle (annulé ou non)
 
 Artiste
 id_artiste(INT PK) : Identifiant unique de l'artiste
@@ -235,6 +236,7 @@ CREATE TABLE Spectacle (
 	description TEXT,
 	video_url VARCHAR(255),
 	horaire_previsionnel TIME,
+	etat VARCHAR(255),
 	id_soiree INT,
 	FOREIGN KEY (id_soiree) REFERENCES Soiree(id_soiree)
 );
@@ -293,8 +295,8 @@ INSERT INTO Soiree (nom_soiree, thematique, date_soiree, horaire_debut, nom_lieu
 	('Soirée Jazz', 'Jazz', '2023-12-15', '20:00:00', 'NRV FESTIVALE JAZZ', 0.36);
 
 INSERT INTO Spectacle (titre, description, video_url, horaire_previsionnel, id_soiree) VALUES
-	('Symphonie No.9', 'Performance de la 9ème symphonie de Beethoven', 'http://example.com/video1', '19:30:00', 1),
-	('Jazz Night', 'Une soirée de jazz inoubliable', 'http://example.com/video2', '20:30:00', 2);
+	('Symphonie No.9', 'Performance de la 9ème symphonie de Beethoven', 'http://example.com/video1', '19:30:00','confirmé', 1),
+	('Jazz Night', 'Une soirée de jazz inoubliable', 'http://example.com/video2', '20:30:00','annulé', 2);
     
 INSERT INTO Artiste VALUES
 	(1, 'Ludwig van Beethoven', 'Compositeur allemand célèbre pour ses symphonies'),
