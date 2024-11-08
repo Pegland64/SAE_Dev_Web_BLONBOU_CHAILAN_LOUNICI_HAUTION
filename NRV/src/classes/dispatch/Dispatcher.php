@@ -43,6 +43,12 @@ class Dispatcher
                 // Code pour ajouter un spectacle (pas encore implémenté)
                 $html = "<p>Ajouter un spectacle - Fonctionnalité en cours de développement.</p>";
                 break;
+            
+            case 'test':
+                // Code pour tester des fonctionnalités (pas encore implémenté)
+                $action =new  act\TestAction();
+                $html = $action->execute();
+                break;
 
             default:
                 $html = "<p>Action inconnue : {$this->action}</p>";
