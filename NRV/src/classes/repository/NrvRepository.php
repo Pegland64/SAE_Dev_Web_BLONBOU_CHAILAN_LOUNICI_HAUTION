@@ -104,7 +104,7 @@ class NrvRepository
         while ($row = $stmt->fetch()) {
             $images[] = [
                 'url' => $row['url'],
-                'description' => $row['description'],
+                'alt' => $row['nom_image'],
                 'id_spectacle' => $row['id_spectacle']
             ];
         }
@@ -129,7 +129,7 @@ class NrvRepository
                 participe.id_artiste=participe.id_artiste
                 inner JOIN artiste ON
                 artiste.id_artiste = participe.id_artiste
-                WHERE spectacle.id_spectacle = 1";
+                WHERE spectacle.id_spectacle = :idspectacle";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['idspectacle' => $idSpectacle]);
         $row = $stmt->fetch();
@@ -138,8 +138,7 @@ class NrvRepository
             'titre' => $row['titre'],
             'date' => $row['date_soiree'],
             'horaire' => $row['horaire_previsionnel'],
-            'imageURL' => $img['url'],
-            'imageNom' => $img['nom_image'],
+            'images' => $img,
             'artiste' => $row['nom_artiste'],
             'description' => $row['description'],
             'style' => $row['thematique'],
