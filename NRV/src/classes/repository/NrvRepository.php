@@ -40,4 +40,25 @@ class NrvRepository
         }
         return self::$instance;
     }
+
+    public function getSpectacleByIdSpectacle(int $idSpectacle): Spectacle
+    {
+        $sql = "SELECT * FROM spectacle WHERE id_spectacle = :idspectacle";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['idspectacle' => $idSpectacle]);
+        $row = $stmt->fetch();
+        return new Spectacle($row['id_spectacle'], $row['titre'], $row['description'], $row['video_url'], $row['horaire_previsionnel'], $row['id_soiree']);
+    }
+
+    public function getAllSpectacleByIdSoiree(int $idSoiree): array
+    {
+        $sql = "SELECT * FROM spectacle WHERE id_soiree = :idsoiree";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['idsoiree' => $idSoiree]);
+        $spectacles = [];
+        while ($row = $stmt->fetch()) {
+            $spectacles[] = new Spectacle($row['id_spectacle'], $row['titre'], $row['description'], $row['video_url'], $row['horaire_previsionnel'], $row['id_soiree']);
+        }
+    }
+
 }
