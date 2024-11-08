@@ -4,6 +4,7 @@ namespace nrv\net\repository;
 
 use nrv\net\show\Spectacle;
 use nrv\net\show\Soiree;
+use nrv\net\show\User;
 
 use PDO;
 use PDOException;
@@ -45,6 +46,20 @@ class NrvRepository
     }
 
     /**
+     * methode qui retourne un utilisateur par son id
+     * @param int $id id de l'utilisateur
+     * @return User objet utilisateur
+     */
+    public function getUserByUsername(string $username): User
+    {
+        $sql = "SELECT * FROM user WHERE username = :username";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['username' => $username]);
+        $row = $stmt->fetch();
+        return new User($row['id_user'], $row['username'], $row['password'], $row['email'], $row['role']);
+    }
+
+    /**
      * methode retourne tout les spectacles
      * @return array tableau de spectacles
      */
@@ -72,6 +87,65 @@ class NrvRepository
         $stmt->execute(['idspectacle' => $idSpectacle]);
         $row = $stmt->fetch();
         return new Spectacle($row['id_spectacle'], $row['titre'], $row['description'], $row['video_url'], $row['horaire_previsionnel'], $row['id_soiree']);
+    }
+
+    /**
+     * methode qui retourne un tableau d'image pour un spectacle
+     * @param int $idSpectacle id du spectacle
+     * @return array tableau d'images
+     */
+    public function getImagesByIdSpectacle(int $idSpectacle): array
+    {
+        $sql = "SELECT * FROM imagespectacle WHERE id_spectacle = :idspectacle";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['idspectacle' => $idSpectacle]);
+        
+        $images = [];
+        while ($row = $stmt->fetch()) {
+            $images[] = [
+                'url' => $row['url'],
+                'description' => $row['description'],
+                'id_spectacle' => $row['id_spectacle']
+            ];
+        }
+        
+        return $images;
+    }
+
+
+    /**
+     * methode qui retourne les donnée necessaire pour affichage de spectacle avec l'id du spectacle
+     * à savoir : titre, date, horaire, image, artiste, description, style, durée, extrait
+     * @param int $idSpectacle id du spectacle
+     * @return array tableau de données
+     */
+    public function getDataForRenderSpectacle(int $idSpectacle): array
+    {
+        $sql = "SELECT spectacle.titre, soiree.date_soiree, spectacle.video_url, spectacle.description, artiste.nom_artiste, soiree.thematique, spectacle.horaire_previsionnel
+                FROM spectacle 
+                inner join soiree on 
+                spectacle.id_soiree = soiree.id_soiree 
+                inner join participe ON
+                participe.id_artiste=participe.id_artiste
+                inner JOIN artiste ON
+                artiste.id_artiste = participe.id_artiste
+                WHERE spectacle.id_spectacle = 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['idspectacle' => $idSpectacle]);
+        $row = $stmt->fetch();
+        $img = $this->getImagesByIdSpectacle($idSpectacle);
+        return [
+            'titre' => $row['titre'],
+            'date' => $row['date_soiree'],
+            'horaire' => $row['horaire_previsionnel'],
+            'imageURL' => $img['url'],
+            'imageNom' => $img['nom_image'],
+            'artiste' => $row['nom_artiste'],
+            'description' => $row['description'],
+            'style' => $row['thematique'],
+            'duree' => '1h30',
+            'extrait' => $row['video_url']
+        ];
     }
 
     /**
