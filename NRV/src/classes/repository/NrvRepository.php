@@ -286,6 +286,29 @@ class NrvRepository
     }
     
 
-
+    /**
+     * methode qui retourne les données pour l'affichage d'un soirée
+     * @param int $idSoiree id de la soiree
+     * @return array tableau de données
+     */
+    public function getDataForRenderSoiree(int $idSoiree): array
+    {
+        $sql = "SELECT soiree.nom_soiree, soiree.thematique, soiree.date_soiree, soiree.horaire_debut, soiree.nom_lieu, soiree.soiree_tarif
+                FROM soiree 
+                WHERE soiree.id_soiree = :idsoiree";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['idsoiree' => $idSoiree]);
+        $row = $stmt->fetch();
+        $spectacles = $this->getAllSpectacleByIdSoiree($idSoiree);
+        return [
+            'nom_soiree' => $row['nom_soiree'],
+            'thematique' => $row['thematique'],
+            'date_soiree' => $row['date_soiree'],
+            'horaire_debut' => $row['horaire_debut'],
+            'nom_lieu' => $row['nom_lieu'],
+            'soiree_tarif' => $row['soiree_tarif'],
+            'spectacles' => $spectacles
+        ];
+    }
 
 }
