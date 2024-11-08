@@ -10,6 +10,7 @@ class Dispatcher
 
     public function __construct()
     {
+        // On détermine l'action à partir du paramètre GET 'action', avec 'default' comme valeur par défaut
         $this->action = $_GET['action'] ?? 'default';
     }
 
@@ -17,20 +18,37 @@ class Dispatcher
     {
         $html = '';
         switch ($this->action) {
-            case 'default' :
+            case 'default':
+                $html = "<p>Bienvenue sur NRV.net</p>";
                 break;
-            case 'display-spectacle' :
+
+            case 'display-spectacle':
+                // Afficher les détails d'un spectacle
                 $action = new act\DisplaySpectacleAction();
                 $html = $action->execute();
                 break;
-            case 'liste-spectacles' :
-                break;
-            case 'login' :
-                break;
-            case 'add-spectacle' :
+
+            case 'liste-spectacles':
+                // Afficher la liste de tous les spectacles
+                $action = new act\SoireeAction();
+                $html = $action->execute();
                 break;
 
+            case 'login':
+                // Code pour la connexion (pas encore implémenté)
+                $html = "<p>Page de connexion - Fonctionnalité en cours de développement.</p>";
+                break;
+
+            case 'add-spectacle':
+                // Code pour ajouter un spectacle (pas encore implémenté)
+                $html = "<p>Ajouter un spectacle - Fonctionnalité en cours de développement.</p>";
+                break;
+
+            default:
+                $html = "<p>Action inconnue : {$this->action}</p>";
+                break;
         }
+
         $this->renderPage($html);
     }
 
@@ -52,14 +70,13 @@ class Dispatcher
             <a href="?action=add-spectacle">Ajouter un spectacle</a>
             <a href="?action=liste-spectacles">Liste des spectacles</a>
             <a href="?action=login">Connexion</a>
-            
         </div>
     </nav>
-    $html  
-   
+    <div class="content">
+        $html  
+    </div>
 </body>
 </html>
 HTML;
-
     }
 }

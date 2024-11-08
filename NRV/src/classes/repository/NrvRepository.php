@@ -2,6 +2,9 @@
 
 namespace nrv\net\repository;
 
+use nrv\net\show\Spectacle;
+use nrv\net\show\Soiree;
+
 use PDO;
 use PDOException;
 

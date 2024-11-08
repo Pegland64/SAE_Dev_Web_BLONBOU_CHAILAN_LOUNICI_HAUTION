@@ -6,23 +6,20 @@ use nrv\net\exception\InvalidPropertyNameException;
 
 class Spectacle
 {
-    private $title;
-    private $artist;
-    private $description;
-    private $style;
-    private $duration;
-    private $image;
-    private $extrait;
+    private int $id;
+    private string $titre;
+    private string $description;
+    private string $videoUrl;
+    private string $horairePrevisionnel;
+    private int $idSoiree;
 
-    public function __construct($title, $artist, $description, $style, $duration, $image, $extrait)
-    {
-        $this->title = $title;
-        $this->artist = $artist;
+    public function __construct($id, $titre, $description, $videoUrl, $horairePrevisionnel, $idSoiree) {
+        $this->id = $id;
+        $this->titre = $titre;
         $this->description = $description;
-        $this->style = $style;
-        $this->duration = $duration;
-        $this->image = $image;
-        $this->extrait = $extrait;
+        $this->videoUrl = $videoUrl;
+        $this->horairePrevisionnel = $horairePrevisionnel;
+        $this->idSoiree = $idSoiree;
     }
 
     public function __get($property)
