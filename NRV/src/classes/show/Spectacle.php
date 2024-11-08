@@ -13,8 +13,9 @@ class Spectacle
     private $duration;
     private $image;
     private $extrait;
+    private $etat;
 
-    public function __construct($title, $artist, $description, $style, $duration, $image, $extrait)
+    public function __construct($title, $artist, $description, $style, $duration, $image, $extrait, $etat)
     {
         $this->title = $title;
         $this->artist = $artist;
@@ -23,6 +24,7 @@ class Spectacle
         $this->duration = $duration;
         $this->image = $image;
         $this->extrait = $extrait;
+        $this->etat = $etat;
     }
 
     public function __get($property)
