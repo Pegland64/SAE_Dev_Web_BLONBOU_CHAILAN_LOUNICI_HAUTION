@@ -1,4 +1,4 @@
-﻿SAE « Conception d’une BD pour le festival Nancy Rock Vibration »
+SAE « Conception d’une BD pour le festival Nancy Rock Vibration »
 
 HAUTION Ilan
 BLONBOU Mathys
@@ -8,289 +8,331 @@ LOUNICI Ilyes
 Sujet BD
 
 Question 1 : 
-
 Nous décrivons ici les entités principales et leurs attributs :
 
 PK = PrimaryKey (clé primaire)
 FK = Foreign Key (clé étrangère)
 
-1. Lieu
-   * nom_lieu (VARCHAR, PK) : Nom du lieu de spectacle.
-   * adresse (VARCHAR) : Adresse du lieu.
-   * places_assises (INT) : Nombre de places assises disponibles.
-   * places_debout (INT) : Nombre de places debout disponibles.
-   * images_lieu (VARCHAR, array) : URLs des images associées au lieu.
+Lieu
+nom_lieu (VARCHAR, PK) : Nom du lieu de spectacle.
+adresse (VARCHAR) : Adresse du lieu.
+places_assises (INT) : Nombre de places assises disponibles.
+places_debout (INT) : Nombre de places debout disponibles.
+images_lieu (VARCHAR, array) : URLs des images associées au lieu.
 
-2. Soiree
-   * id_soiree (INT, PK) : Identifiant unique de la soirée.
-   * nom_soiree (VARCHAR) : Nom de la soirée.
-   * thematique (VARCHAR) : Thématique générale de la soirée.
-   * date_soiree (DATE) : Date de la soirée.
-   * heure_debut (TIME) : Heure de début de la soirée.
-   * lieu (nom_lieu, FK) : Lieu où se déroule la soirée.
+Soiree
+id_soiree (INT, PK) : Identifiant unique de la soirée.
+nom_soiree (VARCHAR) : Nom de la soirée.
+thematique (VARCHAR) : Thématique générale de la soirée (ex. blues, reggae).
+date_soiree (DATE) : Date de la soirée.
+heure_debut (TIME) : Heure de début de la soirée.
+lieu (nom_lieu, FK) : Lieu où se déroule la soirée.
 
-3. Spectacle
-   * id_spectacle (INT, PK) : Identifiant unique du spectacle.
-   * titre (VARCHAR) : Titre du spectacle.
-   * description (TEXT) : Description du spectacle.
-   * video_url (VARCHAR) : URL vers une vidéo du spectacle.
-   * horaire_previsionnel (TIME) : Heure prévisionnelle de début du spectacle.
-   * id_soiree(INT FK) :  Identifiant de la soirée
+Spectacle
+id_spectacle (INT, PK) : Identifiant unique du spectacle.
+titre (VARCHAR) : Titre du spectacle.
+description (TEXT) : Description du spectacle.
+video_url (VARCHAR) : URL vers une vidéo du spectacle.
+horaire_previsionnel (TIME) : Heure prévisionnelle de début du spectacle.
+id_soiree(INT FK) :  Identifiant de la soirée
 
-4. Artiste
-   * id_artiste(INT PK) : Identifiant unique de l'artiste
-   * nom_artiste (VARCHAR) : Nom de l'artiste
-   * bio (TEXT) : Nom de l'artiste
+Artiste
+id_artiste(INT PK) : Identifiant unique de l'artiste
+nom_artiste (VARCHAR) : Nom de l'artiste
+bio (TEXT) : Nom de l'artiste
 
-5. SpectacleArtiste
-   * id_spectacle (INT PK FK) : Identifiant du spectacle
-   * id_artiste (INT PK FK) : Identifiant de l'artiste
+Participe
+id_spectacle (INT PK FK) : Identifiant du spectacle
+id_artiste (INT PK FK) : Identifiant de l'artiste
 
-6. ImageLieu
-   * url (VARCHAR PK) : URL de l'image
-   * nom_image (VARCHAR) : Nom ou description de l'image
-   * nom_lieu (VARCHAR FK) : Lieu associé à l'image
+ImageLieu
+url (VARCHAR PK) : URL de l'image
+nom_image (VARCHAR) : Nom ou description de l'image
+nom_lieu (VARCHAR FK) : Lieu associé à l'image
 
-7. ImageSpectacle
-   * url (VARCHAR PK) : URL de l'image
-   * nom_image (VARCHAR) : Nom ou description de l'image
-   * id_spectacle(INT FK) : Identifiant du spectacle associé
+ImageSpectacle
+url (VARCHAR PK) : URL de l'image
+nom_image (VARCHAR) : Nom ou description de l'image
+id_spectacle(INT FK) : Identifiant du spectacle associé
 
+Users
+id_user (INT PK) : identifiant de l’utilisateur
+username (VARCHAR) : nom d’utilisateur
+email (VARCHAR): email de l’utilisateur
+password (VARCHAR) : mot de passe
+role (INT) : role de l’utilisateur (utilisateur, organisateur, administrateur)
+
+Spectacle2User
+id_user (INT PK FK) : identifiant de l’utilisateur
+id_spectacle(INT PK FK) : Identifiant unique du spectacle.
 
 Question 2 et 3 :
 
+Lieu
+Dépendances fonctionnelles :
+nom_lieu → adresse, places_assises, places_debout
+Clé minimale : nom_lieu
+Justification : Le nom du lieu identifie de manière unique chaque enregistrement et détermine ses autres attributs comme l’adresse, les places assises et debout. Les images seront stockées dans la table ImageLieu associée.
 
-1. Lieu
-* Dépendances fonctionnelles :
-   * nom_lieu → adresse, places_assises, places_debout
-* Clé minimale : nom_lieu
-* Justification : Le nom du lieu identifie de manière unique chaque enregistrement et détermine ses autres attributs comme l’adresse, les places assises et debout. Les images seront stockées dans la table ImageLieu associée.
+Soiree
+Dépendances fonctionnelles :
+id_soiree → nom_soiree, thematique, date, heure_debut, lieu
+Clé minimale : id_soiree
+Justification : L’identifiant unique id_soiree permet d’identifier chaque soirée sans ambiguïté et de déterminer ses autres caractéristiques telles que le nom, la thématique, la date, l’heure de début et le lieu associé.
 
+Spectacle
+Dépendances fonctionnelles :
+id_spectacle → titre, description, video_url, horaire_previsionnel, id_soiree
+Clé minimale : id_spectacle
+Justification : L’identifiant id_spectacle permet de reconnaître chaque spectacle et de déduire ses informations telles que le titre, la description, l’URL vidéo, l’horaire prévisionnel et la soirée à laquelle il est associé. Les images des spectacles sont externalisées dans la table ImageSpectacle et les artistes associés dans SpectacleArtiste.
 
-2. Soiree
-* Dépendances fonctionnelles :
-   * id_soiree → nom_soiree, thematique, date, heure_debut, lieu
-* Clé minimale : id_soiree
-* Justification : L’identifiant unique id_soiree permet d’identifier chaque soirée sans ambiguïté et de déterminer ses autres caractéristiques telles que le nom, la thématique, la date, l’heure de début et le lieu associé.
+Artiste
+Dépendances fonctionnelles :
+id_artiste → nom_artiste, bio
+Clé minimale : id_artiste
+Justification : id_artiste identifie chaque artiste de manière unique, permettant d'accéder aux informations comme le nom et la biographie.
 
+SpectacleArtiste
+Dépendances fonctionnelles :
+(id_spectacle, id_artiste) → Association unique d’un artiste avec un spectacle.
+Clé minimale : (id_spectacle, id_artiste) (clé composite)
+Justification : La combinaison id_spectacle et id_artiste est unique et permet de gérer les associations sans redondance. Un artiste peut participer à plusieurs spectacles, et chaque spectacle peut inclure plusieurs artistes.
 
-3. Spectacle
-* Dépendances fonctionnelles :
-   * id_spectacle → titre, description, video_url, horaire_previsionnel, id_soiree
-* Clé minimale : id_spectacle
-* Justification : L’identifiant id_spectacle permet de reconnaître chaque spectacle et de déduire ses informations telles que le titre, la description, l’URL vidéo, l’horaire prévisionnel et la soirée à laquelle il est associé. Les images des spectacles sont externalisées dans la table ImageSpectacle et les artistes associés dans SpectacleArtiste.
+ImageLieu
+Dépendances fonctionnelles :
+url → nom_image, nom_lieu
+Clé minimale : url
+Justification : L’URL de chaque image est unique et permet de référencer les détails de l’image et son lieu associé.
 
+ImageSpectacle
+Dépendances fonctionnelles :
+url → nom_image, id_spectacle
+Clé minimale : url
+Justification : L’URL de chaque image est unique et permet de référencer les détails de l’image et le spectacle auquel elle est associée.
 
-4. Artiste
-* Dépendances fonctionnelles :
-   * id_artiste → nom_artiste, bio
-* Clé minimale : id_artiste
-* Justification : id_artiste identifie chaque artiste de manière unique, permettant d'accéder aux informations comme le nom et la biographie.
+Users
+Dépendances fonctionnelles :
+id_user → username, email, password, role
+Clé minimale : id_user
+Justification :  id_user est l'identifiant unique pour chaque utilisateur. Il permet d'identifier sans ambiguïté chaque utilisateur et d'accéder à toutes ses informations associées telles que le nom d'utilisateur (username), l'adresse email (email), le mot de passe (password) et son rôle (role). Les colonnes username et email sont également uniques mais ne suffisent pas à elles seules pour identifier complètement chaque utilisateur (par exemple, en cas de modification).
 
-
-5. SpectacleArtiste
-* Dépendances fonctionnelles :
-   * (id_spectacle, id_artiste) → Association unique d’un artiste avec un spectacle.
-* Clé minimale : (id_spectacle, id_artiste) (clé composite)
-* Justification : La combinaison id_spectacle et id_artiste est unique et permet de gérer les associations sans redondance. Un artiste peut participer à plusieurs spectacles, et chaque spectacle peut inclure plusieurs artistes.
-
-
-6. ImageLieu
-* Dépendances fonctionnelles :
-   * url → nom_image, nom_lieu
-* Clé minimale : url
-* Justification : L’URL de chaque image est unique et permet de référencer les détails de l’image et son lieu associé.
-
-
-7. ImageSpectacle
-* Dépendances fonctionnelles :
-   * url → nom_image, id_spectacle
-* Clé minimale : url
-* Justification : L’URL de chaque image est unique et permet de référencer les détails de l’image et le spectacle auquel elle est associée.
-
+Spectacle2User
+Dépendances fonctionnelles :
+(id_user, id_spectacle) → Association unique d’un utilisateur avec un spectacle
+Clé minimale : (id_user, id_spectacle) clé composite
+Justification : La combinaison de id_user et id_spectacle est unique et permet d'identifier chaque association entre un utilisateur et un spectacle. Ce schéma garantit qu’un même utilisateur peut être associé à plusieurs spectacles et qu’un spectacle peut être lié à plusieurs utilisateurs. Cette clé composite est nécessaire pour gérer ces associations sans redondance.
 
 Question 4 et 5
 Pour être en 3NF, chaque relation doit être en 2NF et ne contenir aucune dépendance transitive (c'est-à-dire qu'aucun attribut ne doit dépendre indirectement de la clé primaire).
 
-
-1. Table Lieu
+Table Lieu
 Attributs : nom_lieu, adresse, places_assises, places_debout 
 1NF :
-* Les attributs sont atomiques, donc la table est en 1NF.
+Les attributs sont atomiques, donc la table est en 1NF.
 2NF :
-* La clé primaire nom_lieu détermine chaque autre attribut (adresse, places_assises, places_debout) sans dépendances partielles. Donc, la table est en 2NF.
+La clé primaire nom_lieu détermine chaque autre attribut (adresse, places_assises, places_debout) sans dépendances partielles. Donc, la table est en 2NF.
 3NF :
-* Aucun attribut ne dépend indirectement de la clé primaire. La table Lieu est donc en 3NF.
+Aucun attribut ne dépend indirectement de la clé primaire. La table Lieu est donc en 3NF.
 
-
-2. Table Soiree
+Table Soiree
 Attributs : id_soiree, nom_soiree, thematique, date, heure_debut, lieu 
 1NF :
-* Tous les attributs sont atomiques, donc la table est en 1NF.
+Tous les attributs sont atomiques, donc la table est en 1NF.
 2NF :
-* La clé primaire id_soiree détermine chaque autre attribut sans dépendance partielle. Elle est donc en 2NF.
+La clé primaire id_soiree détermine chaque autre attribut sans dépendance partielle. Elle est donc en 2NF.
 3NF :
-* Aucune dépendance transitive n'existe. La table Soiree est en 3NF.
+Aucune dépendance transitive n'existe. La table Soiree est en 3NF.
 
-
-3. Table Spectacle
+Table Spectacle
 Attributs : id_spectacle, titre, description, video_url, horaire_previsionnel, id_soiree 
 1NF :
-* Les champs sont atomiques. Les images sont déplacées dans une table externe ImageSpectacle et les artistes dans SpectacleArtiste, donc elle respecte la 1NF.
+Les champs sont atomiques. Les images sont déplacées dans une table externe ImageSpectacle et les artistes dans SpectacleArtiste, donc elle respecte la 1NF.
 2NF :
-* id_spectacle détermine chaque autre attribut, sans dépendance partielle. La table est en 2NF.
+id_spectacle détermine chaque autre attribut, sans dépendance partielle. La table est en 2NF.
 3NF :
-* Aucune dépendance transitive. La table Spectacle est en 3NF.
+Aucune dépendance transitive. La table Spectacle est en 3NF.
 
-
-4. Table Artiste
+Table Artiste
 Attributs : id_artiste, nom_artiste, bio 
 1NF :
-* Les attributs sont atomiques et indépendants.
+Les attributs sont atomiques et indépendants.
 2NF :
-* id_artiste détermine les autres attributs, sans dépendance partielle.
+id_artiste détermine les autres attributs, sans dépendance partielle.
 3NF :
-* Aucune dépendance transitive. La table Artiste est donc en 3NF.
+Aucune dépendance transitive. La table Artiste est donc en 3NF.
 
-
-5. Table SpectacleArtiste
+Table SpectacleArtiste
 Attributs : id_spectacle, id_artiste 
 1NF :
-* Les attributs sont atomiques.
+Les attributs sont atomiques.
 2NF :
-* La clé primaire composite (id_spectacle, id_artiste) détermine chaque ligne unique, donc la table est en 2NF.
+La clé primaire composite (id_spectacle, id_artiste) détermine chaque ligne unique, donc la table est en 2NF.
 3NF :
-* Pas de dépendance transitive. La table SpectacleArtiste est en 3NF.
+Pas de dépendance transitive. La table SpectacleArtiste est en 3NF.
 
-
-6. Table ImageLieu
+Table ImageLieu
 Attributs : url, nom_image, nom_lieu 
 1NF :
-* Les attributs sont atomiques.
+Les attributs sont atomiques.
 2NF :
-* La clé primaire url détermine les autres attributs, donc la table est en 2NF.
+La clé primaire url détermine les autres attributs, donc la table est en 2NF.
 3NF :
-* Pas de dépendances transitives. La table ImageLieu est en 3NF.
+Pas de dépendances transitives. La table ImageLieu est en 3NF.
 
-
-7. Table ImageSpectacle
+Table ImageSpectacle
 Attributs : url, nom_image, id_spectacle 
 1NF :
-* Les attributs sont atomiques.
+Les attributs sont atomiques.
 2NF :
-* La clé primaire url détermine chaque autre attribut sans dépendance partielle.
+La clé primaire url détermine chaque autre attribut sans dépendance partielle.
 3NF :
-* Pas de dépendance transitive. La table ImageSpectacle est en 3NF.
+Pas de dépendance transitive. La table ImageSpectacle est en 3NF.
 
+Table Users
+Attributs : id_user, username, email, password, role 
+1NF :
+Les attributs sont atomiques.
+2NF :
+La clé primaire id_user détermine chaque autre attribut sans dépendance partielle.
+3NF :
+Pas de dépendance transitive. La table Users est en 3NF.
 
+Table Spectacle2User
+Attributs : id_user, id_spectacle
+1NF :
+Les attributs sont atomiques.
+2NF :
+La clé primaire composé de id_user et id_spectacle détermine chaque autre attribut sans dépendance partielle.
+3NF :
+Pas de dépendance transitive. La table Spectacle2User est en 3NF.
 
 
 Question 6 :
 Voici le script SQL pour créer les tables, avec quelques exemples d'enregistrements :
 --Création des tables
 CREATE TABLE Lieu (
-        nom_lieu VARCHAR(255) PRIMARY KEY,
-        adresse VARCHAR(255),
-        places_assises INT,
-        places_debout INT,
-        description TEXT
+	nom_lieu VARCHAR(255) PRIMARY KEY,
+	adresse VARCHAR(255),
+	places_assises INT,
+	places_debout INT,
+	description TEXT
 );
-
 
 CREATE TABLE Soiree (
-        id_soiree INT PRIMARY KEY AUTO_INCREMENT,
-        nom_soiree VARCHAR(255),
-        thematique VARCHAR(255),
-        date_soiree DATE,
-        horaire_debut TIME,
-        nom_lieu VARCHAR(255),
-        FOREIGN KEY (nom_lieu) REFERENCES Lieu(nom_lieu)
+	id_soiree INT PRIMARY KEY AUTO_INCREMENT,
+	nom_soiree VARCHAR(255),
+	thematique VARCHAR(255),
+	date_soiree DATE,
+	horaire_debut TIME,
+	nom_lieu VARCHAR(255),
+	soiree_tarif DOUBLE(6,2),
+	FOREIGN KEY (nom_lieu) REFERENCES Lieu(nom_lieu)
 );
-
 
 CREATE TABLE Spectacle (
-        id_spectacle INT PRIMARY KEY AUTO_INCREMENT,
-        titre VARCHAR(255),
-        description TEXT,
-        video_url VARCHAR(255),
-        horaire_previsionnel TIME,
-        id_soiree INT,
-        FOREIGN KEY (id_soiree) REFERENCES Soiree(id_soiree)
+	id_spectacle INT PRIMARY KEY AUTO_INCREMENT,
+	titre VARCHAR(255),
+	description TEXT,
+	video_url VARCHAR(255),
+	horaire_previsionnel TIME,
+	id_soiree INT,
+	FOREIGN KEY (id_soiree) REFERENCES Soiree(id_soiree)
 );
-
 
 CREATE TABLE Artiste (
-        id_artiste INT PRIMARY KEY AUTO_INCREMENT,
-        nom_artiste VARCHAR(255),
-        bio TEXT
+	id_artiste INT PRIMARY KEY AUTO_INCREMENT,
+	nom_artiste VARCHAR(255),
+	bio TEXT
 );
 
-
-CREATE TABLE SpectacleArtiste (
-        id_spectacle INT,
-        id_artiste INT,
-        PRIMARY KEY (id_spectacle, id_artiste),
-        FOREIGN KEY (id_spectacle) REFERENCES Spectacle(id_spectacle),
-        FOREIGN KEY (id_artiste) REFERENCES Artiste(id_artiste)
+CREATE TABLE Participe (
+	id_spectacle INT,
+	id_artiste INT,
+	PRIMARY KEY (id_spectacle, id_artiste),
+	FOREIGN KEY (id_spectacle) REFERENCES Spectacle(id_spectacle),
+	FOREIGN KEY (id_artiste) REFERENCES Artiste(id_artiste)
 );
-
 
 CREATE TABLE ImageLieu (
-        url VARCHAR(255) PRIMARY KEY,
-        nom_image VARCHAR(255),
-        nom_lieu VARCHAR(255),
-        FOREIGN KEY (nom_lieu) REFERENCES Lieu(nom_lieu)
+	url VARCHAR(255) PRIMARY KEY,
+	nom_image VARCHAR(255),
+	nom_lieu VARCHAR(255),
+	FOREIGN KEY (nom_lieu) REFERENCES Lieu(nom_lieu)
 );
-
 
 CREATE TABLE ImageSpectacle (
-        url VARCHAR(255) PRIMARY KEY,
-        nom_image VARCHAR(255),
-        id_spectacle INT,
-        FOREIGN KEY (id_spectacle) REFERENCES Spectacle(id_spectacle)
+	url VARCHAR(255) PRIMARY KEY,
+	nom_image VARCHAR(255),
+	id_spectacle INT,
+	FOREIGN KEY (id_spectacle) REFERENCES Spectacle(id_spectacle)
 );
 
+CREATE TABLE USERS (
+     id_user INT PRIMARY KEY AUTO_INCREMENT,
+     username VARCHAR(50) NOT NULL UNIQUE,
+     email VARCHAR(100) NOT NULL UNIQUE,
+     password VARCHAR(100) NOT NULL,
+     role int(3) NOT NULL
+);
+
+CREATE TABLE Spectacle2User(
+      id_user INT,
+      id_spectacle INT,
+      FOREIGN KEY (id_user) REFERENCES USERS(id_user),
+      FOREIGN KEY (id_spectacle) REFERENCES SPECTACLE(id_spectacle),
+      PRIMARY KEY (id_user, id_spectacle)
+);
 
 -- Test des tables avec des INSERT INTO quelconque
 INSERT INTO Lieu VALUES
-        ('NRV FESTIVALE CLASSIQUE', '123 Rue de Paris, 54000 NANCY', 500, 200, 'La classe en un endroit classique'),
-        ('NRV FESTIVALE JAZZ', '45 Avenue des Champs, 54000 NANCY', 300, 150, 'La classe en un endroit jazz');
+	('NRV FESTIVALE CLASSIQUE', '123 Rue de Paris, 54000 NANCY', 500, 200, 'La classe en un endroit classique'),
+	('NRV FESTIVALE JAZZ', '45 Avenue des Champs, 54000 NANCY', 300, 150, 'La classe en un endroit jazz');
 
+INSERT INTO Soiree (nom_soiree, thematique, date_soiree, horaire_debut, nom_lieu, soiree_tarif)VALUES
+	('Soirée Classique', 'Classique', '2023-12-10', '19:00:00', 'NRV FESTIVALE CLASSIQUE', 200.36),
+	('Soirée Jazz', 'Jazz', '2023-12-15', '20:00:00', 'NRV FESTIVALE JAZZ', 0.36);
 
-INSERT INTO Soiree VALUES
-        (1, 'Soirée Classique', 'Classique', '2023-12-10', '19:00:00', 'NRV FESTIVALE CLASSIQUE'),
-        (2, 'Soirée Jazz', 'Jazz', '2023-12-15', '20:00:00', 'NRV FESTIVALE JAZZ');
-
-
-INSERT INTO Spectacle VALUES
-        (1, 'Symphonie No.9', 'Performance de la 9ème symphonie de Beethoven', 'http://example.com/video1', '19:30:00', 1),
-        (2, 'Jazz Night', 'Une soirée de jazz inoubliable', 'http://example.com/video2', '20:30:00', 2);
+INSERT INTO Spectacle (titre, description, video_url, horaire_previsionnel, id_soiree) VALUES
+	('Symphonie No.9', 'Performance de la 9ème symphonie de Beethoven', 'http://example.com/video1', '19:30:00', 1),
+	('Jazz Night', 'Une soirée de jazz inoubliable', 'http://example.com/video2', '20:30:00', 2);
     
 INSERT INTO Artiste VALUES
-        (1, 'Ludwig van Beethoven', 'Compositeur allemand célèbre pour ses symphonies'),
-        (2, 'Miles Davis', 'Pionnier du jazz et trompettiste de renommée mondiale'),
-        (3, 'JUL', 'Plus grand artiste que cette planète est connu');
+	(1, 'Ludwig van Beethoven', 'Compositeur allemand célèbre pour ses symphonies'),
+	(2, 'Miles Davis', 'Pionnier du jazz et trompettiste de renommée mondiale'),
+	(3, 'JUL', 'Plus grand artiste que cette planète est connu');
 
-
-INSERT INTO SpectacleArtiste VALUES
-        (1, 1),
-        (2, 2),
-        (2, 3);
+INSERT INTO Participe VALUES
+	(1, 1),
+	(2, 2),
+	(2, 3);
     
 INSERT INTO ImageLieu VALUES
-        ('http://example.com/NRV_FESTIVALE_CLASSIQUE.jpg', 'NRV FESTIVALE CLASSIQUE Image', 'NRV FESTIVALE CLASSIQUE'),
-        ('http://example.com/NRV_FESTIVALE_JAZZ.jpg', 'NRV FESTIVALE JAZZ Image', 'NRV FESTIVALE JAZZ');
+	('http://example.com/NRV_FESTIVALE_CLASSIQUE.jpg', 'NRV FESTIVALE CLASSIQUE Image', 'NRV FESTIVALE CLASSIQUE'),
+	('http://example.com/NRV_FESTIVALE_JAZZ.jpg', 'NRV FESTIVALE JAZZ Image', 'NRV FESTIVALE JAZZ');
     
 INSERT INTO ImageSpectacle VALUES
-        ('http://example.com/symphonie_image.jpg', 'Symphonie No.9 Image', 1),
-        ('http://example.com/jazznight_image.jpg', 'Jazz Night Image', 2);
+	('http://example.com/symphonie_image.jpg', 'Symphonie No.9 Image', 1),
+	('http://example.com/jazznight_image.jpg', 'Jazz Night Image', 2);
 
+INSERT INTO USERS VALUES 
+(1, 'random_user', 'john@example.com', 'password123', 1),
+(2, 'artiste', 'jane@example.com', 'securepassword', 2),
+(3, 'admin_user', 'admin@example.com', 'adminpass', 3);
 
-–- Suppression des tables si besoin
-DROP TABLE spectacleartiste;
+INSERT INTO Spectacle2User VALUES
+(2, 2),
+(3, 1), 
+(3, 2); 
+
+– Suppression des tables si besoin
+DROP TABLE Participe;
 DROP TABLE ARTISTE;
 DROP TABLE imagelieu;
 DROP TABLE imagespectacle;
+DROP TABLE Spectacle2User;
+DROP TABLE users;
 DROP TABLE spectacle;
 DROP TABLE soiree;
 DROP TABLE lieu;
+
+
