@@ -59,6 +59,7 @@ class NrvRepository
         while ($row = $stmt->fetch()) {
             $spectacles[] = new Spectacle($row['id_spectacle'], $row['titre'], $row['description'], $row['video_url'], $row['horaire_previsionnel'], $row['id_soiree']);
         }
+        return $spectacles;
     }
 
 }
