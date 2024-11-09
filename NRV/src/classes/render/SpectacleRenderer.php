@@ -18,9 +18,9 @@ class SpectacleRenderer implements Renderer
     public function render(int $type): string
     {
         switch ($type) {
-            case 1:
+            case self::COMPACT:
                 return $this->compact() . "<br>";
-            case 2:
+            case self::FULL:
                 return $this->full() . "<br>";
             default:
                 return "Type de rendu inconnu.";
@@ -29,11 +29,13 @@ class SpectacleRenderer implements Renderer
 
     private function compact()
     {
+        $id = $this->spectacle->id;
+        $image = $this->spectacle->images[0] ?? '';
         return <<<HTML
         <div>
-            <h2>Spectacle : {$this->spectacle->titre}</h2>
-            <p>Date : {$this->spectacle->date} - {$this->spectacle->horaire}</p>
-            <img src="{$this->spectacle->image}" alt="{$this->spectacle->titre}">
+            <h2><a href="?action=display-spectacle&id={$id}">Spectacle : {$this->spectacle->titre}</a></h2>
+            <p>Horaire : {$this->spectacle->horaire}</p>
+            <img src="{$image}" alt="une image du spectacle">
         </div>
 HTML;
 
@@ -41,14 +43,25 @@ HTML;
 
     private function full()
     {
+        $images = '';
+        foreach ($this->spectacle->images as $image) {
+            $images .= "<img src='{$image}' alt='une image du spectacle'>";
+        }
+
+        $artistes = '';
+        foreach ($this->spectacle->artistes as $artiste) {
+            $artistes .= "<p> - {$artiste}</p>";
+        }
         return <<<HTML
 <div>
     <h2>Spectacle : {$this->spectacle->titre}</h2>
-    <p>Artistes : {$this->spectacle->artiste}</p>
+    <p>Artistes :</p>
+    {$artistes}
     <p>Description : {$this->spectacle->description}</p>
     <p>Style : {$this->spectacle->style}</p>
     <p>Durée : {$this->spectacle->duree} minutes</p>
-    <img src="{$this->spectacle->image}" alt="{$this->spectacle->titre}">
+    <p>Horaire : {$this->spectacle->horaire}</p>
+    {$images}
 </div>
 
 

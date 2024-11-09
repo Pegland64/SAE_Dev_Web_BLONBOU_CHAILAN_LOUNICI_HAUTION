@@ -6,22 +6,22 @@ use nrv\net\exception\InvalidPropertyNameException;
 
 class Soiree
 {
+    private int $id;
     private string $nom;
     private string $thematique;
     private string $date;
     private string $horaire;
     private string $lieu;
-    private int $tarif;
     private array $spectacles= [];
 
-    public function __construct(string $nom, string $thematique, string $date, string $horaire, string $lieu, int $tarif, array $spectacles= [])
+    public function __construct(string $nom, string $thematique, string $date, string $horaire, string $lieu, array $spectacles= [])
     {
+        $this->id = 0;
         $this->nom = $nom;
         $this->thematique = $thematique;
         $this->date = $date;
         $this->horaire = $horaire;
         $this->lieu = $lieu;
-        $this->tarif = $tarif;
         $this->spectacles = $spectacles;
     }
 

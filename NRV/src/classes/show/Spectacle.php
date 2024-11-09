@@ -7,28 +7,28 @@ use nrv\net\exception\InvalidPropertyValueException;
 
 class Spectacle
 {
+    private int $id;
     private string $titre;
-    private string $artiste;
     private string $description;
     private string $style;
-    private string $image;
     private string $video;
-    private string $date;
     private string $horaire;
-    private int $duree;
+    private string $duree;
+    private array $artistes;
+    private array $images;
 
 
     // définir un spectacle avec le titre, la date, l'horaire, une image, l'artiste, le lieu, la description, le style, une vidéo
-    public function __construct(string $titre, string $date, string $horaire, string $image, string $artiste, string $description, string $style, string $video)
+    public function __construct($titre, $description, $video, $horaire, $duree, $style)
     {
         $this->titre = $titre;
-        $this->date = $date;
-        $this->horaire = $horaire;
-        $this->image = $image;
-        $this->artiste = $artiste;
         $this->description = $description;
-        $this->style = $style;
         $this->video = $video;
+        $this->horaire = $horaire;
+        $this->duree = $duree;
+        $this->style = $style;
+        $this->images = [];
+        $this->artistes = [];
     }
 
     public function __get(string $name) : mixed
@@ -41,13 +41,19 @@ class Spectacle
         }
     }
 
-    public function setDuree(int $duree) : void
+    public function setId(int $id) : void
     {
-        if($duree > 0) {
-            $this->duree = $duree;
-        }else{
-            throw new InvalidPropertyValueException("Erreur : La durée doit être supérieure à 0");
-        }
+        $this->id = $id;
+    }
+
+    public function setArtistes(array $artistes) : void
+    {
+        $this->artistes = $artistes;
+    }
+
+    public function setImages(array $images) : void
+    {
+        $this->images = $images;
     }
 
 }
