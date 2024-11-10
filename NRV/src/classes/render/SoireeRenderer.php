@@ -26,7 +26,7 @@ class SoireeRenderer implements Renderer
         }
     }
 
-    private function compact() : string
+    private function compact(): string
     {
         $html = "<div>";
         $html .= "<h2>Soirée : {$this->soiree->nom}</h2>";
@@ -35,16 +35,16 @@ class SoireeRenderer implements Renderer
         $html .= "<p>Horaire : {$this->soiree->horaire->format('H:i:s')}</p>";
         $html .= "<p>Lieu : {$this->soiree->lieu->nom}</p>";
         $html .= "<p>Tarif : {$this->soiree->tarif} €</p>";
-        $html .= "<h3>Spectacles :</h3>";
-        foreach($this->soiree->spectacles as $spectacle)
-        {
+        $html .= "<h3>Spectacles :</h3><ul>";
+        foreach ($this->soiree->spectacles as $spectacle) {
             $renderer = new SpectacleRenderer($spectacle);
-            $html .= $renderer->render(Renderer::COMPACT);
+            $html .= "<li>" . $renderer->render(Renderer::COMPACT) . "</li>";
         }
+        $html .= "</ul>";
         return $html . "</div>";
     }
 
-    private function full() : string
+    private function full(): string
     {
         return "<div><p>En cours de développement.</p></div>";
     }
