@@ -7,14 +7,14 @@ use nrv\net\show\Spectacle;
 
 class SpectacleRenderer implements Renderer
 {
-    
+
     private Spectacle $spectacle;
-    
+
     public function __construct(Spectacle $spectacle)
     {
         $this->spectacle = $spectacle;
     }
-    
+
     public function render(int $type): string
     {
         switch ($type) {
@@ -29,13 +29,15 @@ class SpectacleRenderer implements Renderer
 
     private function compact()
     {
-        $id = $this->spectacle->id;
+        $id = $this->spectacle->id_spectacle;
         $image = $this->spectacle->images[0] ?? '';
+        $horaire = $this->spectacle->horaire->format('H:i:s');
         return <<<HTML
         <div>
-            <h2><a href="?action=display-spectacle&id={$id}">Spectacle : {$this->spectacle->titre}</a></h2>
-            <p>Horaire : {$this->spectacle->horaire}</p>
+            <h3>Spectacle : {$this->spectacle->titre}</h3>
+            <p>Horaire : {$horaire}</p>
             <img src="{$image}" alt="une image du spectacle">
+            <p><a href="?action=display-spectacle&id_spectacle={$id}">En savoir plus</a></p>
         </div>
 HTML;
 
@@ -48,23 +50,24 @@ HTML;
             $images .= "<img src='{$image}' alt='une image du spectacle'>";
         }
 
-        $artistes = '';
+        $artistes = '<ul>';
         foreach ($this->spectacle->artistes as $artiste) {
-            $artistes .= "<p> - {$artiste}</p>";
+            $artistes .= "<li>{$artiste}</li>";
         }
+        $artistes .= '</ul>';
+
+        $horaire = $this->spectacle->horaire->format('H:i:s');
         return <<<HTML
 <div>
-    <h2>Spectacle : {$this->spectacle->titre}</h2>
+    <h3>Spectacle : {$this->spectacle->titre}</h3>
     <p>Artistes :</p>
     {$artistes}
     <p>Description : {$this->spectacle->description}</p>
     <p>Style : {$this->spectacle->style}</p>
     <p>Durée : {$this->spectacle->duree} minutes</p>
-    <p>Horaire : {$this->spectacle->horaire}</p>
+    <p>Horaire : {$horaire}</p>
     {$images}
 </div>
-
-
 HTML;
 // implémentation d'une vidéo plutard
 //        <video controls>

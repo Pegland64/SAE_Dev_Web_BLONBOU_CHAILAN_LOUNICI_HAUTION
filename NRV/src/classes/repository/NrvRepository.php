@@ -2,6 +2,8 @@
 
 namespace nrv\net\repository;
 
+use nrv\net\show\Lieu;
+use nrv\net\show\Soiree;
 use nrv\net\show\Spectacle;
 
 class NrvRepository
@@ -45,18 +47,24 @@ class NrvRepository
             $id = $row['id_spectacle'];
             $titre = $row['titre'];
             $description = $row['description'];
-            $style = "PAS DE STYLE POUR LE MOMENT";
+            $style = $row['style'];
             $video = $row['video_url'];
-            $horaire = $row['horaire_previsionnel'];
-            $duree = "PAS DE DUREE";
+            $horaire_debut = new \DateTime($row['horaire_debut_previsionnel']);
+            $horaire_fin = new \DateTime($row['horaire_fin_previsionnel']);
+            $interval = $horaire_debut->diff($horaire_fin);
+            $duree = $interval->format('%H:%I:%S');
+            $etat = $row['etat'];
+            $id_soiree = $row['id_soiree'];
 
             $images = $this->getImagesBySpectracleId($id);
             $artistes = $this->getArtisteBySpectracleId($id);
 
-            $spectacle = new Spectacle($titre, $description, $video, $horaire, $duree, $style);
-            $spectacle->setId($id);
+            $spectacle = new Spectacle($titre, $description, $video, $horaire_debut, $duree, $style);
+            $spectacle->setIdSpectacle($id);
             $spectacle->setArtistes($artistes);
             $spectacle->setImages($images);
+            $spectacle->setEtat($etat);
+            $spectacle->setIdSoiree($id_soiree);
             $spectacles[] = $spectacle;
         }
         return $spectacles;
@@ -94,19 +102,75 @@ class NrvRepository
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
         $titre = $row['titre'];
         $description = $row['description'];
-        $style = "PAS DE STYLE POUR LE MOMENT";
+        $style = $row['style'];
         $video = $row['video_url'];
-        $horaire = $row['horaire_previsionnel'];
-        $duree = "PAS DE DUREE";
+        $horaire_debut = new \DateTime($row['horaire_debut_previsionnel']);
+        $horaire_fin = new \DateTime($row['horaire_fin_previsionnel']);
+        $interval = $horaire_debut->diff($horaire_fin);
+        $duree = $interval->format('%H:%I:%S');
+        $etat = $row['etat'];
+        $id_soiree = $row['id_soiree'];
 
         $images = $this->getImagesBySpectracleId($id);
         $artistes = $this->getArtisteBySpectracleId($id);
 
-        $spectacle = new Spectacle($titre, $description, $video, $horaire, $duree, $style);
-        $spectacle->setId($id);
+        $spectacle = new Spectacle($titre, $description, $video, $horaire_debut, $duree, $style);
+        $spectacle->setIdSpectacle($id);
         $spectacle->setArtistes($artistes);
         $spectacle->setImages($images);
+        $spectacle->setEtat($etat);
+        $spectacle->setIdSoiree($id_soiree);
         return $spectacle;
+    }
+
+    public function getSoireeById($id) : Soiree
+    {
+        $sql = "SELECT * FROM soiree WHERE id_soiree = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $nom = $row['nom_soiree'];
+        $thematique = $row['thematique'];
+        $date = new \DateTime($row['date_soiree']);
+        $horaire = new \DateTime($row['horaire_debut']);
+        $lieu = new Lieu($row['nom_lieu']);
+        $tarif = $row['soiree_tarif'];
+
+        $spectacles = $this->getAllSpectacles(); // On récupère tous les spectacles
+        $spectaclesSoiree = [];
+
+        foreach ($spectacles as $spectacle) {
+            if ($spectacle->id_soiree === $id) {
+                $spectaclesSoiree[] = $spectacle;
+            }
+        }
+
+        $soiree = new Soiree($nom, $thematique, $date, $horaire, $lieu, $tarif);
+        $soiree->setIdSoiree($id);
+        $soiree->setSpectacles($spectaclesSoiree);
+
+        return $soiree;
+    }
+
+    public function getAllSoirees() : array
+    {
+        $sql = "SELECT * FROM soiree";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $id = $row['id_soiree'];
+            $nom = $row['nom_soiree'];
+            $thematique = $row['thematique'];
+            $date = new \DateTime($row['date_soiree']);
+            $horaire = new \DateTime($row['horaire_debut']);
+            $lieu = new Lieu($row['nom_lieu']);
+            $tarif = $row['soiree_tarif'];
+
+            $soiree = new Soiree($nom, $thematique, $date, $horaire, $lieu, $tarif);
+            $soiree->setIdSoiree($id);
+            $soirees[] = $soiree;
+        }
+        return $soirees;
     }
 
 

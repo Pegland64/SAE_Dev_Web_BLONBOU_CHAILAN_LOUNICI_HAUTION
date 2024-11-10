@@ -11,10 +11,10 @@ class DisplaySpectacleAction extends Action
 
     public function executeGET(): string
     {
-        if (!isset($_GET['id'])) {
+        if (!isset($_GET['id_spectacle'])) {
             return "Spectacle inconnu.";
         }
-        $spectacle = NrvRepository::getInstance()->getSpectacleById($_GET['id']);
+        $spectacle = NrvRepository::getInstance()->getSpectacleById((int)$_GET['id_spectacle']);
         $renderer = new SpectacleRenderer($spectacle);
         return $renderer->render(2);
     }

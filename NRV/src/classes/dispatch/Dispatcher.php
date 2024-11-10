@@ -4,7 +4,9 @@ namespace nrv\net\dispatch;
 
 use nrv\net\action\DefaultAction;
 use nrv\net\action\DisplaySpectacleAction;
+use nrv\net\action\ListeSoireeAction;
 use nrv\net\action\ListeSpectaclesAction;
+use nrv\net\action\SoireeAction;
 
 class Dispatcher
 {
@@ -27,6 +29,12 @@ class Dispatcher
             case 'display-spectacle':
                 $action = new DisplaySpectacleAction();
                 break;
+            case 'soiree':
+                $action = new SoireeAction();
+                break;
+            case 'soirees':
+                $action = new ListeSoireeAction();
+                break;
             default:
                 echo "Action inconnue.";
                 break;
@@ -48,8 +56,8 @@ class Dispatcher
     <h1>NRV</h1>
     <ul>
         <li><a href="?action=default">Accueil</a></li>
+        <li><a href="?action=soirees">Liste des soirées</a></li>
         <li><a href="?action=liste-spectacles">Liste des spectacles</a></li>
-        <li><a href="?action=display-spectacle">Afficher un spectacle</a></li>
     </ul>
     $html
 </body>
