@@ -3,6 +3,8 @@
 namespace nrv\net\dispatch;
 
 use nrv\net\action as act;
+use nrv\net\action\ListeSoireeAction;
+use nrv\net\action\SoireeAction;
 use nrv\net\auth\AuthnProvider;
 
 class Dispatcher
@@ -23,7 +25,7 @@ class Dispatcher
         $isAuthenticated = AuthnProvider::isAuthenticated();
 
         // Définit les actions accessibles seulement aux utilisateurs connectés
-        $restrictedActions = ['add-spectacle', 'display-spectacle'];
+        $restrictedActions = ['add-spectacle'];
 
         if (in_array($this->action, $restrictedActions) && !$isAuthenticated) {
             $html = "<p>Veuillez vous <a href='?action=login'>connecter</a> pour accéder à cette fonctionnalité.</p>";
@@ -40,7 +42,7 @@ class Dispatcher
                     break;
 
                 case 'liste-spectacles':
-                    $action = new act\SoireeAction();
+                    $action = new act\ListeSpectaclesAction();
                     $html = $action->execute();
                     break;
 
@@ -56,7 +58,6 @@ class Dispatcher
                             $html = "<p style='color: red;'>$result</p>";
                         }
                     }
-
                     $html .= $this->renderLoginForm();
                     break;
 
@@ -67,6 +68,16 @@ class Dispatcher
                     } else {
                         $html = "<p>Veuillez vous <a href='?action=login'>connecter</a> pour ajouter un spectacle.</p>";
                     }
+                    break;
+
+                case 'soiree':
+                    $action = new SoireeAction();
+                    $html = $action->execute();
+                    break;
+
+                case 'soirees':
+                    $action = new ListeSoireeAction();
+                    $html = $action->execute();
                     break;
 
                 case 'test':
@@ -80,7 +91,7 @@ class Dispatcher
             }
         }
 
-        $this->renderPage($html, $isAuthenticated);
+        $this->renderPage($html);
     }
 
 
@@ -99,10 +110,10 @@ class Dispatcher
     <nav>
         <div class="nav-links">
             <a href="?action=default">Accueil</a>
-            <a href="?action=display-spectacle">Afficher spectacle</a>
-            <a href="?action=add-spectacle">Ajouter un spectacle</a>
-            <a href="?action=liste-spectacles">Liste des spectacles</a>
             <a href="?action=login">Connexion</a>
+            <a href="?action=soirees">Liste des soirées</a>
+            <a href="?action=liste-spectacles">Liste des spectacles</a>
+            <a href="?action=add-spectacle">Ajouter un spectacle</a>
         </div>
     </nav>
     <div class="content">

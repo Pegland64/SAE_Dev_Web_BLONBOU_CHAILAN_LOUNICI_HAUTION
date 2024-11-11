@@ -4,8 +4,8 @@ namespace nrv\net\render;
 
 interface Renderer
 {
-    const LONG = 1;
-    const SHORT = 2;
+    const COMPACT = 1;
+    const FULL = 2;
 
     public function render(int $type) : string;
 }

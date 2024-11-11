@@ -1,6 +1,8 @@
 <?php
 namespace nrv\net\render;
 
+use nrv\net\render\Renderer;
+use nrv\net\repository\NrvRepository;
 use nrv\net\show\Spectacle;
 
 class SpectacleRenderer implements Renderer
@@ -16,37 +18,70 @@ class SpectacleRenderer implements Renderer
     public function render(int $type): string
     {
         switch ($type) {
-            case Renderer::LONG:
-                return $this->renderLong();
-            case Renderer::SHORT:
-                return $this->renderShort();
+            case self::COMPACT:
+                return $this->compact() . "<br>";
+            case self::FULL:
+                return $this->full() . "<br>";
             default:
-                return '';
+                return "Type de rendu inconnu.";
         }
     }
-    public function renderLong(): string
+
+    private function compact()
     {
-        return "<div class='spectacle'>
-            <h2>{$this->spectacle->title}</h2>
-            <h3>{$this->spectacle->artist}</h3>
-            <p>{$this->spectacle->description}</p>
-            <p>{$this->spectacle->style}</p>
-            <p>{$this->spectacle->duration}</p>
-            <img src='{$this->spectacle->image}' alt='image spectacle'>
-            <audio controls>
-                <source src='{$this->spectacle->extrait}' type='audio/mpeg'>
-                Votre navigateur ne supporte pas l'élément audio.
-            </audio>
-        </div>";
+        $id = $this->spectacle->id_spectacle;
+        $id_soiree = $this->spectacle->id_soiree;
+        $image_url = $this->spectacle->images[0]->url ?? '';
+        $image_nom = $this->spectacle->images[0]->nom_image ?? '';
+        $horaire = $this->spectacle->horaire->format('H:i:s');
+        $date = NrvRepository::getInstance()->getSoireeById($this->spectacle->id_soiree)->date->format('d/m/Y');
+
+        return <<<HTML
+        <div>
+            <h3>Spectacle : {$this->spectacle->titre}</h3>
+            <p>Le {$date} à {$horaire}</p>
+            <img src="{$image_url}" alt="{$image_nom}">
+            <p><a href="?action=soiree&id_soiree={$id_soiree}">Voir la soirée ></a></p>
+            <p><a href="?action=display-spectacle&id_spectacle={$id}">Voir les details du spectacle ></a></p>
+        </div>
+HTML;
+
     }
-    public function renderShort(): string
+
+    private function full()
     {
-        return "<div class='spectacle'>
-            <h2>{$this->spectacle->title}</h2>
-            <h3>{$this->spectacle->artist}</h3>
-            <p>{$this->spectacle->style}</p>
-            <p>{$this->spectacle->duration}</p>
-            <img src='{$this->spectacle->image}' alt='image spectacle'>
-        </div>";
+        $id = $this->spectacle->id_spectacle;
+        $images = '';
+        foreach ($this->spectacle->images as $image) {
+            $images .= "<img src='{$image->url}' alt='{$image->nom_image}'><br>";
+        }
+
+        $artistes = '<ul>';
+        foreach ($this->spectacle->artistes as $artiste) {
+            $artistes .= "<li>{$artiste->nom_artiste}</li>";
+        }
+        $artistes .= '</ul>';
+
+        $date = NrvRepository::getInstance()->getSoireeById($this->spectacle->id_soiree)->date->format('d/m/Y');
+        $horaire = $this->spectacle->horaire->format('H:i:s');
+
+        return <<<HTML
+<div>
+    <h3>Spectacle : {$this->spectacle->titre}</h3>
+    <p>Artistes :</p>
+    {$artistes}
+    <p>Description : {$this->spectacle->description}</p>
+    <p>Style : {$this->spectacle->style}</p>
+    <p>Le {$date} à {$horaire}</p>
+    <p>Durée : {$this->spectacle->duree}</p>
+    {$images}
+    <video controls>
+        <source src="{$this->spectacle->video}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+HTML;
+
+        // <p><a href="?action=soiree&id_soiree={$this->spectacle->id_soiree}">Detail de la soirée></a></p>
     }
 }

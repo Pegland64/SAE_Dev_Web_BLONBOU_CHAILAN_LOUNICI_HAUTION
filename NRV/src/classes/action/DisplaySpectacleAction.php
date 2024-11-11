@@ -10,24 +10,11 @@ class DisplaySpectacleAction extends Action{
 
     public function execute(): string
     {
-        // Récupérer l'ID du spectacle depuis les paramètres GET
-        $idSpectacle = isset($_GET['id_spectacle']) ? (int)$_GET['id_spectacle'] : null;
-
-        // Vérifier si l'ID du spectacle est valide
-        if ($idSpectacle === null) {
-            return "<p>Erreur : ID de spectacle manquant.</p>";
+        if (!isset($_GET['id_spectacle'])) {
+            return "Spectacle inconnu.";
         }
-
-        // Récupérer l'instance du repository
-        $repo = NrvRepository::getInstance();
-
-        // Obtenir les détails du spectacle
-        $spectacle = $repo->getSpectacleByIdSpectacle($idSpectacle);
-
-        // Utiliser le renderer pour afficher le spectacle en mode LONG
+        $spectacle = NrvRepository::getInstance()->getSpectacleById((int)$_GET['id_spectacle']);
         $renderer = new SpectacleRenderer($spectacle);
-        $html = $renderer->render(Renderer::LONG);
-
-        return $html;
+        return $renderer->render(2);
     }
 }

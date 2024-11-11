@@ -13,7 +13,7 @@ class DisplayFavorisAction extends Action
         foreach ($_COOKIE as $cookieName => $cookieValue) {
             if (strpos($cookieName, 'spectacle_id_') === 0) {
                 $spectacleId = str_replace('spectacle_id_', '', $cookieName);
-                $spectacles = $repo->getAllSpectacle();
+                $spectacles = $repo->getAllSpectacles();
                 foreach ($spectacles as $spectacle) {
                     if ($spectacle['id_spectacle'] == $spectacleId) {
                         $spectaclesSelectionnes[] = $spectacle;
