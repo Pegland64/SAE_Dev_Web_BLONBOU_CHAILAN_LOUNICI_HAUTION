@@ -28,25 +28,43 @@ class SoireeRenderer implements Renderer
 
     private function compact(): string
     {
-        $html = "<div>";
-        $html .= "<h2>Soirée : {$this->soiree->nom}</h2>";
-        $html .= "<p>Thématique : {$this->soiree->thematique}</p>";
-        $html .= "<p>Date : {$this->soiree->date->format('d/m/Y')}</p>";
-        $html .= "<p>Horaire : {$this->soiree->horaire->format('H:i:s')}</p>";
-        $html .= "<p>Lieu : {$this->soiree->lieu->nom}</p>";
-        $html .= "<p>Tarif : {$this->soiree->tarif} €</p>";
-        $html .= "<h3>Spectacles :</h3><ul>";
-        foreach ($this->soiree->spectacles as $spectacle) {
-            $renderer = new SpectacleRenderer($spectacle);
-            $html .= "<li>" . $renderer->render(Renderer::COMPACT) . "</li>";
-        }
-        $html .= "</ul>";
-        return $html . "</div>";
+        $date = $this->soiree->date->format('d/m/Y');
+        $horaire = $this->soiree->horaire->format('H:i:s');
+        return <<<HTML
+<div>
+    <h2>Soirée : {$this->soiree->nom}</h2>
+    <p>Le {$date} à {$horaire}</p>
+    <p>Durée : {$this->soiree->duree}</p>
+    <p>Lieu : {$this->soiree->lieu->nom}</p>
+    <p>Tarif : {$this->soiree->tarif} €</p>
+    <p><a href='?action=soiree&id_soiree={$this->soiree->id_soiree}'>En savoir plus ></a></p>
+</div>
+HTML;
     }
 
     private function full(): string
     {
-        return "<div><p>En cours de développement.</p></div>";
+        $date = $this->soiree->date->format('d/m/Y');
+        $horaire = $this->soiree->horaire->format('H:i:s');
+        $spectacles = '<ul>';
+        foreach ($this->soiree->spectacles as $spectacle) {
+            $renderer = new SpectacleRenderer($spectacle);
+            $spectacles .= "<li>" . $renderer->render(Renderer::FULL) . "</li>";
+        }
+        $spectacles .= '</ul>';
+        return <<<HTML
+        <div>
+            <h2>Soirée : {$this->soiree->nom}</h2>
+            <p>Thématique : {$this->soiree->thematique}</p>
+            <p>Le {$date} à {$horaire}</p>
+            <p>Durée : {$this->soiree->duree}</p>
+            <p>Lieu : {$this->soiree->lieu->nom}</p>
+            <p>Tarif : {$this->soiree->tarif} €</p>
+            <h3>Spectacles :</h3>
+            {$spectacles}
+        </div>
+HTML;
+
     }
 
 }

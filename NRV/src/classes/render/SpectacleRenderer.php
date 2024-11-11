@@ -3,6 +3,7 @@
 namespace nrv\net\render;
 
 use nrv\net\render\Renderer;
+use nrv\net\repository\NrvRepository;
 use nrv\net\show\Spectacle;
 
 class SpectacleRenderer implements Renderer
@@ -29,15 +30,18 @@ class SpectacleRenderer implements Renderer
 
     private function compact()
     {
-        $id = $this->spectacle->id_spectacle;
-        $image = $this->spectacle->images[0] ?? '';
+        $id_soiree = $this->spectacle->id_soiree;
+        $image_url = $this->spectacle->images[0]->url ?? '';
+        $image_nom = $this->spectacle->images[0]->nom_image ?? '';
         $horaire = $this->spectacle->horaire->format('H:i:s');
+        $date = NrvRepository::getInstance()->getSoireeById($this->spectacle->id_soiree)->date->format('d/m/Y');
+
         return <<<HTML
         <div>
             <h3>Spectacle : {$this->spectacle->titre}</h3>
-            <p>Horaire : {$horaire}</p>
-            <img src="{$image}" alt="une image du spectacle">
-            <p><a href="?action=display-spectacle&id_spectacle={$id}">En savoir plus</a></p>
+            <p>Le {$date} à {$horaire}</p>
+            <img src="{$image_url}" alt="{$image_nom}">
+            <p><a href="?action=soiree&id_soiree={$id_soiree}">Voir la soirée ></a></p>
         </div>
 HTML;
 
@@ -45,18 +49,21 @@ HTML;
 
     private function full()
     {
+        $id = $this->spectacle->id_spectacle;
         $images = '';
         foreach ($this->spectacle->images as $image) {
-            $images .= "<img src='{$image}' alt='une image du spectacle'>";
+            $images .= "<img src='{$image->url}' alt='{$image->nom_image}'><br>";
         }
 
         $artistes = '<ul>';
         foreach ($this->spectacle->artistes as $artiste) {
-            $artistes .= "<li>{$artiste}</li>";
+            $artistes .= "<li>{$artiste->nom_artiste}</li>";
         }
         $artistes .= '</ul>';
 
+        $date = NrvRepository::getInstance()->getSoireeById($this->spectacle->id_soiree)->date->format('d/m/Y');
         $horaire = $this->spectacle->horaire->format('H:i:s');
+
         return <<<HTML
 <div>
     <h3>Spectacle : {$this->spectacle->titre}</h3>
@@ -64,16 +71,16 @@ HTML;
     {$artistes}
     <p>Description : {$this->spectacle->description}</p>
     <p>Style : {$this->spectacle->style}</p>
-    <p>Durée : {$this->spectacle->duree} minutes</p>
-    <p>Horaire : {$horaire}</p>
+    <p>Le {$date} à {$horaire}</p>
+    <p>Durée : {$this->spectacle->duree}</p>
     {$images}
+    <video controls>
+        <source src="{$this->spectacle->video}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
 </div>
 HTML;
-// implémentation d'une vidéo plutard
-//        <video controls>
-//        <source src="{$this->spectacle->video}" type="video/mp4">
-//        Your browser does not support the video tag.
-//    </video>
 
+        // <p><a href="?action=soiree&id_soiree={$this->spectacle->id_soiree}">Detail de la soirée></a></p>
     }
 }

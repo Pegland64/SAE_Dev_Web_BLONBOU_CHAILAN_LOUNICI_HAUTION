@@ -15,7 +15,7 @@ class SoireeAction extends Action
         }
         $soiree = NrvRepository::getInstance()->getSoireeById((int)$_GET['id_soiree']);
         $renderer = new SoireeRenderer($soiree);
-        return $renderer->render(1);
+        return $renderer->render(2);
     }
 
     public function executePOST(): string
