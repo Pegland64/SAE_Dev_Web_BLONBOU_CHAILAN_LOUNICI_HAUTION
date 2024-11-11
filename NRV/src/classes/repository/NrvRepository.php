@@ -130,6 +130,11 @@ class NrvRepository
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $idSpectacle]);
         $row = $stmt->fetch();
+
+        if($row === false) {
+            throw new PDOException("Spectacle not found.");
+        }
+
         $titre = $row['titre'];
         $description = $row['description'];
         $style = $row['style'];
@@ -163,14 +168,14 @@ class NrvRepository
         $sql = "SELECT * FROM imagespectacle WHERE id_spectacle = :idspectacle";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['idspectacle' => $idSpectacle]);
-        
+
         $images = [];
         while ($row = $stmt->fetch()) {
             $image = new Image($row['url'], $row['nom_image']);
             $image->setIdSpectacle($row['id_spectacle']);
             $images[] = $image;
         }
-        
+
         return $images;
     }
 
@@ -221,6 +226,11 @@ class NrvRepository
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch();
+
+        if($row === false) {
+            throw new PDOException("Soiree not found.");
+        }
+
         $nom = $row['nom_soiree'];
         $thematique = $row['thematique'];
         $date = new \DateTime($row['date_soiree']);
@@ -290,92 +300,11 @@ class NrvRepository
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['nom' => $nom]);
         $row = $stmt->fetch();
+        if ($row === false) {
+            throw new PDOException("Lieu not found.");
+        }
         $lieu = new Lieu($row['nom_lieu'], $row['adresse'], $row['places_assises'], $row['places_debout'], $row['description']);
         return $lieu;
-    }
-
-    /**
-     * methode retourne tous les spectacles d'une soiree
-     * @param int $idSoiree id de la soiree
-     * @return array tableau de spectacles
-     */
-    public function getAllSpectacleByIdSoiree(int $idSoiree): array
-    {
-        $sql = "SELECT * FROM spectacle WHERE id_soiree = :idsoiree";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['idsoiree' => $idSoiree]);
-        $spectacles = [];
-        while ($row = $stmt->fetch()) {
-            $spectacles[] = new Spectacle($row['id_spectacle'], $row['titre'], $row['description'], $row['video_url'], $row['horaire_previsionnel'], $row['id_soiree']);
-        }
-        return $spectacles;
-    }
-
-    /**
-     * methode retourne tous les spectacles par rapport a une date
-     * @param string $date date du spectacle
-     * @return array tableau de spectacles
-     */
-    public function getAllSpectacleByDate(string $date): array
-    {
-        $sql = "SELECT * FROM spectacle inner join soiree on soiree.id_soiree = spectacle.id_soiree where soiree.date_soiree = :date";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['date' => $date]);
-        $spectacles = [];
-        while ($row = $stmt->fetch()) {
-            $spectacles[] = new Spectacle($row['id_spectacle'], $row['titre'], $row['description'], $row['video_url'], $row['horaire_previsionnel'], $row['id_soiree']);
-        }
-        return $spectacles;
-    }
-
-    /**
-     * methode retourne tous les spectacles par rapport a une thematique
-     * @param string $thematique thematique du spectacle
-     * @return array tableau de spectacles
-     */
-    public function getAllSpectacleByThematique(string $thematique): array
-    {
-        $sql = "SELECT * FROM spectacle inner join soiree on soiree.id_soiree = spectacle.id_soiree where soiree.thematique = :thematique";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['thematique' => $thematique]);
-        $spectacles = [];
-        while ($row = $stmt->fetch()) {
-            $spectacles[] = new Spectacle($row['id_spectacle'], $row['titre'], $row['description'], $row['video_url'], $row['horaire_previsionnel'], $row['id_soiree']);
-        }
-        return $spectacles;
-    }
-
-    /**
-     * methode retourne tous les spectacles par rapport a un lieu
-     * @param string $lieu lieu du spectacle
-     * @return array tableau de spectacles
-     */
-    public function getAllSpectacleByLieu(string $lieu): array
-    {
-        $sql = "SELECT * FROM spectacle inner join soiree on soiree.id_soiree = spectacle.id_soiree where soiree.nom_lieu = :lieu";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['lieu' => $lieu]);
-        $spectacles = [];
-        while ($row = $stmt->fetch()) {
-            $spectacles[] = new Spectacle($row['id_spectacle'], $row['titre'], $row['description'], $row['video_url'], $row['horaire_previsionnel'], $row['id_soiree']);
-        }
-        return $spectacles;
-    }
-
-    /**
-     * methode retourne toute les soirées du festival
-     * @return array tableau de soirees
-     */
-    public function getAllSoiree(): array
-    {
-        $sql = "SELECT * FROM soiree";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute();
-        $soirees = [];
-        while ($row = $stmt->fetch()) {
-            $soirees[] = new Soiree($row['id_soiree'], $row['nom_soiree'], $row['thematique'], $row['date_soiree'], $row['horaire_debut'], $row['nom_lieu'], $row['soiree_tarif']);
-        }
-        return $soirees;
     }
 
     /**
@@ -386,7 +315,7 @@ class NrvRepository
      * @param string $horairePrevisionnel horaire previsionnel du spectacle
      * @throws PDOException
      */
-    public function createSpectacle(string $titre=null, string $description=null, string $videoUrl=null, string $horairePrevisionnel=null): void
+    public function createSpectacle(string $titre = null, string $description = null, string $videoUrl = null, string $horairePrevisionnel = null): void
     {
         $sql = "INSERT INTO spectacle (titre, description, video_url, horaire_previsionnel, etat) VALUES (:titre, :description, :video_url, :horaire_previsionnel, :etat)";
         $stmt = $this->pdo->prepare($sql);
@@ -402,7 +331,7 @@ class NrvRepository
      * @param string $nomLieu nom du lieu de la soiree
      * @param float $soireeTarif tarif de la soiree
      */
-    public function createSoiree(string $nomSoiree=null, string $thematique=null, string $dateSoiree=null, string $horaireDebut=null, string $nomLieu=null, float $soireeTarif=null): void
+    public function createSoiree(string $nomSoiree = null, string $thematique = null, string $dateSoiree = null, string $horaireDebut = null, string $nomLieu = null, float $soireeTarif = null): void
     {
         $sql = "INSERT INTO soiree (nom_soiree, thematique, date_soiree, horaire_debut, nom_lieu, soiree_tarif) VALUES (:nom_soiree, :thematique, :date_soiree, :horaire_debut, :nom_lieu, :soiree_tarif)";
         $stmt = $this->pdo->prepare($sql);
@@ -431,7 +360,7 @@ class NrvRepository
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['etat' => 'annulé', 'id_spectacle' => $idSpectacle]);
     }
-    
+
 
 //    /**
 //     * methode qui retourne les données pour l'affichage d'un soirée
