@@ -50,13 +50,15 @@ class NrvRepository
      * @param int $id id de l'utilisateur
      * @return User objet utilisateur
      */
-    public function getUserByUsername(string $username): User
+    public function getUserByUsername(string $username)
     {
-        $sql = "SELECT * FROM user WHERE username = :username";
+        // Utilisation de `USERS` au lieu de `user` si la table est en majuscules
+        $sql = "SELECT * FROM USERS WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['username' => $username]);
-        $row = $stmt->fetch();
-        return new User($row['id_user'], $row['username'], $row['password'], $row['email'], $row['role']);
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     /**
