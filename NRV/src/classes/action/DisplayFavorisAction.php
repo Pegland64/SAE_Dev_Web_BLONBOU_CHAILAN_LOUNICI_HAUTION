@@ -15,7 +15,7 @@ class DisplayFavorisAction extends Action
                 $spectacleId = str_replace('spectacle_id_', '', $cookieName);
                 $spectacles = $repo->getAllSpectacles();
                 foreach ($spectacles as $spectacle) {
-                    if ($spectacle['id_spectacle'] == $spectacleId) {
+                    if ($spectacle->id_spectacle == $spectacleId) {
                         $spectaclesSelectionnes[] = $spectacle;
                         break;
                     }
@@ -23,15 +23,20 @@ class DisplayFavorisAction extends Action
             }
         }
 
+        $html = "";
+
         if (!empty($spectaclesSelectionnes)) {
             foreach ($spectaclesSelectionnes as $spectacle) {
-                echo "<div class='spectacle'>";
-                echo "<h3>" . htmlspecialchars($spectacle['titre']) . "</h3>";
-                echo "<p>" . htmlspecialchars($spectacle['description']) . "</p>";
-                echo "</div><hr>";
+                $html .= <<<HTML
+                    <div class='spectacle'>
+                        <h3>$spectacle->titre</h3>
+                        <p>$spectacle->description</p>
+                    </div><hr>
+                    HTML;
             }
         } else {
-            echo "<p>Aucun spectacle n'a été sélectionné pour le moment.</p>";
+            $html .="<p>Aucun spectacle n'a été sélectionné pour le moment.</p>";
         }
+        return $html;
     }
 }

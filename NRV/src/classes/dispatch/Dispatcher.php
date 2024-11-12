@@ -71,8 +71,8 @@ class Dispatcher
                     $html = $action->execute();
                     break;
 
-                case 'test':
-                    $action = new act\TestAction();
+                case 'listes-spectales-favoris':
+                    $action = new act\DisplayFavorisAction();
                     $html = $action->execute();
                     break;
 
@@ -104,6 +104,7 @@ class Dispatcher
         <li><a href="?action=soirees">Liste des soirées</a></li>
         <li><a href="?action=liste-spectacles">Liste des spectacles</a></li>
         <li><a href="?action=add-spectacle">Ajouter un spectacle</a></li>
+        <li><a href="?action=listes-spectales-favoris">voir favoris</a></li>
     </ul>
     
 <!--    <nav>-->
