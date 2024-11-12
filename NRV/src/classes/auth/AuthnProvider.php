@@ -31,6 +31,7 @@ class AuthnProvider
             // Récupère l'utilisateur par nom d'utilisateur depuis le dépôt
             $user = NrvRepository::getInstance()->getUserByUsername($username);
 
+            // TODO : Le mdp devrait déjà être hashé dans la base de données...
             if (password_verify($password, password_hash($user->password, PASSWORD_DEFAULT))) {
                 $_SESSION['user'] = serialize($user);
                 $_SESSION['login_attempts'] = 0;
