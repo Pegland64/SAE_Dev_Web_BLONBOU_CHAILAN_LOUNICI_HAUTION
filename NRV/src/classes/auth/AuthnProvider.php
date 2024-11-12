@@ -1,4 +1,5 @@
 <?php
+
 namespace nrv\net\auth;
 
 use nrv\net\exception\InvalidPropertyNameException;
@@ -13,7 +14,7 @@ class AuthnProvider
      * @param string $password Le mot de passe fourni.
      * @throws \Exception En cas d'erreur d'authentification ou de trop de tentatives.
      */
-    public static function login(string $username, string $password) : void
+    public static function login(string $username, string $password): void
     {
 
         // Initialisation du compteur de tentatives de connexion
@@ -26,22 +27,20 @@ class AuthnProvider
 //            throw new \Exception("Trop de tentatives de connexion. Veuillez réessayer plus tard.");
 //        }
 
-        // Récupère l'utilisateur par nom d'utilisateur depuis le dépôt
-        $user = NrvRepository::getUserByUsername($username);
+        try {
+            // Récupère l'utilisateur par nom d'utilisateur depuis le dépôt
+            $user = NrvRepository::getInstance()->getUserByUsername($username);
 
-        // Vérifie si l'utilisateur existe et si le mot de passe est correct
-        if ($user && password_verify($password, $user->password)) {
-            // Mot de passe correct, on démarre une session sécurisée pour l'utilisateur
-            $_SESSION['user'] = $user;  // Stocke l'utilisateur dans la session
-            $_SESSION['login_attempts'] = 0;  // Réinitialise le compteur de tentatives en cas de succès
-
-            // Sécurisation supplémentaire en régénérant l'ID de session après connexion réussie
-            session_regenerate_id(true);
-
-        } else {
-            // Mot de passe incorrect ou utilisateur introuvable
-            $_SESSION['login_attempts']++;  // Incrémente le compteur de tentatives
-            throw new \Exception("Nom d'utilisateur ou mot de passe incorrect.");
+            if (password_verify($password, password_hash($user->password, PASSWORD_DEFAULT))) {
+                $_SESSION['user'] = serialize($user);
+                $_SESSION['login_attempts'] = 0;
+            } else {
+                $_SESSION['login_attempts']++;
+                throw new AuthnException("Nom d'utilisateur ou mot de passe incorrect.");
+            }
+        } catch
+        (\PDOException $e) {
+            throw new \Exception("Erreur de base de données : " . $e->getMessage());
         }
     }
 
@@ -63,5 +62,14 @@ class AuthnProvider
     public static function isAuthenticated(): bool
     {
         return isset($_SESSION['user']);
+    }
+
+    public static function getSignedInUser(): User
+    {
+        if (!isset($_SESSION['user'])) {
+            throw new AuthnException("User is not signed in.");
+        }
+
+        return unserialize($_SESSION['user']);
     }
 }

@@ -37,45 +37,36 @@ class Dispatcher
                     break;
 
                 case 'display-spectacle':
+                    // Affiche un spectacle en fonction de l'ID fourni
                     $action = new act\DisplaySpectacleAction();
                     $html = $action->execute();
                     break;
 
                 case 'liste-spectacles':
+                    // Affiche la liste des spectacles
                     $action = new act\ListeSpectaclesAction();
                     $html = $action->execute();
                     break;
 
                 case 'login':
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $action = new act\LoginAction();
-                        $result = $action->execute();
-
-                        if ($result === "Connexion réussie !") {
-                            header('Location: index.php?action=default');
-                            exit;
-                        } else {
-                            $html = "<p style='color: red;'>$result</p>";
-                        }
-                    }
-                    $html .= $this->renderLoginForm();
+                    $action = new act\LoginAction();
+                    $html = $action->execute();
                     break;
 
                 case 'add-spectacle':
-                    if ($isAuthenticated) {
-                        $action = new act\AddSpectacleAction();
-                        $html = $action->execute();
-                    } else {
-                        $html = "<p>Veuillez vous <a href='?action=login'>connecter</a> pour ajouter un spectacle.</p>";
-                    }
+                    // Ajoute un spectacle
+                    $action = new act\AddSpectacleAction();
+                    $html = $action->execute();
                     break;
 
                 case 'soiree':
+                    // Affiche une soirée en fonction de l'ID fourni
                     $action = new SoireeAction();
                     $html = $action->execute();
                     break;
 
                 case 'soirees':
+                    // Affiche la liste des soirées
                     $action = new ListeSoireeAction();
                     $html = $action->execute();
                     break;
@@ -107,44 +98,29 @@ class Dispatcher
 </head>
 <body>
     <h1>NRV.net</h1>
-    <nav>
-        <div class="nav-links">
-            <a href="?action=default">Accueil</a>
-            <a href="?action=login">Connexion</a>
-            <a href="?action=soirees">Liste des soirées</a>
-            <a href="?action=liste-spectacles">Liste des spectacles</a>
-            <a href="?action=add-spectacle">Ajouter un spectacle</a>
-        </div>
-    </nav>
+    <ul>
+        <li><a href="?action=default">Accueil</a></li>
+        <li><a href="?action=login">Connexion</a></li>
+        <li><a href="?action=soirees">Liste des soirées</a></li>
+        <li><a href="?action=liste-spectacles">Liste des spectacles</a></li>
+        <li><a href="?action=add-spectacle">Ajouter un spectacle</a></li>
+    </ul>
+    
+<!--    <nav>-->
+<!--        <div class="nav-links">-->
+<!--            <a href="?action=default">Accueil</a>-->
+<!--            <a href="?action=login">Connexion</a>-->
+<!--            <a href="?action=soirees">Liste des soirées</a>-->
+<!--            <a href="?action=liste-spectacles">Liste des spectacles</a>-->
+<!--            <a href="?action=add-spectacle">Ajouter un spectacle</a>-->
+<!--        </div>-->
+<!--    </nav>-->
+
     <div class="content">
         $html  
     </div>
 </body>
 </html>
-HTML;
-    }
-    private function getAuthLinks(bool $isAuthenticated): string
-    {
-        // Liens de navigation basés sur l'état d'authentification
-        if ($isAuthenticated) {
-            return '<a href="?action=add-spectacle">Ajouter un spectacle</a>
-                    <a href="logout.php">Déconnexion</a>';
-        } else {
-            return '<a href="?action=login">Connexion</a>';
-        }
-    }
-    private function renderLoginForm(): string
-    {
-        return <<<HTML
-        <form action="?action=login" method="post">
-            <label for="username">Nom d'utilisateur :</label>
-            <input type="text" name="username" id="username" required>
-            <br>
-            <label for="password">Mot de passe :</label>
-            <input type="password" name="password" id="password" required>
-            <br>
-            <button type="submit">Se connecter</button>
-        </form>
 HTML;
     }
 }

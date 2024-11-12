@@ -7,10 +7,10 @@ use nrv\net\show\Image;
 use nrv\net\show\Lieu;
 use nrv\net\show\Spectacle;
 use nrv\net\show\Soiree;
-use nrv\net\show\User;
-
+use nrv\net\user\User;
 use PDO;
 use PDOException;
+
 
 class NrvRepository
 {
@@ -53,15 +53,18 @@ class NrvRepository
      * @param int $id id de l'utilisateur
      * @return User objet utilisateur
      */
-    public function getUserByUsername(string $username)
+    public function getUserByUsername(string $username) : User
     {
         // Utilisation de `USERS` au lieu de `user` si la table est en majuscules
         $sql = "SELECT * FROM USERS WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':username', $username);
-        $stmt->execute();
+        $stmt->execute(['username'=>$username]);
+        $row = $stmt->fetch();
+        if ($row === false) {
+            throw new PDOException("Utilisateur non trouvé.");
+        }
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return new User($row['id_user'], $row['username'], $row['password'], $row['email'], (int)$row['role']);
     }
 
     /**
