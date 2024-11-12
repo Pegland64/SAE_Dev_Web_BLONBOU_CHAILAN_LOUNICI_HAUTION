@@ -14,8 +14,20 @@ class ListeSpectaclesAction extends Action
         // permet l'ajout en favori
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['spectacle_id'])) {
             $spectacleId = intval($_POST['spectacle_id']);
-            setcookie("spectacle_id_$spectacleId", $spectacleId, time() + (7 * 24 * 60 * 60), "/");
+            $cookieName = "spectacle_id_$spectacleId";
+
+            if (isset($_COOKIE[$cookieName])) {
+                // Le cookie existe, donc on le supprime
+                setcookie($cookieName, '', time() - 3600, "/"); // Expire immédiatement
+            } else {
+                // Le cookie n'existe pas, donc on le crée
+                setcookie($cookieName, $spectacleId, time() + (7 * 24 * 60 * 60), "/"); // Expire dans 7 jours
+            }
+            header("Location: " . $_SERVER['REQUEST_URI']);
+            exit();
         }
+
+
 
         $category = $_GET['category'] ?? null;
         $filter = $_GET['filter'] ?? 'all';

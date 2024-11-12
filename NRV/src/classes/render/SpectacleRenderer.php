@@ -28,30 +28,34 @@ class SpectacleRenderer implements Renderer
     }
 
     private function compact()
-    {
-        $id = $this->spectacle->id_spectacle;
-        $id_soiree = $this->spectacle->id_soiree;
-        $image_url = $this->spectacle->images[0]->url ?? '';
-        $image_nom = $this->spectacle->images[0]->nom_image ?? '';
-        $horaire = $this->spectacle->horaire->format('H:i:s');
-        $date = NrvRepository::getInstance()->getSoireeById($this->spectacle->id_soiree)->date->format('d/m/Y');
+{
+    $id = $this->spectacle->id_spectacle;
+    $id_soiree = $this->spectacle->id_soiree;
+    $image_url = $this->spectacle->images[0]->url ?? '';
+    $image_nom = $this->spectacle->images[0]->nom_image ?? '';
+    $horaire = $this->spectacle->horaire->format('H:i:s');
+    $date = NrvRepository::getInstance()->getSoireeById($this->spectacle->id_soiree)->date->format('d/m/Y');
+    $cookieName = "spectacle_id_$id";
 
-        return <<<HTML
-        <div>
-            <h3>
-                Spectacle : {$this->spectacle->titre}
-                <form method="POST" action=''>
-                    <button type="submit" name="spectacle_id" value="$id">Favoris</button>
-                </form>
-            </h3>
-            <p>Le {$date} à {$horaire}</p>
-            <img src="{$image_url}" alt="{$image_nom}">
-            <p><a href="?action=soiree&id_soiree={$id_soiree}">Voir la soirée ></a></p>
-            <p><a href="?action=display-spectacle&id_spectacle={$id}">Voir les details du spectacle ></a></p>
-        </div>
-HTML;
+    // Vérifier si le cookie existe
+    $buttonText = isset($_COOKIE[$cookieName]) ? 'Retirer des Favoris' : 'Ajouter aux Favoris';
 
-    }
+    return <<<HTML
+    <div>
+        <h3>
+            Spectacle : {$this->spectacle->titre}
+            <form method="POST" action=''>
+                <button type="submit" name="spectacle_id" value="$id">$buttonText</button>
+            </form>
+        </h3>
+        <p>Le {$date} à {$horaire}</p>
+        <img src="{$image_url}" alt="{$image_nom}">
+        <p><a href="?action=soiree&id_soiree={$id_soiree}">Voir la soirée ></a></p>
+        <p><a href="?action=display-spectacle&id_spectacle={$id}">Voir les détails du spectacle ></a></p>
+    </div>
+    HTML;
+}
+
 
     private function full()
     {
@@ -70,22 +74,30 @@ HTML;
         $date = NrvRepository::getInstance()->getSoireeById($this->spectacle->id_soiree)->date->format('d/m/Y');
         $horaire = $this->spectacle->horaire->format('H:i:s');
 
+        $cookieName = "spectacle_id_$id";
+        $buttonText = isset($_COOKIE[$cookieName]) ? 'Retirer des Favoris' : 'Ajouter aux Favoris';
+
         return <<<HTML
-<div>
-    <h3>Spectacle : {$this->spectacle->titre}</h3>
-    <p>Artistes :</p>
-    {$artistes}
-    <p>Description : {$this->spectacle->description}</p>
-    <p>Style : {$this->spectacle->style}</p>
-    <p>Le {$date} à {$horaire}</p>
-    <p>Durée : {$this->spectacle->duree}</p>
-    {$images}
-    <video controls>
-        <source src="{$this->spectacle->video}" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-</div>
-HTML;
+            <div>
+                <h3>
+                    Spectacle : {$this->spectacle->titre}
+                    <form method="POST" action=''>
+                            <button type="submit" name="spectacle_id" value="$id">$buttonText</button>
+                        </form>
+                </h3>
+                <p>Artistes :</p>
+                {$artistes}
+                <p>Description : {$this->spectacle->description}</p>
+                <p>Style : {$this->spectacle->style}</p>
+                <p>Le {$date} à {$horaire}</p>
+                <p>Durée : {$this->spectacle->duree}</p>
+                {$images}
+                <video controls>
+                    <source src="{$this->spectacle->video}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            HTML;
 
         // <p><a href="?action=soiree&id_soiree={$this->spectacle->id_soiree}">Detail de la soirée></a></p>
     }
