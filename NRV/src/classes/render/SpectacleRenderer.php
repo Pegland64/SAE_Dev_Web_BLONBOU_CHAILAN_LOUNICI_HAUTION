@@ -38,7 +38,12 @@ class SpectacleRenderer implements Renderer
 
         return <<<HTML
         <div>
-            <h3>Spectacle : {$this->spectacle->titre}</h3>
+            <h3>
+                Spectacle : {$this->spectacle->titre}
+                <form method="POST" action=''>
+                    <button type="submit" name="spectacle_id" value="$id">Favoris</button>
+                </form>
+            </h3>
             <p>Le {$date} à {$horaire}</p>
             <img src="{$image_url}" alt="{$image_nom}">
             <p><a href="?action=soiree&id_soiree={$id_soiree}">Voir la soirée ></a></p>

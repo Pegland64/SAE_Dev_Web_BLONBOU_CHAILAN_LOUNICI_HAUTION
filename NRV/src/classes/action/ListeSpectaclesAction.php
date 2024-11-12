@@ -11,6 +11,12 @@ class ListeSpectaclesAction extends Action
 
     public function execute(): string
     {
+        // permet l'ajout en favori
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['spectacle_id'])) {
+            $spectacleId = intval($_POST['spectacle_id']);
+            setcookie("spectacle_id_$spectacleId", $spectacleId, time() + (7 * 24 * 60 * 60), "/");
+        }
+
         $category = $_GET['category'] ?? null;
         $filter = $_GET['filter'] ?? 'all';
 
@@ -21,7 +27,7 @@ class ListeSpectaclesAction extends Action
             <button type="submit" name="category" value="lieu">Lieu</button>
             <button type="submit" name="category" value="style">Style</button>
         </form>
-HTML;
+        HTML;
 
         if ($category) {
             $options = NrvRepository::getInstance()->getOptionsByCategory($category);
