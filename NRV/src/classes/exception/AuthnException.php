@@ -1,6 +1,6 @@
 <?php
 
-namespace nrv\net\auth;
+namespace nrv\net\exception;
 
 class AuthnException extends \Exception
 {
