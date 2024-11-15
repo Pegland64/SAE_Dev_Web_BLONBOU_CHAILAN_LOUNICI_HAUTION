@@ -12,9 +12,9 @@ class User
     private String $email;
     private int $role;
 
-    private const AVG_USER = 1;
-    private const STAFF_USER = 2;
-    private const ADMIN_USER = 3;
+    const AVG_USER = 1;
+    const STAFF_USER = 2;
+    const ADMIN_USER = 3;
 
     public function __construct(int $id, String $username, String $password, String $email, int $role)
     {
