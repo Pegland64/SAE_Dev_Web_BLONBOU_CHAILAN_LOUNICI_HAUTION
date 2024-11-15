@@ -23,7 +23,7 @@ class ListesUser extends Action
             $html.="<table>";
             $html.="<tr><th>Id</th><th>Nom d'utilisateur</th><th>Email</th><th>Role</th><th>Actions</tr>";
             foreach($users as $user){
-                $html.="<tr><td>".$user->id."</td><td>".$user->username."</td><td>".$user->password."</td><td>".$user->role."</td>";
+                $html.="<tr><td>".$user->id."</td><td>".$user->username."</td><td>".$user->email."</td><td>".$user->role."</td>";
                 $html.="<td><a href='?action=edit-user&id=".$user->id."'>Editer</a> | <a href='?action=delete-user&id=".$user->id."'>Supprimer</a></td></tr>";
             }
             $html.="</table>";
