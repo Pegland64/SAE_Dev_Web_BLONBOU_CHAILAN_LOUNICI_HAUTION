@@ -13,7 +13,7 @@ class Soiree
     private \DateTime $horaire;
     private string $duree;
     private Lieu $lieu;
-    private int $tarif;
+    private float $tarif;
     private array $spectacles;
 
     public function __construct($nom, $thematique, $date, $horaire, $lieu, $tarif)

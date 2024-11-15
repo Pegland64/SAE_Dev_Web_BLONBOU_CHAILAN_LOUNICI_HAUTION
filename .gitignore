@@ -5,3 +5,4 @@ out/
 .idea/*
 .ini
 .db
+.db.ini
