@@ -26,7 +26,7 @@ class Dispatcher
         $isAuthenticated = AuthnProvider::isAuthenticated();
 
         // Définit les actions accessibles seulement aux utilisateurs connectés
-        $restrictedActions = ['add-spectacle'];
+        $restrictedActions = ['add-spectacle', 'add-soiree'];
 
         if (in_array($this->action, $restrictedActions) && !$isAuthenticated) {
             $html = "<p>Veuillez vous <a href='?action=login'>connecter</a> pour accéder à cette fonctionnalité.</p>";
