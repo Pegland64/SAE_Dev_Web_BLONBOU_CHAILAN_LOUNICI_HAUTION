@@ -26,7 +26,7 @@ class Dispatcher
         $isAuthenticated = AuthnProvider::isAuthenticated();
 
         // Définit les actions accessibles seulement aux utilisateurs connectés
-        $restrictedActions = ['add-spectacle'];
+        $restrictedActions = ['add-spectacle', 'add-soiree'];
 
         if (in_array($this->action, $restrictedActions) && !$isAuthenticated) {
             $html = "<p>Veuillez vous <a href='?action=login'>connecter</a> pour accéder à cette fonctionnalité.</p>";
@@ -34,7 +34,8 @@ class Dispatcher
             switch ($this->action) {
                 case 'default':
                     // Utilisation d'un message statique pour l'accueil
-                    $html = "<p>Bienvenue sur NRV.net</p>";
+                    $action = new act\DefaultAction();
+                    $html = $action->execute();
                     break;
 
                 case 'display-spectacle':
@@ -135,6 +136,7 @@ class Dispatcher
     <nav>
         <div id="topNav">
             <h1>NRV.net</h1>
+            <h2>Oh la fête !</h2>
             <ul>
                 $adminli
                 $coDeco

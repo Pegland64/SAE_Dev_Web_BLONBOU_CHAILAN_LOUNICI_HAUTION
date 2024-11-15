@@ -11,6 +11,13 @@ class AddSoireeAction extends Action
 
     public function execute(): string
     {
+
+        if(!isset($_SESSION['user']) || (unserialize($_SESSION['user'])->role !== 2 && unserialize($_SESSION['user'])->role !== 3)){
+            return "<div>Accès refusé. Vous devez être un membre du staff ou un administrateur pour accéder à cette fonctionnalité.</div>";
+        }
+
+
+
         $html = "";
 
         if ($this->http_method === 'GET') {
