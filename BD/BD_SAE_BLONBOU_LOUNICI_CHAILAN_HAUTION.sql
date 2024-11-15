@@ -1,79 +1,79 @@
 --Cr�ation des tables
 CREATE TABLE Lieu (
-	nom_lieu VARCHAR(255) PRIMARY KEY,
-	adresse VARCHAR(255),
-	places_assises INT,
-	places_debout INT,
-	description TEXT
+                      nom_lieu VARCHAR(255) PRIMARY KEY,
+                      adresse VARCHAR(255),
+                      places_assises INT,
+                      places_debout INT,
+                      description TEXT
 );
 
 CREATE TABLE Soiree (
-	id_soiree INT PRIMARY KEY AUTO_INCREMENT,
-	nom_soiree VARCHAR(255),
-	thematique VARCHAR(255),
-	date_soiree DATE,
-	horaire_debut TIME,
-	horaire_fin TIME,
-	nom_lieu VARCHAR(255),
-	soiree_tarif DOUBLE(6,2),
-	FOREIGN KEY (nom_lieu) REFERENCES Lieu(nom_lieu)
+                        id_soiree INT PRIMARY KEY AUTO_INCREMENT,
+                        nom_soiree VARCHAR(255),
+                        thematique VARCHAR(255),
+                        date_soiree DATE,
+                        horaire_debut TIME,
+                        horaire_fin TIME,
+                        nom_lieu VARCHAR(255),
+                        soiree_tarif DOUBLE(6,2),
+                        FOREIGN KEY (nom_lieu) REFERENCES Lieu(nom_lieu)
 );
 
 CREATE TABLE Spectacle (
-	id_spectacle INT PRIMARY KEY AUTO_INCREMENT,
-	titre VARCHAR(255),
-	description TEXT,
-	video_url VARCHAR(255),
-	horaire_debut_previsionnel TIME,
-	horaire_fin_previsionnel TIME,
-	style VARCHAR(255),
-	etat VARCHAR(255),
-	id_soiree INT,
-	FOREIGN KEY (id_soiree) REFERENCES Soiree(id_soiree)
+                           id_spectacle INT PRIMARY KEY AUTO_INCREMENT,
+                           titre VARCHAR(255),
+                           description TEXT,
+                           video_url VARCHAR(255),
+                           horaire_debut_previsionnel TIME,
+                           horaire_fin_previsionnel TIME,
+                           style VARCHAR(255),
+                           etat VARCHAR(255),
+                           id_soiree INT,
+                           FOREIGN KEY (id_soiree) REFERENCES Soiree(id_soiree)
 );
 
 CREATE TABLE Artiste (
-	id_artiste INT PRIMARY KEY AUTO_INCREMENT,
-	nom_artiste VARCHAR(255),
-	bio TEXT
+                         id_artiste INT PRIMARY KEY AUTO_INCREMENT,
+                         nom_artiste VARCHAR(255),
+                         bio TEXT
 );
 
 CREATE TABLE Participe (
-	id_spectacle INT,
-	id_artiste INT,
-	PRIMARY KEY (id_spectacle, id_artiste),
-	FOREIGN KEY (id_spectacle) REFERENCES Spectacle(id_spectacle),
-	FOREIGN KEY (id_artiste) REFERENCES Artiste(id_artiste)
+                           id_spectacle INT,
+                           id_artiste INT,
+                           PRIMARY KEY (id_spectacle, id_artiste),
+                           FOREIGN KEY (id_spectacle) REFERENCES Spectacle(id_spectacle),
+                           FOREIGN KEY (id_artiste) REFERENCES Artiste(id_artiste)
 );
 
 CREATE TABLE ImageLieu (
-	url VARCHAR(255) PRIMARY KEY,
-	nom_image VARCHAR(255),
-	nom_lieu VARCHAR(255),
-	FOREIGN KEY (nom_lieu) REFERENCES Lieu(nom_lieu)
+                           url VARCHAR(255) PRIMARY KEY,
+                           nom_image VARCHAR(255),
+                           nom_lieu VARCHAR(255),
+                           FOREIGN KEY (nom_lieu) REFERENCES Lieu(nom_lieu)
 );
 
 CREATE TABLE ImageSpectacle (
-	url VARCHAR(255) PRIMARY KEY,
-	nom_image VARCHAR(255),
-	id_spectacle INT,
-	FOREIGN KEY (id_spectacle) REFERENCES Spectacle(id_spectacle)
+                                url VARCHAR(255) PRIMARY KEY,
+                                nom_image VARCHAR(255),
+                                id_spectacle INT,
+                                FOREIGN KEY (id_spectacle) REFERENCES Spectacle(id_spectacle)
 );
 
 CREATE TABLE USERS (
-     id_user INT PRIMARY KEY AUTO_INCREMENT,
-     username VARCHAR(50) NOT NULL UNIQUE,
-     email VARCHAR(100) NOT NULL UNIQUE,
-     password VARCHAR(100) NOT NULL,
-     role int(3) NOT NULL
+                       id_user INT PRIMARY KEY AUTO_INCREMENT,
+                       username VARCHAR(50) NOT NULL UNIQUE,
+                       email VARCHAR(100) NOT NULL UNIQUE,
+                       password VARCHAR(100) NOT NULL,
+                       role int(3) NOT NULL
 );
 
 CREATE TABLE Spectacle2User(
-      id_user INT,
-      id_spectacle INT,
-      FOREIGN KEY (id_user) REFERENCES USERS(id_user),
-      FOREIGN KEY (id_spectacle) REFERENCES SPECTACLE(id_spectacle),
-      PRIMARY KEY (id_user, id_spectacle)
+                               id_user INT,
+                               id_spectacle INT,
+                               FOREIGN KEY (id_user) REFERENCES USERS(id_user),
+                               FOREIGN KEY (id_spectacle) REFERENCES SPECTACLE(id_spectacle),
+                               PRIMARY KEY (id_user, id_spectacle)
 );
 
 -- Test des tables avec des INSERT INTO quelconque
