@@ -13,7 +13,7 @@ class Spectacle
     private string $style;
     private string $video;
     private \DateTime $horaire;
-    private string $duree;
+    private \DateTime $duree;
     private array $artistes;
     private array $images;
     private string $etat;
@@ -73,4 +73,8 @@ class Spectacle
         $this->id_soiree = $id_soiree;
     }
 
+    public function setDuree(\DateTime $duree) : void
+    {
+        $this->duree = $duree;
+    }
 }
