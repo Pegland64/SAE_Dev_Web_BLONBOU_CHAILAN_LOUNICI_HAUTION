@@ -136,6 +136,7 @@ class Dispatcher
     <nav>
         <div id="topNav">
             <h1>NRV.net</h1>
+            <h2>Oh la fête !</h2>
             <ul>
                 $adminli
                 $coDeco
