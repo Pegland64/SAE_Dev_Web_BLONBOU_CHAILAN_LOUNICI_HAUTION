@@ -30,12 +30,6 @@ class DisplaySpectacleAction extends Action{
         $renderer = new SpectacleRenderer($spectacle);
         $html .= $renderer->render(2);
 
-        $canEdit = isset($_SESSION['user']) && (unserialize($_SESSION['user'])->role === 2 || unserialize($_SESSION['user'])->role === 3);
-
-        if ($canEdit) {
-            $html .= "<a href='?action=edit-spectacle&id_spectacle={$spectacle->id_spectacle}' class='btn btn-primary'>Modifier ce spectacle</a>";
-        }
-
         $soireeSpectacle = NrvRepository::getInstance()->getSoireeById($spectacle->id_soiree);
         $spectacleParLieu = NrvRepository::getInstance()->getSpectaclesByLieu($soireeSpectacle->lieu->nom, $spectacle->id_spectacle);
         $html .= "<h2>Spectacles au même endroit</h2>";
