@@ -126,15 +126,15 @@ INSERT INTO ImageLieu VALUES
     ('http://example.com/NRV_FESTIVALE_RAP.jpg', 'NRV FESTIVALE RAP Image', 'NRV FESTIVALE RAP');
 
 INSERT INTO ImageSpectacle VALUES
-    ('http://example.com/symphonie_image.jpg', 'Symphonie No.9 Image', 1),
-    ('http://example.com/quatuor_mozart_image.jpg', 'Quatuor Mozart Image', 1),
-    ('http://example.com/nocturnes_chopin_image.jpg', 'Nocturnes de Chopin Image', 1),
-    ('http://example.com/jazznight_image.jpg', 'Jazz Night Image', 2),
-    ('http://example.com/blue_note_session_image.jpg', 'Blue Note Session Image', 2),
-    ('http://example.com/late_night_swing_image.jpg', 'Late Night Swing Image', 2),
-    ('http://example.com/rap_contenders_image.jpg', 'Rap Contenders Image', 3),
-    ('http://example.com/flow_factory_image.jpg', 'Flow Factory Image', 3),
-    ('http://example.com/old_school_revival_image.jpg', 'Old School Revival Image', 3);
+    ('https://cso.org/media/maldpiq1/beethoven-9.jpg?mode=max&quality=80&width=1024&upscale=false', 'Symphonie No.9 Image', 1),
+    ('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Wolfgang-amadeus-mozart_1.jpg/1200px-Wolfgang-amadeus-mozart_1.jpg', 'Quatuor Mozart Image', 2),
+    ('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Frederic_Chopin_photo.jpeg/220px-Frederic_Chopin_photo.jpeg', 'Nocturnes de Chopin Image', 3),
+    ('https://cdn0.toutcomment.com/fr/posts/1/8/2/quelle_est_l_origine_du_jazz_8281_orig.jpg', 'Jazz Night Image', 4),
+    ('https://www.googobits.com/wp-content/uploads/2018/06/blues-music.jpg', 'Blue Note Session Image', 5),
+    ('https://highlandartsvt.org/wp-content/uploads/Swingdancing.png', 'Late Night Swing Image', 6),
+    ('https://img.nrj.fr/erdknfXiRjC5y-0Fq515pUCrTgk=/800x450/smart/medias%2F2018%2F03%2Fbig-ali.jpg', 'Rap Contenders Image', 7),
+    ('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3jBLcfxqwT-IhkjVTLHwtCDfcKXRqH2LZGA&s', 'Flow Factory Image', 8),
+    ('https://m.media-amazon.com/images/I/91r7NelJXPL._UF1000,1000_QL80_.jpg', 'Old School Revival Image', 9);
 
 INSERT INTO USERS VALUES
     (1, 'random_user', 'john@example.com', 'password123', 1),
