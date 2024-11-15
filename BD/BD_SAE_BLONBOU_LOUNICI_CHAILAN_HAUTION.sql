@@ -1,3 +1,4 @@
+--Cr�ation des tables
 CREATE TABLE Lieu (
                       nom_lieu VARCHAR(255) PRIMARY KEY,
                       adresse VARCHAR(255),

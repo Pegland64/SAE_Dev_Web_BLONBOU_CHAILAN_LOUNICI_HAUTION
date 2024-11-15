@@ -32,11 +32,13 @@ class Authz
      * Vérifier si l'utilisateur a les droit staff et admin.
      * @throws \Exception Si l'utilisateur n'a pas les droits requis.
      */
-    public function checkStaffAdmin() : void
+    public function checkStaffAdmin() : bool
     {
         if($this->authenticated_user->role < User::STAFF_USER){
             echo "Vous n'avez pas les droits nécessaires pour accéder à cette ressource.";
+            return false;
         }
+        return true;
     }
 
 }
