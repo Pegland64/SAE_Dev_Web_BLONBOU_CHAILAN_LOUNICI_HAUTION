@@ -107,6 +107,25 @@ class NrvRepository
     }
 
     /**
+     * Récupère le hash du mot de passe d'un utilisateur par son nom d'utilisateur.
+     *
+     * @param string $username Le nom d'utilisateur.
+     * @return string Le hash du mot de passe.
+     * @throws PDOException Si l'utilisateur n'est pas trouvé.
+     */
+    public function getHash(string $username): string
+    {
+        $sql = "SELECT password FROM USERS WHERE username = :username";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['username' => $username]);
+        $row = $stmt->fetch();
+        if ($row === false) {
+            throw new PDOException("Utilisateur non trouvé.");
+        }
+        return $row['password'];
+    }
+
+    /**
      * methode qui retourne un utilisateur par son id
      * @param int $id id de l'utilisateur
      * @return User objet utilisateur
