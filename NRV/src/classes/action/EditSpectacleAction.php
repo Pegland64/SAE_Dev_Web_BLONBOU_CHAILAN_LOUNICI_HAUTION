@@ -14,11 +14,13 @@ class EditSpectacleAction extends Action
             return "<div>Accès refusé. Vous devez être un membre du staff ou un administrateur pour accéder à cette fonctionnalité.</div>";
         }
 
+        // Vérifie si la méthode HTTP est GET
         if ($this->http_method === 'GET') {
             if (!isset($_GET['id_spectacle'])) {
                 return "<div>Spectacle inconnu.</div>";
             }
 
+            // Récupère le spectacle par ID
             $spectacle = NrvRepository::getInstance()->getSpectacleById((int)$_GET['id_spectacle']);
             return $this->renderForm($spectacle);
         } elseif ($this->http_method === 'POST') {
@@ -26,6 +28,7 @@ class EditSpectacleAction extends Action
                 return "<div>Spectacle inconnu.</div>";
             }
 
+            // Récupère le spectacle par ID
             $id_spectacle = (int)$_POST['id_spectacle'];
             $spectacle = NrvRepository::getInstance()->getSpectacleById($id_spectacle);
 
@@ -38,7 +41,7 @@ class EditSpectacleAction extends Action
             $etat = $_POST['etat'];
             $id_soiree = (int)$_POST['id_soiree'];
 
-            // Met à jour les champs via setters
+            // Met à jour les champs via setters les champs via setters
             $spectacle->setTitre($titre);
             $spectacle->setDescription($description);
             $spectacle->setHoraire($horaire_debut);

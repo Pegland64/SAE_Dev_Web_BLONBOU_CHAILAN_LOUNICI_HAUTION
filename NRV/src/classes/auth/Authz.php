@@ -3,7 +3,6 @@
 namespace nrv\net\auth;
 
 use nrv\net\user\User;
-use nrv\net\exception\AccessControlException;
 
 class Authz
 {
@@ -29,7 +28,7 @@ class Authz
     }
 
     /**
-     * Vérifier si l'utilisateur a les droit staff et admin.
+     * Vérifie si l'utilisateur a les droits staff et admin.
      * @throws \Exception Si l'utilisateur n'a pas les droits requis.
      */
     public function checkStaffAdmin() : bool

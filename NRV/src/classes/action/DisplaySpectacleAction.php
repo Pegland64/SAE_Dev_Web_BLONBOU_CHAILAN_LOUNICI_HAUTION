@@ -8,15 +8,20 @@ use nrv\net\repository\NrvRepository;
 class DisplaySpectacleAction extends Action{
     public function execute(): string
     {
+        // Initialisation de la variable HTML
         $html = '';
+
+        // Vérifie si l'ID du spectacle est présent dans les paramètres GET
         if (!isset($_GET['id_spectacle'])) {
             return "Spectacle inconnu.";
         }
 
+        // Gestion des requêtes POST pour ajouter ou supprimer un spectacle des favoris
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['spectacle_id'])) {
             $spectacleId = intval($_POST['spectacle_id']);
             $cookieName = "spectacle_id_$spectacleId";
 
+            // Ajoute ou supprime le cookie correspondant au spectacle
             if (isset($_COOKIE[$cookieName])) {
                 setcookie($cookieName, '', time() - 3600, "/");
             } else {
@@ -26,16 +31,12 @@ class DisplaySpectacleAction extends Action{
             exit();
         }
 
+        // Récupère le spectacle par son ID
         $spectacle = NrvRepository::getInstance()->getSpectacleById((int)$_GET['id_spectacle']);
         $renderer = new SpectacleRenderer($spectacle);
         $html .= $renderer->render(2);
 
-        $canEdit = isset($_SESSION['user']) && (unserialize($_SESSION['user'])->role === 2 || unserialize($_SESSION['user'])->role === 3);
-
-        if ($canEdit) {
-            $html .= "<a href='?action=edit-spectacle&id_spectacle={$spectacle->id_spectacle}' class='btn btn-primary'>Modifier ce spectacle</a>";
-        }
-
+        // Récupère les spectacles au même endroit
         $soireeSpectacle = NrvRepository::getInstance()->getSoireeById($spectacle->id_soiree);
         $spectacleParLieu = NrvRepository::getInstance()->getSpectaclesByLieu($soireeSpectacle->lieu->nom, $spectacle->id_spectacle);
         $html .= "<h2>Spectacles au même endroit</h2>";
@@ -52,6 +53,7 @@ class DisplaySpectacleAction extends Action{
             $html .= "Aucun spectacle similaire";
         }
 
+        // Récupère les spectacles du même style
         $spectacleParStyle = NrvRepository::getInstance()->getSpectaclesByStyle($spectacle->style, $spectacle->id_spectacle);
         $html .= "<h2>Spectacles du même style</h2>";
         if (count($spectacleParStyle) >= 2) {
@@ -67,6 +69,7 @@ class DisplaySpectacleAction extends Action{
             $html .= "Aucun spectacle similaire";
         }
 
+        // Récupère les spectacles du même jour
         $spectacleParDate = NrvRepository::getInstance()->getSpectaclesByDate(NrvRepository::getInstance()->getDateSpectacle($spectacle->id_spectacle), $spectacle->id_spectacle);
         $html .= "<h2>Spectacles du même jour</h2>";
         if (count($spectacleParDate) >= 2) {
@@ -82,6 +85,7 @@ class DisplaySpectacleAction extends Action{
             $html .= "Aucun spectacle similaire";
         }
 
+        // Retourne le HTML généré
         return $html;
     }
 }

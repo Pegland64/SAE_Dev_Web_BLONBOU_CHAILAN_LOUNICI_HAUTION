@@ -3,9 +3,7 @@
 namespace nrv\net\action;
 
 use nrv\net\auth\Authz;
-use nrv\net\action\Action;
 use nrv\net\repository\NrvRepository;
-use nrv\net\user\User;
 
 class ListesUser extends Action
 {
@@ -28,6 +26,8 @@ class ListesUser extends Action
             }
             $html.="</table>";
             return $html;  
+        }else{
+            return "<p>Vous devez être connecté pour accéder à cette page.</p>";
         }
     }
 }
