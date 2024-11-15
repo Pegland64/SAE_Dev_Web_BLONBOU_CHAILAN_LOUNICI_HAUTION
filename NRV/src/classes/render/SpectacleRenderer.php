@@ -73,6 +73,7 @@ class SpectacleRenderer implements Renderer
 
         $date = NrvRepository::getInstance()->getSoireeById($this->spectacle->id_soiree)->date->format('d/m/Y');
         $horaire = $this->spectacle->horaire->format('H:i:s');
+        $duree = $this->spectacle->duree->format('H:i:s');
 
         $cookieName = "spectacle_id_$id";
         $buttonText = isset($_COOKIE[$cookieName]) ? 'Retirer des Favoris' : 'Ajouter aux Favoris';
@@ -90,7 +91,7 @@ class SpectacleRenderer implements Renderer
                 <p>Description : {$this->spectacle->description}</p>
                 <p>Style : {$this->spectacle->style}</p>
                 <p>Le {$date} à {$horaire}</p>
-                <p>Durée : {$this->spectacle->duree}</p>
+                <p>Durée : {$duree}</p>
                 {$images}
                 <video controls>
                     <source src="{$this->spectacle->video}" type="video/mp4">

@@ -11,7 +11,7 @@ class Soiree
     private string $thematique;
     private \DateTime $date;
     private \DateTime $horaire;
-    private string $duree;
+    private \DateTime $duree;
     private Lieu $lieu;
     private float $tarif;
     private array $spectacles;
@@ -47,7 +47,7 @@ class Soiree
         $this->spectacles = $spectacles;
     }
 
-    public function setDuree(string $duree) : void
+    public function setDuree(\DateTime $duree) : void
     {
         $this->duree = $duree;
     }
