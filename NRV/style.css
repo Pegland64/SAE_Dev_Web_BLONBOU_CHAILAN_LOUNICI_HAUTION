@@ -48,6 +48,10 @@ nav #bottomNav li a{
     align-items: center;
     flex-direction: column;
     width: 100%;
+    img{
+        width: 100%;
+        height: auto;
+    }
 }
 
 form{

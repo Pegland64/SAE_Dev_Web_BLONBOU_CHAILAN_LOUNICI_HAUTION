@@ -34,7 +34,8 @@ class Dispatcher
             switch ($this->action) {
                 case 'default':
                     // Utilisation d'un message statique pour l'accueil
-                    $html = "<p>Bienvenue sur NRV.net</p>";
+                    $action = new act\DefaultAction();
+                    $html = $action->execute();
                     break;
 
                 case 'display-spectacle':
