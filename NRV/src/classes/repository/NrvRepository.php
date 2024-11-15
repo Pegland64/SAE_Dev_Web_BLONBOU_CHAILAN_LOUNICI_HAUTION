@@ -84,6 +84,9 @@ class NrvRepository
             $video = $row['video_url'];
             $horaire_debut = new \DateTime($row['horaire_debut_previsionnel']);
             $horaire_fin = new \DateTime($row['horaire_fin_previsionnel']);
+            if ($horaire_debut > $horaire_fin) {
+                $horaire_fin->add(new \DateInterval('P1D'));
+            }
             $interval = $horaire_debut->diff($horaire_fin);
             $duree = $interval->format('%H:%I:%S');
             $etat = $row['etat'];
@@ -144,6 +147,9 @@ class NrvRepository
         $video = $row['video_url'];
         $horaire_debut = new \DateTime($row['horaire_debut_previsionnel']);
         $horaire_fin = new \DateTime($row['horaire_fin_previsionnel']);
+        if($horaire_debut > $horaire_fin) {
+            $horaire_fin->add(new \DateInterval('P1D'));
+        }
         $interval = $horaire_debut->diff($horaire_fin);
         $duree = $interval->format('%H:%I:%S');
         $etat = $row['etat'];
@@ -239,6 +245,9 @@ class NrvRepository
         $date = new \DateTime($row['date_soiree']);
         $horaire_debut = new \DateTime($row['horaire_debut']);
         $horaire_fin = new \DateTime($row['horaire_fin']);
+        if ($horaire_debut > $horaire_fin) {
+            $horaire_fin->add(new \DateInterval('P1D'));
+        }
         $interval = $horaire_debut->diff($horaire_fin);
         $duree = $interval->format('%H:%I:%S');
         $tarif = $row['soiree_tarif'];
@@ -277,6 +286,9 @@ class NrvRepository
             $date = new \DateTime($row['date_soiree']);
             $horaire_debut = new \DateTime($row['horaire_debut']);
             $horaire_fin = new \DateTime($row['horaire_fin']);
+            if ($horaire_debut > $horaire_fin) {
+                $horaire_fin->add(new \DateInterval('P1D'));
+            }
             $interval = $horaire_debut->diff($horaire_fin);
             $duree = $interval->format('%H:%I:%S');
             $tarif = $row['soiree_tarif'];
