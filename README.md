@@ -16,8 +16,8 @@ Ce projet est en deux partie :
 - Le deuxième dossier “NRV” qui contient l'entièreté du site web du festival.
 
 Les différents tests peuvent se faire sur un compte ayant tout les droits tels que l’admin:
-- utilisateur: admin
-- password:adminpass
+- utilisateur: admin_user
+- password: adminpass
 
 
 Nous nous sommes répartit les fonctionnalité de cette façon :

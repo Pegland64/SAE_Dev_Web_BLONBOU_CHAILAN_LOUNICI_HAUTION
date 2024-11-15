@@ -137,9 +137,9 @@ INSERT INTO ImageSpectacle VALUES
     ('https://m.media-amazon.com/images/I/91r7NelJXPL._UF1000,1000_QL80_.jpg', 'Old School Revival Image', 9);
 
 INSERT INTO USERS VALUES
-    (1, 'random_user', 'john@example.com', 'password123', 1),
-    (2, 'artiste', 'jane@example.com', 'securepassword', 2),
-    (3, 'admin_user', 'admin@example.com', 'adminpass', 3);
+    (1, 'random_user', 'john@example.com', '$2y$10$.bggR031HNbFuKvXNUFFqeWBb.rdMCuNR/7w/jjFFdXTeLfanJPJu', 1),
+    (2, 'artiste', 'jane@example.com', '$2y$10$wd3UnfFcg9jWULax7IyVIOz55KwQMFF31OEhgvPs1rTPpfEX7858y', 2),
+    (3, 'admin_user', 'admin@example.com', '$2y$10$2KxH6bM41YxfiT6RYMrJNuEvrwt3/Rk9H4ZyKbWYgMihWdH7MKs9q', 3);
 
 INSERT INTO Spectacle2User VALUES
     (2, 2),
