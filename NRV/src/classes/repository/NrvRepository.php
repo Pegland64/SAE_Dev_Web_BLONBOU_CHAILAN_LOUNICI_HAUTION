@@ -62,6 +62,7 @@ class NrvRepository
         $stmt->execute(['role' => $role, 'id' => $user->id]);
     }
 
+
     public function deleteUser(User $user): void
     {
         $sql = "DELETE FROM USERS WHERE id_user = :id";
@@ -577,16 +578,32 @@ class NrvRepository
         }
     }
 
-    /**
-     * methode qui annule un spectacle
-     * @param int $idSpectacle id du spectacle
-     */
-    public function cancelSpectacle(int $idSpectacle): void
+    public function updateSpectacle(Spectacle $spectacle): void
     {
-        $sql = "UPDATE Spectacle SET etat = :etat WHERE id_spectacle = :id_spectacle";
+        $sql = "UPDATE Spectacle
+            SET titre = :titre,
+                description = :description,
+                video_url = :video_url,
+                horaire_debut_previsionnel = :horaire_debut,
+                horaire_fin_previsionnel = :horaire_fin,
+                style = :style,
+                etat = :etat,
+                id_soiree = :id_soiree
+            WHERE id_spectacle = :id_spectacle";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['etat' => 'annulé', 'id_spectacle' => $idSpectacle]);
+        $stmt->execute([
+            'titre' => $spectacle->titre,
+            'description' => $spectacle->description,
+            'video_url' => $spectacle->video,
+            'horaire_debut' => $spectacle->horaire->format('H:i:s'),
+            'horaire_fin' => $spectacle->duree->format('H:i:s'),
+            'style' => $spectacle->style,
+            'etat' => $spectacle->etat,
+            'id_soiree' => $spectacle->id_soiree,
+            'id_spectacle' => $spectacle->id_spectacle
+        ]);
     }
+
 
     /**
      * methode qui retourne un la liste des categories pour le tri

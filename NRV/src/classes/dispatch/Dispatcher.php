@@ -71,6 +71,11 @@ class Dispatcher
                     $html = $action->execute();
                     break;
 
+                case 'edit-spectacle':
+                    $action = new act\EditSpectacleAction();
+                    $html = $action->execute();
+                    break;
+
                 case 'soiree':
                     // Affiche une soirée en fonction de l'ID fourni
                     $action = new SoireeAction();

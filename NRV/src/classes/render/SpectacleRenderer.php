@@ -49,7 +49,7 @@ class SpectacleRenderer implements Renderer
             </form>
         </h3>
         <p>Le <span class="dateDeco">{$date}</span> à <span class="dateDeco">{$horaire}</span></p>
-        <img src="{$image_url}" alt="{$image_nom}">
+        <img src="{$image_url}" alt="{$image_nom}" id="img_spectacle">
         <p><a href="?action=soiree&id_soiree={$id_soiree}">Voir la soirée ></a></p>
         <p><a href="?action=display-spectacle&id_spectacle={$id}">Voir les détails du spectacle ></a></p>
     </div>
