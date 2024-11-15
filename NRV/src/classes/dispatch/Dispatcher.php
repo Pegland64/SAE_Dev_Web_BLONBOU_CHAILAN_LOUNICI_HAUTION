@@ -140,15 +140,15 @@ class Dispatcher
                 $coDeco
             </ul>
         </div>
-        <ul id="bottomNav">
-            <li><a href="?action=default">Accueil</a></li>
-            <li><a href="?action=soirees">Liste des soirées</a></li>
-            <li><a href="?action=liste-spectacles">Liste des spectacles</a></li>
-            <li><a href="?action=add-spectacle">Ajouter un spectacle</a></li>
-            <li><a href="?action=add-soiree">Ajouter une soiree</a></li>
-            <li><a href="?action=listes-spectales-favoris">voir favoris</a></li>
-        </ul>
     </nav>
+    <ul id="bottomNav">
+        <li><a href="?action=default">Accueil</a></li>
+        <li><a href="?action=soirees">Liste des soirées</a></li>
+        <li><a href="?action=liste-spectacles">Liste des spectacles</a></li>
+        <li><a href="?action=add-spectacle">Ajouter un spectacle</a></li>
+        <li><a href="?action=add-soiree">Ajouter une soiree</a></li>
+        <li><a href="?action=listes-spectales-favoris">voir favoris</a></li>
+    </ul>
     
 <!--    <nav>-->
 <!--        <div class="nav-links">-->
