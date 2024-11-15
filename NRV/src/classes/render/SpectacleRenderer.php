@@ -48,7 +48,7 @@ class SpectacleRenderer implements Renderer
                 <button type="submit" name="spectacle_id" value="$id">$buttonText</button>
             </form>
         </h3>
-        <p>Le {$date} à {$horaire}</p>
+        <p>Le <span class="dateDeco">{$date}</span> à <span class="dateDeco">{$horaire}</span></p>
         <img src="{$image_url}" alt="{$image_nom}">
         <p><a href="?action=soiree&id_soiree={$id_soiree}">Voir la soirée ></a></p>
         <p><a href="?action=display-spectacle&id_spectacle={$id}">Voir les détails du spectacle ></a></p>

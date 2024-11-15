@@ -34,7 +34,8 @@ class Dispatcher
             switch ($this->action) {
                 case 'default':
                     // Utilisation d'un message statique pour l'accueil
-                    $html = "<p>Bienvenue sur NRV.net</p>";
+                    $action = new act\DefaultAction();
+                    $html = $action->execute();
                     break;
 
                 case 'display-spectacle':
@@ -129,12 +130,13 @@ class Dispatcher
 <head>
     <meta charset="UTF-8">
     <title>NRV</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
     <nav>
         <div id="topNav">
             <h1>NRV.net</h1>
+            <h2>Oh la fête !</h2>
             <ul>
                 $adminli
                 $coDeco
@@ -147,7 +149,7 @@ class Dispatcher
         <li><a href="?action=liste-spectacles">Liste des spectacles</a></li>
         <li><a href="?action=add-spectacle">Ajouter un spectacle</a></li>
         <li><a href="?action=add-soiree">Ajouter une soiree</a></li>
-        <li><a href="?action=listes-spectales-favoris">voir favoris</a></li>
+        <li><a href="?action=listes-spectales-favoris">Voir favoris</a></li>
     </ul>
     
 <!--    <nav>-->
