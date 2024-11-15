@@ -22,13 +22,21 @@ class AddSpectacleAction extends Action
             $description = $_POST['description'];
             $horaire_debut = new \DateTime($_POST['horaire_debut']);
             $horaire_fin = new \DateTime($_POST['horaire_fin']);
+
+            if ($horaire_debut > $horaire_fin) {
+                $horaire_fin->add(new \DateInterval('P1D'));
+            }
+
+            $interval = $horaire_debut->diff($horaire_fin);
+            $duree = new \DateTime($interval->format('%H:%I:%S'));
+
             $style = $_POST['style'];
             $etat = $_POST['etat'];
             $id_soiree = (int)$_POST['id_soiree'];
             $artistes = $_POST['artistes'];
             $images = $_FILES['images'];
 
-            $spectacle = new Spectacle($titre, $description, '', $horaire_debut, $horaire_fin, $style);
+            $spectacle = new Spectacle($titre, $description, '', $horaire_debut, $duree, $style);
             $spectacle->setEtat($etat);
             $spectacle->setIdSoiree($id_soiree);
 

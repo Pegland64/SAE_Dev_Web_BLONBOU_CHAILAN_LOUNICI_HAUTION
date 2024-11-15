@@ -64,7 +64,7 @@ class AddSoireeAction extends Action
             <input type="time" id="horaire" name="horaire" required><br>
 
             <label for="duree">Durée :</label>
-            <input type="time" id="duree" name="duree" required><br>
+            <input type="text" id="duree" name="duree" placeholder="HH:MM:SS" required><br>
 
             <label for="lieu">Lieu:</label>
             <select id="lieu" name="lieu" required>

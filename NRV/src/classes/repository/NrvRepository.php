@@ -541,12 +541,14 @@ class NrvRepository
             VALUES (:titre, :description, :video_url, :horaire_debut, :horaire_fin, :style, :etat, :id_soiree)";
         $stmt = $this->pdo->prepare($sql);
 
+
+        $interval = $spectacle->duree->diff(new \DateTime('00:00:00'));
         $stmt->execute([
             'titre' => $spectacle->titre,
             'description' => $spectacle->description,
             'video_url' => $spectacle->video,
             'horaire_debut' => $spectacle->horaire->format('H:i:s'),
-            'horaire_fin' => $spectacle->horaire->add($spectacle->duree->diff(new \DateTime('00:00:00')))->format('H:i:s'),
+            'horaire_fin' => ($spectacle->horaire->add($interval)->format('H:i:s')),
             'style' => $spectacle->style,
             'etat' => $spectacle->etat,
             'id_soiree' => $spectacle->id_soiree
