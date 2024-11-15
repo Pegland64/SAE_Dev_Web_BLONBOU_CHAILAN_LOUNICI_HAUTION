@@ -36,14 +36,15 @@ class ListeSpectaclesAction extends Action
         // Génère le formulaire pour sélectionner la catégorie
         $html = <<<HTML
         <div class='affichageListe' id='liste-spectacles'>
-            <div id="titleListeSpectacles">
-                <div id="form-filter-div">
-                    <form method="GET" action="" id="form-filter">
-                        <input type="hidden" name="action" value="liste-spectacles">
-                        <button type="submit" name="category" value="date">Date</button>
-                        <button type="submit" name="category" value="lieu">Lieu</button>
-                        <button type="submit" name="category" value="style">Style</button>
-                    </form>
+            <h2><span class='listeTitre'>Liste des spectacles :</span></h2>
+                <div id="ListeSpectacles">
+                    <div id="form-filter-div">
+                        <form method="GET" action="" id="form-filter">
+                            <input type="hidden" name="action" value="liste-spectacles">
+                            <button type="submit" name="category" value="date">Date</button>
+                            <button type="submit" name="category" value="lieu">Lieu</button>
+                            <button type="submit" name="category" value="style">Style</button>
+                        </form>
         HTML;
 
         // Si une catégorie est sélectionnée, génère le formulaire pour sélectionner le filtre
@@ -58,11 +59,12 @@ class ListeSpectaclesAction extends Action
             }
             $html .= '</form>';
         }
+        $html .= '</div>';
 
         // Si un filtre est sélectionné, récupère et affiche les spectacles filtrés
         if ($filter) {
             $spectacles = NrvRepository::getInstance()->getFilteredSpectaclesByCategory($category, $filter);
-            $html .= "</div><h2><span class='listeTitre'>Liste des spectacles :</span></h2></div><ul>";
+            $html .= "<div id='listeSpectacles'><ul>";
             foreach ($spectacles as $spectacle) {
                 $renderer = new SpectacleRenderer($spectacle);
                 $html .= '<li>' . $renderer->render(1) . '</li>';

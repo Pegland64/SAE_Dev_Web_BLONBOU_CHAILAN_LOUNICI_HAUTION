@@ -3,6 +3,7 @@
 namespace nrv\net\action;
 
 use nrv\net\repository\NrvRepository;
+use nrv\net\render\SpectacleRenderer;
 
 // Classe pour afficher les favoris
 class DisplayFavorisAction extends Action

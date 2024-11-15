@@ -49,7 +49,8 @@ HTML;
         $spectacles = '<ul>';
         foreach ($this->soiree->spectacles as $spectacle) {
             $renderer = new SpectacleRenderer($spectacle);
-            $spectacles .= "<li>" . $renderer->render(Renderer::FULL) . "</li>";
+            $spectacles .= "<li>" . $renderer->render(Renderer::FULL) ;
+            $spectacles .= "<a href='?action=display-spectacle&id_spectacle={$spectacle->id_spectacle}'>Voir les détails du spectacle ></a></li>";
         }
         $spectacles .= '</ul>';
         return <<<HTML
