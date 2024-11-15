@@ -1,7 +1,7 @@
 <?php
 
 namespace nrv\net\action;
-
+// classe pour gérer chaque actions de notre site web
 abstract class Action {
 
     protected ?string $http_method = null;
