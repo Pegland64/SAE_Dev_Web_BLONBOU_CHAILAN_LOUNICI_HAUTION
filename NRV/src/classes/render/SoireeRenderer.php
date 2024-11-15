@@ -30,11 +30,12 @@ class SoireeRenderer implements Renderer
     {
         $date = $this->soiree->date->format('d/m/Y');
         $horaire = $this->soiree->horaire->format('H:i:s');
+        $duree = $this->soiree->duree->format('H:i:s');
         return <<<HTML
 <div>
     <h2>Soirée : {$this->soiree->nom}</h2>
     <p>Le {$date} à {$horaire}</p>
-    <p>Durée : {$this->soiree->duree}</p>
+    <p>Durée : {$duree}</p>
     <p>Lieu : {$this->soiree->lieu->nom}</p>
     <p>Tarif : {$this->soiree->tarif} €</p>
     <p><a href='?action=soiree&id_soiree={$this->soiree->id_soiree}'>En savoir plus ></a></p>
@@ -46,6 +47,7 @@ HTML;
     {
         $date = $this->soiree->date->format('d/m/Y');
         $horaire = $this->soiree->horaire->format('H:i:s');
+        $duree = $this->soiree->duree->format('H:i:s');
         $spectacles = '<ul>';
         foreach ($this->soiree->spectacles as $spectacle) {
             $renderer = new SpectacleRenderer($spectacle);
@@ -58,7 +60,7 @@ HTML;
             <h2>Soirée : {$this->soiree->nom}</h2>
             <p>Thématique : {$this->soiree->thematique}</p>
             <p>Le {$date} à {$horaire}</p>
-            <p>Durée : {$this->soiree->duree}</p>
+            <p>Durée : {$duree}</p>
             <p>Lieu : {$this->soiree->lieu->nom}</p>
             <p>Tarif : {$this->soiree->tarif} €</p>
             <h3>Spectacles :</h3>

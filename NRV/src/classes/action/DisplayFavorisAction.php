@@ -2,6 +2,7 @@
 
 namespace nrv\net\action;
 
+use nrv\net\render\SpectacleRenderer;
 use nrv\net\repository\NrvRepository;
 use nrv\net\render\SpectacleRenderer;
 

@@ -27,7 +27,7 @@ class AddSoireeAction extends Action
             $thematique = $_POST['thematique'] ?? '';
             $date = new \DateTime($_POST['date'] ?? '');
             $horaire = new \DateTime($_POST['horaire'] ?? '');
-            $duree = $_POST['duree'] ?? '';
+            $duree = new \DateTime($_POST['duree'] ?? '');
             $lieu = new Lieu($_POST['lieu'] ?? '', '', 0, 0, '');
             $tarif = (float)$_POST['tarif'] ?? 0.0;
 
@@ -60,11 +60,11 @@ class AddSoireeAction extends Action
             <label for="date">Date:</label>
             <input type="date" id="date" name="date" required><br>
 
-            <label for="horaire">Horaire:</label>
+            <label for="horaire">Horaire :</label>
             <input type="time" id="horaire" name="horaire" required><br>
 
-            <label for="duree">Durée (HH:MM:SS):</label>
-            <input type="text" id="duree" name="duree" required><br>
+            <label for="duree">Durée :</label>
+            <input type="text" id="duree" name="duree" placeholder="HH:MM:SS" required><br>
 
             <label for="lieu">Lieu:</label>
             <select id="lieu" name="lieu" required>

@@ -57,14 +57,15 @@ class NrvRepository
 
     public function updateRoleUser(User $user, string $role): void
     {
-        $sql = "UPDATE users SET role = :role WHERE id_user = :id";
+        $sql = "UPDATE USERS SET role = :role WHERE id_user = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['role' => $role, 'id' => $user->id]);
     }
 
+
     public function deleteUser(User $user): void
     {
-        $sql = "DELETE FROM users WHERE id_user = :id";
+        $sql = "DELETE FROM USERS WHERE id_user = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $user->id]);
     }
@@ -101,7 +102,7 @@ class NrvRepository
 
     public function getUserbyId(int $id): User
     {
-        $sql = "SELECT * FROM users WHERE id_user = :id";
+        $sql = "SELECT * FROM USERS WHERE id_user = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch();
@@ -145,8 +146,7 @@ class NrvRepository
             if ($horaire_debut > $horaire_fin) {
                 $horaire_fin->add(new \DateInterval('P1D'));
             }
-            $interval = $horaire_debut->diff($horaire_fin);
-            $duree = $interval->format('%H:%I:%S');
+            $duree = (new \DateTime('00:00:00'))->add($horaire_debut->diff($horaire_fin));
             $etat = $row['etat'];
             $id_soiree = $row['id_soiree'];
 
@@ -208,8 +208,7 @@ class NrvRepository
         if($horaire_debut > $horaire_fin) {
             $horaire_fin->add(new \DateInterval('P1D'));
         }
-        $interval = $horaire_debut->diff($horaire_fin);
-        $duree = $interval->format('%H:%I:%S');
+        $duree = (new \DateTime('00:00:00'))->add($horaire_debut->diff($horaire_fin));
         $etat = $row['etat'];
         $id_soiree = $row['id_soiree'];
 
@@ -270,8 +269,7 @@ class NrvRepository
         if ($horaire_debut > $horaire_fin) {
             $horaire_fin->add(new \DateInterval('P1D'));
         }
-        $interval = $horaire_debut->diff($horaire_fin);
-        $duree = $interval->format('%H:%I:%S');
+        $duree = (new \DateTime('00:00:00'))->add($horaire_debut->diff($horaire_fin));
         $tarif = $row['soiree_tarif'];
         $lieu = $this->getLieuByNom($row['nom_lieu']);
 
@@ -294,17 +292,17 @@ class NrvRepository
 
     public function addSoiree(Soiree $soiree) : void
     {
-        $sql = "SELECT COUNT(*) FROM lieu WHERE nom_lieu = :nom_lieu";
+        $sql = "SELECT COUNT(*) FROM Lieu WHERE nom_lieu = :nom_lieu";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['nom_lieu' => $soiree->lieu->nom]);
         if ($stmt->fetchColumn() == 0) {
             throw new PDOException("Lieu not found.");
         }
 
-        $sql = "INSERT INTO soiree (nom_soiree, thematique, date_soiree, horaire_debut, horaire_fin, nom_lieu, soiree_tarif) VALUES (:nom_soiree, :thematique, :date_soiree, :horaire_debut, :horaire_fin, :nom_lieu, :soiree_tarif)";
+        $sql = "INSERT INTO Soiree (nom_soiree, thematique, date_soiree, horaire_debut, horaire_fin, nom_lieu, soiree_tarif) VALUES (:nom_soiree, :thematique, :date_soiree, :horaire_debut, :horaire_fin, :nom_lieu, :soiree_tarif)";
         $stmt = $this->pdo->prepare($sql);
 
-        $durationParts = explode(':', $soiree->duree);
+        $durationParts = explode(':', $soiree->duree->format('H:i:s'));
         $intervalSpec = sprintf('PT%sH%sM%sS', $durationParts[0], $durationParts[1], $durationParts[2]);
 
         $stmt->execute([
@@ -337,8 +335,7 @@ class NrvRepository
             if ($horaire_debut > $horaire_fin) {
                 $horaire_fin->add(new \DateInterval('P1D'));
             }
-            $interval = $horaire_debut->diff($horaire_fin);
-            $duree = $interval->format('%H:%I:%S');
+            $duree = (new \DateTime('00:00:00'))->add($horaire_debut->diff($horaire_fin));
             $tarif = $row['soiree_tarif'];
 
             $lieu = $this->getLieuByNom($row['nom_lieu']);
@@ -351,6 +348,20 @@ class NrvRepository
         return $soirees;
     }
 
+    public function getAllArtistes() : array
+    {
+        $sql = "SELECT * FROM Artiste";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $artistes = [];
+        while ($row = $stmt->fetch()) {
+            $artiste = new Artiste($row['nom_artiste'], $row['bio']);
+            $artiste->setIdArtiste($row['id_artiste']);
+            $artistes[] = $artiste;
+        }
+        return $artistes;
+    }
+
     /**
      * methode qui renvoie tout les spectacle par rapports a un lieu sans une spectacle passer en parametre
      * @param string $lieu objet lieu
@@ -359,7 +370,7 @@ class NrvRepository
      */
     public function getSpectaclesByLieu(string $lieu,int $idspec): array
     {
-        $sql = "select * from spectacle inner join soiree on soiree.id_soiree=spectacle.id_soiree inner join lieu ON lieu.nom_lieu = soiree.nom_lieu where lieu.nom_lieu = :nomlieu AND spectacle.id_spectacle != :idspec";
+        $sql = "select * from Spectacle inner join Soiree on Soiree.id_soiree=Spectacle.id_soiree inner join Lieu ON Lieu.nom_lieu = Soiree.nom_lieu where Lieu.nom_lieu = :nomlieu AND Spectacle.id_spectacle != :idspec";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['nomlieu' => $lieu, 'idspec' => $idspec]);
         $spectacles = [];
@@ -374,8 +385,7 @@ class NrvRepository
             if ($horaire_debut > $horaire_fin) {
                 $horaire_fin->add(new \DateInterval('P1D'));
             }
-            $interval = $horaire_debut->diff($horaire_fin);
-            $duree = $interval->format('%H:%I:%S');
+            $duree = (new \DateTime('00:00:00'))->add($horaire_debut->diff($horaire_fin));
             $etat = $row['etat'];
             $id_soiree = $row['id_soiree'];
 
@@ -402,7 +412,7 @@ class NrvRepository
      */
     public function getSpectaclesByStyle(string $style, int $idspec): array
     {
-        $sql = "select * from spectacle where style = :style AND id_spectacle != :idspec";
+        $sql = "select * from Spectacle where style = :style AND id_spectacle != :idspec";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['style' => $style, 'idspec' => $idspec]);
         $spectacles = [];
@@ -416,8 +426,7 @@ class NrvRepository
             if ($horaire_debut > $horaire_fin) {
                 $horaire_fin->add(new \DateInterval('P1D'));
             }
-            $interval = $horaire_debut->diff($horaire_fin);
-            $duree = $interval->format('%H:%I:%S');
+            $duree = (new \DateTime('00:00:00'))->add($horaire_debut->diff($horaire_fin));
             $etat = $row['etat'];
             $id_soiree = $row['id_soiree'];
 
@@ -437,7 +446,7 @@ class NrvRepository
 
     public function getDateSpectacle(int $id): string
     {
-        $sql = "SELECT date_soiree FROM spectacle Inner join soiree on spectacle.id_soiree = soiree.id_soiree WHERE id_spectacle = :id";
+        $sql = "SELECT date_soiree FROM Spectacle Inner join Soiree on Spectacle.id_soiree = Soiree.id_soiree WHERE id_spectacle = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch();
@@ -455,7 +464,7 @@ class NrvRepository
      */
     public function getSpectaclesByDate(string $date, int $idspec): array
     {
-        $sql = "select * from spectacle inner join soiree on soiree.id_soiree=spectacle.id_soiree where soiree.date_soiree = :date AND spectacle.id_spectacle != :idspec";
+        $sql = "select * from Spectacle inner join Soiree on Soiree.id_soiree=Spectacle.id_soiree where Soiree.date_soiree = :date AND Spectacle.id_spectacle != :idspec";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['date' => $date, 'idspec' => $idspec]);
         $spectacles = [];
@@ -470,8 +479,7 @@ class NrvRepository
             if ($horaire_debut > $horaire_fin) {
                 $horaire_fin->add(new \DateInterval('P1D'));
             }
-            $interval = $horaire_debut->diff($horaire_fin);
-            $duree = $interval->format('%H:%I:%S');
+            $duree = (new \DateTime('00:00:00'))->add($horaire_debut->diff($horaire_fin));
             $etat = $row['etat'];
             $id_soiree = $row['id_soiree'];
 
@@ -511,7 +519,7 @@ class NrvRepository
 
     public function getAllLieux(): array
     {
-        $sql = "SELECT * FROM lieu";
+        $sql = "SELECT * FROM Lieu";
         $stmt = $this->pdo->query($sql);
         $stmt->execute();
         while($row = $stmt->fetch()) {
@@ -521,59 +529,81 @@ class NrvRepository
         return $lieux;
     }
 
-    /**
-     * methode qui crée un nouveau spectacle
-     * @param string $titre titre du spectacle
-     * @param string $description description du spectacle
-     * @param string $videoUrl url de la video du spectacle
-     * @param string $horairePrevisionnel horaire previsionnel du spectacle
-     * @throws PDOException
-     */
-    public function createSpectacle(string $titre = null, string $description = null, string $videoUrl = null, string $horairePrevisionnel = null): void
+    public function addSpectacle(Spectacle $spectacle, array $artistes, array $images) : void
     {
-        $sql = "INSERT INTO Spectacle (titre, description, video_url, horaire_previsionnel, etat) VALUES (:titre, :description, :video_url, :horaire_previsionnel, :etat)";
+        $sql = "SELECT COUNT(*) FROM Soiree WHERE id_soiree = :id_soiree";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['titre' => $titre, 'description' => $description, 'video_url' => $videoUrl, 'horaire_previsionnel' => $horairePrevisionnel, 'etat' => 'confirmé']);
+        $stmt->execute(['id_soiree' => $spectacle->id_soiree]);
+        if ($stmt->fetchColumn() == 0) {
+            throw new PDOException("Soiree not found.");
+        }
+
+        $sql = "INSERT INTO Spectacle (titre, description, video_url, horaire_debut_previsionnel, horaire_fin_previsionnel, style, etat, id_soiree)
+            VALUES (:titre, :description, :video_url, :horaire_debut, :horaire_fin, :style, :etat, :id_soiree)";
+        $stmt = $this->pdo->prepare($sql);
+
+
+        $interval = $spectacle->duree->diff(new \DateTime('00:00:00'));
+        $stmt->execute([
+            'titre' => $spectacle->titre,
+            'description' => $spectacle->description,
+            'video_url' => $spectacle->video,
+            'horaire_debut' => $spectacle->horaire->format('H:i:s'),
+            'horaire_fin' => ($spectacle->horaire->add($interval)->format('H:i:s')),
+            'style' => $spectacle->style,
+            'etat' => $spectacle->etat,
+            'id_soiree' => $spectacle->id_soiree
+        ]);
+
+        $idSpectacle = $this->pdo->lastInsertId();
+
+        $sql = "INSERT INTO Participe (id_spectacle, id_artiste) VALUES (:id_spectacle, :id_artiste)";
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($artistes as $idArtiste) {
+            $stmt->execute(['id_spectacle' => $idSpectacle, 'id_artiste' => $idArtiste]);
+        }
+
+        if (!empty($images['name'][0])) {
+            $sql = "INSERT INTO ImageSpectacle (url, nom_image, id_spectacle) VALUES (:url, :nom_image, :id_spectacle)";
+            $stmt = $this->pdo->prepare($sql);
+            foreach ($images['name'] as $key => $name) {
+                $tmpName = $images['tmp_name'][$key];
+                $extension = pathinfo($name, PATHINFO_EXTENSION);
+                $randomName = uniqid() . '.' . $extension;
+                $filePath = 'images/' . $randomName;
+                move_uploaded_file($tmpName, $filePath);
+
+                $stmt->execute(['url' => $filePath, 'nom_image' => $name, 'id_spectacle' => $idSpectacle]);
+            }
+        }
     }
 
-    /**
-     * methode qui crée une nouvelle soiree
-     * @param string $nomSoiree nom de la soiree
-     * @param string $thematique thematique de la soiree
-     * @param string $dateSoiree date de la soiree
-     * @param string $horaireDebut horaire de debut de la soiree
-     * @param string $nomLieu nom du lieu de la soiree
-     * @param float $soireeTarif tarif de la soiree
-     */
-    public function createSoiree(string $nomSoiree = null, string $thematique = null, string $dateSoiree = null, string $horaireDebut = null, string $nomLieu = null, float $soireeTarif = null): void
+    public function updateSpectacle(Spectacle $spectacle): void
     {
-        $sql = "INSERT INTO Soiree (nom_soiree, thematique, date_soiree, horaire_debut, nom_lieu, soiree_tarif) VALUES (:nom_soiree, :thematique, :date_soiree, :horaire_debut, :nom_lieu, :soiree_tarif)";
+        $sql = "UPDATE Spectacle
+            SET titre = :titre,
+                description = :description,
+                video_url = :video_url,
+                horaire_debut_previsionnel = :horaire_debut,
+                horaire_fin_previsionnel = :horaire_fin,
+                style = :style,
+                etat = :etat,
+                id_soiree = :id_soiree
+            WHERE id_spectacle = :id_spectacle";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['nom_soiree' => $nomSoiree, 'thematique' => $thematique, 'date_soiree' => $dateSoiree, 'horaire_debut' => $horaireDebut, 'nom_lieu' => $nomLieu, 'soiree_tarif' => $soireeTarif]);
+        $stmt->execute([
+            'titre' => $spectacle->titre,
+            'description' => $spectacle->description,
+            'video_url' => $spectacle->video,
+            'horaire_debut' => $spectacle->horaire->format('H:i:s'),
+            'horaire_fin' => $spectacle->duree->format('H:i:s'),
+            'style' => $spectacle->style,
+            'etat' => $spectacle->etat,
+            'id_soiree' => $spectacle->id_soiree,
+            'id_spectacle' => $spectacle->id_spectacle
+        ]);
     }
 
-    /**
-     * methode qui ajoute un spectacle a une soiree
-     * @param int $idSpectacle id du spectacle
-     * @param int $idSoiree id de la soiree
-     */
-    public function addSpectacleToSoiree(int $idSpectacle, int $idSoiree): void
-    {
-        $sql = "UPDATE Spectacle SET id_soiree = :id_soiree WHERE id_spectacle = :id_spectacle";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['id_soiree' => $idSoiree, 'id_spectacle' => $idSpectacle]);
-    }
-
-    /**
-     * methode qui annule un spectacle
-     * @param int $idSpectacle id du spectacle
-     */
-    public function cancelSpectacle(int $idSpectacle): void
-    {
-        $sql = "UPDATE Spectacle SET etat = :etat WHERE id_spectacle = :id_spectacle";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['etat' => 'annulé', 'id_spectacle' => $idSpectacle]);
-    }
 
     /**
      * methode qui retourne un la liste des categories pour le tri

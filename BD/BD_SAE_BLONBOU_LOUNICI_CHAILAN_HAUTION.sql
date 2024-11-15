@@ -88,15 +88,15 @@ INSERT INTO Soiree (nom_soiree, thematique, date_soiree, horaire_debut, horaire_
                                                                                                                  ('Soirée Rap', 'Rap', '2023-12-13', '04:00:00', '02:00:00', 'NRV FESTIVALE RAP', 88.88);
 
 INSERT INTO Spectacle (titre, description, video_url, horaire_debut_previsionnel, horaire_fin_previsionnel, style, etat, id_soiree) VALUES
-                                                                                                                                        ('Symphonie No.9', 'Performance de la 9ème symphonie de Beethoven', 'http://example.com/video1', '19:30:00', '20:30:00', 'HardClassique', 'confirmé', 1),
-                                                                                                                                        ('Quatuor Mozart', 'Exécution du célèbre quatuor de Mozart en ré majeur', 'http://example.com/video3', '20:45:00', '21:45:00', 'Classique Légendaire', 'annulé', 1),
-                                                                                                                                        ('Nocturnes de Chopin', 'Chopin comme vous ne l\'avez jamais entendu', 'http://example.com/video4', '22:00:00', '23:00:00', 'Romantique', 'confirmé', 1),
-    ('Jazz Night', 'Une soirée de jazz inoubliable', 'http://example.com/video2', '20:30:00', '23:30:00', 'Salopette Jazz', 'annulé', 2),
-    ('Blue Note Session', 'Jam session avec les plus grands du jazz', 'http://example.com/video5', '21:00:00', '22:00:00', 'Bebop', 'confirmé', 2),
-    ('Late Night Swing', 'Jazz swing pour les passionnés', 'http://example.com/video6', '23:00:00', '01:00:00', 'Swing', 'confirmé', 2),
-    ('Rap Contenders', 'Battle de rap entre talents émergents', 'http://example.com/video7', '04:30:00', '14:30:00', 'Battle Rap', 'confirmé', 3),
-    ('Flow Factory', 'Concert de rap rythmé et intense', 'http://example.com/video8', '14:45:00', '23:45:00', 'Trap', 'annulé', 3),
-    ('Old School Revival', 'Retour aux racines du rap des années 90', 'http://example.com/video9', '00:00:00', '02:00:00', 'Old School', 'confirmé', 3);
+    ('Symphonie No.9', 'Performance de la 9ème symphonie de Beethoven', 'https://www.youtube.com/embed/YlK641jt8H0?si=VN6Pz9gfbMnrHgJ3', '19:30:00', '20:30:00', 'HardClassique', 'confirmé', 1),
+    ('Quatuor Mozart', 'Exécution du célèbre quatuor de Mozart en ré majeur', 'https://www.youtube.com/embed/tP6tQ7OEFlY?si=6Vv_Bffq4sl4MFv0', '20:45:00', '21:45:00', 'Classique Légendaire', 'annulé', 1),
+    ('Nocturnes de Chopin', 'Chopin comme vous ne l\'avez jamais entendu', 'https://www.youtube.com/embed/9E6b3swbnWg?si=oCFDmB0G4nuWoasL', '22:00:00', '23:00:00', 'Romantique', 'confirmé', 1),
+    ('Jazz Night', 'Une soirée de jazz inoubliable', 'https://www.youtube.com/embed/ZEcqHA7dbwM?si=8evxYGOzskBlm8lg', '20:30:00', '23:30:00', 'Salopette Jazz', 'annulé', 2),
+    ('Blue Note Session', 'Jam session avec les plus grands du jazz', 'https://www.youtube.com/embed/68ugkg9RePc?si=Av64c_It3U8cpyUE', '21:00:00', '22:00:00', 'Bebop', 'confirmé', 2),
+    ('Late Night Swing', 'Jazz swing pour les passionnés', 'https://www.youtube.com/embed/Eco4z98nIQY?si=jWcKyZjOBsWApOwg', '23:00:00', '01:00:00', 'Swing', 'confirmé', 2),
+    ('Rap Contenders', 'Battle de rap entre talents émergents', 'https://www.youtube.com/embed/PJlmw3kneSQ?si=Ag82-FHRMLD1lY2w', '04:30:00', '14:30:00', 'Battle Rap', 'confirmé', 3),
+    ('Flow Factory', 'Concert de rap rythmé et intense', 'https://www.youtube.com/embed/IhKdk0Wp2uY?si=_9S-ATwoHefzZmpw', '14:45:00', '23:45:00', 'Trap', 'annulé', 3),
+    ('Old School Revival', 'Retour aux racines du rap des années 90', 'https://www.youtube.com/embed/AS4GlgkW5Fc?si=hCPRUTyib6VXZWuo', '00:00:00', '02:00:00', 'Old School', 'confirmé', 3);
 
 INSERT INTO Artiste (nom_artiste, bio) VALUES
     ('Anne-Sophie Mutter', 'Violoniste allemande de renommée mondiale, spécialiste de la musique classique et des œuvres de Mozart.'),
@@ -126,15 +126,15 @@ INSERT INTO ImageLieu VALUES
     ('http://example.com/NRV_FESTIVALE_RAP.jpg', 'NRV FESTIVALE RAP Image', 'NRV FESTIVALE RAP');
 
 INSERT INTO ImageSpectacle VALUES
-    ('http://example.com/symphonie_image.jpg', 'Symphonie No.9 Image', 1),
-    ('http://example.com/quatuor_mozart_image.jpg', 'Quatuor Mozart Image', 1),
-    ('http://example.com/nocturnes_chopin_image.jpg', 'Nocturnes de Chopin Image', 1),
-    ('http://example.com/jazznight_image.jpg', 'Jazz Night Image', 2),
-    ('http://example.com/blue_note_session_image.jpg', 'Blue Note Session Image', 2),
-    ('http://example.com/late_night_swing_image.jpg', 'Late Night Swing Image', 2),
-    ('http://example.com/rap_contenders_image.jpg', 'Rap Contenders Image', 3),
-    ('http://example.com/flow_factory_image.jpg', 'Flow Factory Image', 3),
-    ('http://example.com/old_school_revival_image.jpg', 'Old School Revival Image', 3);
+    ('https://cso.org/media/maldpiq1/beethoven-9.jpg?mode=max&quality=80&width=1024&upscale=false', 'Symphonie No.9 Image', 1),
+    ('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Wolfgang-amadeus-mozart_1.jpg/1200px-Wolfgang-amadeus-mozart_1.jpg', 'Quatuor Mozart Image', 2),
+    ('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Frederic_Chopin_photo.jpeg/220px-Frederic_Chopin_photo.jpeg', 'Nocturnes de Chopin Image', 3),
+    ('https://cdn0.toutcomment.com/fr/posts/1/8/2/quelle_est_l_origine_du_jazz_8281_orig.jpg', 'Jazz Night Image', 4),
+    ('https://www.googobits.com/wp-content/uploads/2018/06/blues-music.jpg', 'Blue Note Session Image', 5),
+    ('https://highlandartsvt.org/wp-content/uploads/Swingdancing.png', 'Late Night Swing Image', 6),
+    ('https://img.nrj.fr/erdknfXiRjC5y-0Fq515pUCrTgk=/800x450/smart/medias%2F2018%2F03%2Fbig-ali.jpg', 'Rap Contenders Image', 7),
+    ('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3jBLcfxqwT-IhkjVTLHwtCDfcKXRqH2LZGA&s', 'Flow Factory Image', 8),
+    ('https://m.media-amazon.com/images/I/91r7NelJXPL._UF1000,1000_QL80_.jpg', 'Old School Revival Image', 9);
 
 INSERT INTO USERS VALUES
     (1, 'random_user', 'john@example.com', 'password123', 1),

@@ -268,3 +268,7 @@ form{
     border-bottom: 2px solid red;
 }
 
+#img_spectacle{
+    width: max(300px);
+    height: max(200px);
+}

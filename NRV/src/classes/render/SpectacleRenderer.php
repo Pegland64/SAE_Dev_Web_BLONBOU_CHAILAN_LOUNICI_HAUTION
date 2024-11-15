@@ -49,7 +49,7 @@ class SpectacleRenderer implements Renderer
             </form>
         </h3>
         <p>Le <span class="dateDeco">{$date}</span> à <span class="dateDeco">{$horaire}</span></p>
-        <img src="{$image_url}" alt="{$image_nom}">
+        <img src="{$image_url}" alt="{$image_nom}" id="img_spectacle">
         <p><a href="?action=soiree&id_soiree={$id_soiree}">Voir la soirée ></a></p>
         <p><a href="?action=display-spectacle&id_spectacle={$id}">Voir les détails du spectacle ></a></p>
     </div>
@@ -73,6 +73,7 @@ class SpectacleRenderer implements Renderer
 
         $date = NrvRepository::getInstance()->getSoireeById($this->spectacle->id_soiree)->date->format('d/m/Y');
         $horaire = $this->spectacle->horaire->format('H:i:s');
+        $duree = $this->spectacle->duree->format('H:i:s');
 
         $cookieName = "spectacle_id_$id";
         $buttonText = isset($_COOKIE[$cookieName]) ? 'Retirer des Favoris' : 'Ajouter aux Favoris';
@@ -90,12 +91,9 @@ class SpectacleRenderer implements Renderer
                 <p>Description : {$this->spectacle->description}</p>
                 <p>Style : {$this->spectacle->style}</p>
                 <p>Le {$date} à {$horaire}</p>
-                <p>Durée : {$this->spectacle->duree}</p>
+                <p>Durée : {$duree}</p>
                 {$images}
-                <video controls>
-                    <source src="{$this->spectacle->video}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+                <iframe width="560" height="315" src="{$this->spectacle->video}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             HTML;
 

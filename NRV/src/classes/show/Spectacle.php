@@ -13,7 +13,7 @@ class Spectacle
     private string $style;
     private string $video;
     private \DateTime $horaire;
-    private string $duree;
+    private \DateTime $duree;
     private array $artistes;
     private array $images;
     private string $etat;
@@ -41,6 +41,30 @@ class Spectacle
         }else{
             throw new InvalidPropertyNameException("Erreur : La propriété $name n'existe pas");
         }
+    }
+
+    public function __set(string $name, mixed $value): void
+    {
+        if (property_exists($this, $name)) {
+            $this->$name = $value;
+        } else {
+            throw new InvalidPropertyNameException("La propriété $name n'existe pas.");
+        }
+    }
+
+    public function setTitre(string $titre): void
+    {
+        $this->titre = $titre;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function setStyle(string $style): void
+    {
+        $this->style = $style;
     }
 
     public function setIdSpectacle(int $id_spectacle) : void
@@ -73,4 +97,13 @@ class Spectacle
         $this->id_soiree = $id_soiree;
     }
 
+    public function setDuree(\DateTime $duree) : void
+    {
+        $this->duree = $duree;
+    }
+
+    public function setHoraire(\DateTime $horaire_debut)
+    {
+        $this->horaire = $horaire_debut;
+    }
 }
