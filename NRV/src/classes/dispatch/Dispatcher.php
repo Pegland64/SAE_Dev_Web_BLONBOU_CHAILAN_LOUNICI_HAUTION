@@ -102,6 +102,11 @@ class Dispatcher
                     $html = $action->execute();
                     break;
 
+                case 'add-soiree':
+                    $action = new act\AddSoireeAction();
+                    $html = $action->execute();
+                    break;
+
                 default:
                     $html = "<p>Action inconnue : {$this->action}</p>";
                     break;
@@ -140,6 +145,7 @@ class Dispatcher
             <li><a href="?action=soirees">Liste des soirées</a></li>
             <li><a href="?action=liste-spectacles">Liste des spectacles</a></li>
             <li><a href="?action=add-spectacle">Ajouter un spectacle</a></li>
+            <li><a href="?action=add-soiree">Ajouter une soiree</a></li>
             <li><a href="?action=listes-spectales-favoris">voir favoris</a></li>
         </ul>
     </nav>
