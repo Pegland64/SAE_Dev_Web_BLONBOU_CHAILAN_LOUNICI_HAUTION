@@ -31,7 +31,29 @@ nav #topNav{
 }
 
 nav #topNav h2{
-    transition: color 0.2s;
+    transition: color 0.1s;
+}
+
+nav #topNav h2:hover{
+    animation: jump 0.5s ease-in-out infinite;
+}
+
+@keyframes jump {
+    0% {
+        transform: translateY(0); /* Position initiale */
+    }
+    25% {
+        transform: translateY(-10px); /* Légère montée */
+    }
+    50% {
+        transform: translateY(0); /* Retour à la position normale */
+    }
+    75% {
+        transform: translateY(-5px); /* Un peu moins haut pour l'effet */
+    }
+    100% {
+        transform: translateY(0); /* Retour à la position initiale */
+    }
 }
 
 nav #topNav ul{
