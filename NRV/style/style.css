@@ -1,4 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
+button{
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.6rem;
+    width: 75px;
+    background-color: white;
+    border: none;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
 body{
     font-family: 'Geist Mono', monospace;
     margin: 0;
@@ -102,12 +112,12 @@ form{
     width: 90vw;
 }
 
-#liste-soirees .listeTitre{
+.listeTitre{
     position: relative;
     display: inline-block;
 }
 
-#liste-soirees .listeTitre::before{
+.listeTitre::before{
     content: "";
     position: absolute;
     top: 50%;
@@ -152,3 +162,98 @@ form{
 #liste-soirees ul li:hover{
     transform: scale(1.1);
 }
+
+#liste-spectacles{
+    display: flex;
+    flex-direction: column;
+    width: 90vw;
+    justify-content: center;
+}
+
+#liste-spectacles #form-filter{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#liste-spectacles #titleListeSpectacles{
+    display: flex;
+    flex-direction:row-reverse;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#liste-spectacles #titleListeSpectacles #form-filter-div{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#liste-spectacles #titleListeSpectacles #form-filter-div #form-filter{
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#liste-spectacles #titleListeSpectacles #form-filter-div #form-liste-2{
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    top: 3rem;
+    width: 100%;
+    height: 7rem;
+}
+
+#liste-spectacles #titleListeSpectacles #form-filter-div #form-liste-2 button{
+    width: 100px;
+}
+
+#liste-spectacles ul{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#liste-spectacles ul li{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem;
+    padding: 1rem;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+#liste-spectacles ul li:hover{
+    transform: scale(1.1);
+}
+
+#liste-spectacles ul li h3{
+    display: flex;
+    flex-direction: column;
+}
+
+
+#liste-spectacles ul li h3 form{
+    margin: 10px;
+}
+
+.dateDeco{
+    border-bottom: 1px solid #ccc;
+}
+
+#liste-spectacles ul li p a{
+    text-decoration: none;
+    color: black;
+    border-bottom: 2px solid red;
+}
+

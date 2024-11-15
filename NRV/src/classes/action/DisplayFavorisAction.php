@@ -37,12 +37,11 @@ class DisplayFavorisAction extends Action
         // Génère le HTML pour afficher les spectacles sélectionnés
         if (!empty($spectaclesSelectionnes)) {
             foreach ($spectaclesSelectionnes as $spectacle) {
-                $html .= <<<HTML
-                    <div class='spectacle'>
-                        <h3>$spectacle->titre</h3>
-                        <p>$spectacle->description</p>
-                    </div><hr>
-                    HTML;
+                $html .= "<div class='spectacle'>";
+                $renderer = new SpectacleRenderer($spectacle);
+                $html .= '<li>' . $renderer->render(1) . '</li>';
+                $html.=  '</div><hr>';
+
             }
         } else {
             // Message à afficher si aucun spectacle n'a été sélectionné
