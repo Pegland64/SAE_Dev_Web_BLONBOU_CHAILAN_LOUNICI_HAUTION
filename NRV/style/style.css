@@ -30,6 +30,10 @@ nav #topNav{
     width: 90%;
 }
 
+nav #topNav h2{
+    transition: color 0.2s;
+}
+
 nav #topNav ul{
     display: flex;
     gap: 1rem;

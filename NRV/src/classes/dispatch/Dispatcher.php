@@ -141,7 +141,7 @@ class Dispatcher
     <nav>
         <div id="topNav">
             <h1>NRV.net</h1>
-            <h2>Oh la fête !</h2>
+            <h2 id="hoverText">Oh la fête !</h2>
             <ul>
                 $adminli
                 $coDeco
@@ -170,6 +170,26 @@ class Dispatcher
     <div class="content">
         $html  
     </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const hoverText = document.getElementById('hoverText');
+        let interval;
+
+        
+
+        hoverText.addEventListener('mouseenter', () => {
+            interval = setInterval(() => {
+                let random = Math.floor(Math.random() * 300);
+                hoverText.style.color = "hsl(" + random + ", 100%, 50%)";
+            }, 100); 
+        });
+
+        hoverText.addEventListener('mouseleave', () => {
+            clearInterval(interval);
+            hoverText.style.color = '';
+        });
+    });
+</script>
 </body>
 </html>
 HTML;
