@@ -55,6 +55,20 @@ class NrvRepository
         $stmt->execute(['username' => $username, 'password' => $password, 'email' => $email]);
     }
 
+    public function updateRoleUser(User $user, string $role): void
+    {
+        $sql = "UPDATE users SET role = :role WHERE id_user = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['role' => $role, 'id' => $user->id]);
+    }
+
+    public function deleteUser(User $user): void
+    {
+        $sql = "DELETE FROM users WHERE id_user = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $user->id]);
+    }
+
     public function getHash(string $username): string
     {
         $sql = "SELECT password FROM users WHERE username = :username";
@@ -78,6 +92,19 @@ class NrvRepository
         $sql = "SELECT * FROM USERS WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username'=>$username]);
+        $row = $stmt->fetch();
+        if ($row === false) {
+            throw new PDOException("Utilisateur non trouvé.");
+        }
+
+        return new User($row['id_user'], $row['username'], $row['password'], $row['email'], (int)$row['role']);
+    }
+
+    public function getUserbyId(int $id): User
+    {
+        $sql = "SELECT * FROM users WHERE id_user = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
         $row = $stmt->fetch();
         if ($row === false) {
             throw new PDOException("Utilisateur non trouvé.");

@@ -81,6 +81,16 @@ class Dispatcher
                     $html = $action->execute();
                     break;
 
+                case 'edit-user':
+                    $action = new act\EditUser();
+                    $html = $action->execute();
+                    break;
+                
+                case 'delete-user':
+                    $action = new act\SupprimerUser();
+                    $html = $action->execute();
+                    break;
+
                 case 'soirees':
                     // Affiche la liste des soirées
                     $action = new ListeSoireeAction();
@@ -106,8 +116,8 @@ class Dispatcher
     private function renderPage(string $html) : void
     {   
         $coDeco = isset($_SESSION['user']) ? '<li><a href="?action=logout">Déconnexion</a></li>' : '<li><a href="?action=login">Connexion</a></li><li><a href="?action=register">S\'enregistrer</a></li>';
-        if(isset($_SESSION['user'])){
-        }
+        $adminli=isset($_SESSION['user']) && (new Authz(unserialize($_SESSION['user'])))->checkStaffAdmin() ? '<li><a href="?action=afficher-users">Afficher les utilisateurs</a></li>' : ' ' ;
+
         echo <<<HTML
 <!DOCTYPE html>
 <html lang="fr">
@@ -121,6 +131,7 @@ class Dispatcher
         <div id="topNav">
             <h1>NRV.net</h1>
             <ul>
+                $adminli
                 $coDeco
             </ul>
         </div>

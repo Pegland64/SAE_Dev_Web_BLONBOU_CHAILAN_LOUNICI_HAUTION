@@ -14,8 +14,8 @@ class ListesUser extends Action
         $repo=NrvRepository::getInstance();
         if(isset($_SESSION['user'])){
             $user=unserialize($_SESSION['user']);
-            $authz=new Authz($repo->getUserbyUsername($user->username));
-            if($authz->checkStaffAdmin()){
+            $authz=new Authz($user);
+            if(!$authz->checkStaffAdmin()){
                 return "<p>Vous n'avez pas les droits pour accéder à cette page.</p>";
             }
             $users=$repo->getAllUsers();
@@ -27,8 +27,7 @@ class ListesUser extends Action
                 $html.="<td><a href='?action=edit-user&id=".$user->id."'>Editer</a> | <a href='?action=delete-user&id=".$user->id."'>Supprimer</a></td></tr>";
             }
             $html.="</table>";
-            return $html;
-            
+            return $html;  
         }
     }
 }
