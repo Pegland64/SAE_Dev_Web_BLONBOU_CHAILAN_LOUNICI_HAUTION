@@ -12,9 +12,9 @@ class User
     private String $email;
     private int $role;
 
-    private static int $AVG_USER = 1;
-    private static int $STAFF_USER = 10;
-    private static int $ADMIN_USER = 100;
+    const AVG_USER = 1;
+    const STAFF_USER = 2;
+    const ADMIN_USER = 3;
 
     public function __construct(int $id, String $username, String $password, String $email, int $role)
     {
@@ -36,7 +36,7 @@ class User
 
     public function setRole(int $role)
     {
-        if(!in_array($role, [User::$ADMIN_USER, User::$STAFF_USER, User::$AVG_USER])) {
+        if(!in_array($role, [self::ADMIN_USER, self::STAFF_USER, self::AVG_USER])) {
             throw new \Exception("Rôle invalide");
         }
     }
