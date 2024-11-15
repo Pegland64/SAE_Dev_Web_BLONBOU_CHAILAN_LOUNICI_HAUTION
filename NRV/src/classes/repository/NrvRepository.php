@@ -361,6 +361,144 @@ class NrvRepository
         return $soirees;
     }
 
+    /**
+     * methode qui renvoie tout les spectacle par rapports a un lieu sans une spectacle passer en parametre
+     * @param string $lieu objet lieu
+     * @param int $idSpectacle id du spectacle
+     * @return array tableau de spectacles
+     */
+    public function getSpectaclesByLieu(string $lieu,int $idspec): array
+    {
+        $sql = "select * from spectacle inner join soiree on soiree.id_soiree=spectacle.id_soiree inner join lieu ON lieu.nom_lieu = soiree.nom_lieu where lieu.nom_lieu = :nomlieu AND spectacle.id_spectacle != :idspec";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['nomlieu' => $lieu, 'idspec' => $idspec]);
+        $spectacles = [];
+        while ($row = $stmt->fetch()) {
+            $id = $row['id_spectacle'];
+            $titre = $row['titre'];
+            $description = $row['description'];
+            $style = $row['style'];
+            $video = $row['video_url'];
+            $horaire_debut = new \DateTime($row['horaire_debut_previsionnel']);
+            $horaire_fin = new \DateTime($row['horaire_fin_previsionnel']);
+            if ($horaire_debut > $horaire_fin) {
+                $horaire_fin->add(new \DateInterval('P1D'));
+            }
+            $interval = $horaire_debut->diff($horaire_fin);
+            $duree = $interval->format('%H:%I:%S');
+            $etat = $row['etat'];
+            $id_soiree = $row['id_soiree'];
+
+            $images = $this->getImagesByIdSpectacle($id);
+            $artistes = $this->getArtistesBySpectacleId($id);
+
+            $spectacle = new Spectacle($titre, $description, $video, $horaire_debut, $duree, $style);
+            $spectacle->setIdSpectacle($id);
+            $spectacle->setArtistes($artistes);
+            $spectacle->setImages($images);
+            $spectacle->setEtat($etat);
+            $spectacle->setIdSoiree($id_soiree);
+            $spectacles[] = $spectacle;
+        }
+        return $spectacles;
+
+    }
+
+    /**
+     * methode qui renvoie tout les spectacle par rapports a un style sans une spectacle passer en parametre
+     * @param string $style style du spectacle
+     * @param int $idspec id du spectacle
+     * @return array tableau de spectacles
+     */
+    public function getSpectaclesByStyle(string $style, int $idspec): array
+    {
+        $sql = "select * from spectacle where style = :style AND id_spectacle != :idspec";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['style' => $style, 'idspec' => $idspec]);
+        $spectacles = [];
+        while ($row = $stmt->fetch()) {
+            $id = $row['id_spectacle'];
+            $titre = $row['titre'];
+            $description = $row['description'];
+            $video = $row['video_url'];
+            $horaire_debut = new \DateTime($row['horaire_debut_previsionnel']);
+            $horaire_fin = new \DateTime($row['horaire_fin_previsionnel']);
+            if ($horaire_debut > $horaire_fin) {
+                $horaire_fin->add(new \DateInterval('P1D'));
+            }
+            $interval = $horaire_debut->diff($horaire_fin);
+            $duree = $interval->format('%H:%I:%S');
+            $etat = $row['etat'];
+            $id_soiree = $row['id_soiree'];
+
+            $images = $this->getImagesByIdSpectacle($id);
+            $artistes = $this->getArtistesBySpectacleId($id);
+
+            $spectacle = new Spectacle($titre, $description, $video, $horaire_debut, $duree, $style);
+            $spectacle->setIdSpectacle($id);
+            $spectacle->setArtistes($artistes);
+            $spectacle->setImages($images);
+            $spectacle->setEtat($etat);
+            $spectacle->setIdSoiree($id_soiree);
+            $spectacles[] = $spectacle;
+        }
+        return $spectacles;
+    }
+
+    public function getDateSpectacle(int $id): string
+    {
+        $sql = "SELECT date_soiree FROM spectacle Inner join soiree on spectacle.id_soiree = soiree.id_soiree WHERE id_spectacle = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $row = $stmt->fetch();
+        if ($row === false) {
+            throw new PDOException("Spectacle not found.");
+        }
+        return $row['date_soiree'];
+    }
+
+    /**
+     * methode qui renvoie tout les spectacle par rapport a une date passer en parametre
+     * @param string $date date de la soiree
+     * @param int $idspec id du spectacle
+     * @return array tableau de spectacles
+     */
+    public function getSpectaclesByDate(string $date, int $idspec): array
+    {
+        $sql = "select * from spectacle inner join soiree on soiree.id_soiree=spectacle.id_soiree where soiree.date_soiree = :date AND spectacle.id_spectacle != :idspec";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['date' => $date, 'idspec' => $idspec]);
+        $spectacles = [];
+        while ($row = $stmt->fetch()) {
+            $id = $row['id_spectacle'];
+            $titre = $row['titre'];
+            $description = $row['description'];
+            $style = $row['style'];
+            $video = $row['video_url'];
+            $horaire_debut = new \DateTime($row['horaire_debut_previsionnel']);
+            $horaire_fin = new \DateTime($row['horaire_fin_previsionnel']);
+            if ($horaire_debut > $horaire_fin) {
+                $horaire_fin->add(new \DateInterval('P1D'));
+            }
+            $interval = $horaire_debut->diff($horaire_fin);
+            $duree = $interval->format('%H:%I:%S');
+            $etat = $row['etat'];
+            $id_soiree = $row['id_soiree'];
+
+            $images = $this->getImagesByIdSpectacle($id);
+            $artistes = $this->getArtistesBySpectacleId($id);
+
+            $spectacle = new Spectacle($titre, $description, $video, $horaire_debut, $duree, $style);
+            $spectacle->setIdSpectacle($id);
+            $spectacle->setArtistes($artistes);
+            $spectacle->setImages($images);
+            $spectacle->setEtat($etat);
+            $spectacle->setIdSoiree($id_soiree);
+            $spectacles[] = $spectacle;
+        }
+        return $spectacles;
+    }
+
 
     /**
      * methode qui retourne un lieu par son nom
