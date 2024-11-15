@@ -62,7 +62,7 @@ class SpectacleRenderer implements Renderer
         $id = $this->spectacle->id_spectacle;
         $images = '';
         foreach ($this->spectacle->images as $image) {
-            $images .= "<img src='{$image->url}' alt='{$image->nom_image}'><br>";
+            $images .= "<img src='{$image->url}' alt='{$image->nom_image}' id='img_spectacle2'><br>";
         }
 
         $artistes = '<ul>';
