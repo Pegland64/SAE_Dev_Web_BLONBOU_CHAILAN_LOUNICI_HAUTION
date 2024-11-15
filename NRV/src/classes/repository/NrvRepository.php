@@ -99,7 +99,6 @@ class NrvRepository
         return new User($row['id_user'], $row['username'], $row['password'], $row['email'], (int)$row['role']);
     }
 
-<<<<<<< HEAD
     public function getUserbyId(int $id): User
     {
         $sql = "SELECT * FROM users WHERE id_user = :id";
@@ -112,8 +111,6 @@ class NrvRepository
 
         return new User($row['id_user'], $row['username'], $row['password'], $row['email'], (int)$row['role']);
     }
-=======
->>>>>>> 806dda56c7954d442cd1a34563574c47a0920f74
 
     public function getAllUsers(){
         $sql = "SELECT * FROM USERS";
