@@ -40,7 +40,7 @@ class AuthnProvider
                 throw new AuthnException("Nom d'utilisateur ou mot de passe incorrect.");
             }
         } catch (\PDOException $e) {
-            throw new \Exception("Erreur de base de données : " . $e->getMessage());
+            throw new AuthnException("Nom d'utilisateur ou mot de passe incorrect.");
         }
     }
 
