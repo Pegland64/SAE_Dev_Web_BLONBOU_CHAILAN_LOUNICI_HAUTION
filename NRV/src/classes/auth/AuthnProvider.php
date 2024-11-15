@@ -3,6 +3,7 @@
 namespace nrv\net\auth;
 
 use nrv\net\exception\InvalidPropertyNameException;
+use nrv\net\exception\AuthnException;
 use nrv\net\repository\NrvRepository;
 use nrv\net\user\User;
 
@@ -30,9 +31,7 @@ class AuthnProvider
         try {
             // Récupère l'utilisateur par nom d'utilisateur depuis le dépôt
             $user = NrvRepository::getInstance()->getUserByUsername($username);
-
-            // TODO : Le mdp devrait déjà être hashé dans la base de données...
-            if (password_verify($password, password_hash($user->password, PASSWORD_DEFAULT))) {
+            if (password_verify($password, NrVRepository::getInstance()->getHash($username))) {
                 $_SESSION['user'] = serialize($user);
                 $_SESSION['login_attempts'] = 0;
             } else {
@@ -45,15 +44,23 @@ class AuthnProvider
         }
     }
 
+    public static function register(string $username,string $email, string $hash): void
+    {
+        try {
+            NrvRepository::getInstance()->addUser($username,$email, $hash);
+            $user = NrvRepository::getInstance()->getUserByUsername($username);
+            $_SESSION['user'] = serialize($user);
+        } catch (\PDOException $e) {
+            throw new \Exception("Erreur de base de données : " . $e->getMessage());
+        }
+    }
+
     /**
      * Fonction de déconnexion de l'utilisateur.
      */
     public static function logout(): void
     {
-        if (session_start() === PHP_SESSION_ACTIVE) {
-            session_unset();
-            session_destroy();
-        }
+        session_destroy();
     }
 
     /**

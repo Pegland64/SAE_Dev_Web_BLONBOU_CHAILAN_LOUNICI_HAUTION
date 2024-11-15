@@ -17,7 +17,7 @@ class LoginAction extends Action
 
         if($this->http_method === 'GET'){
             $html = <<<HTML
-        <form action="?action=login" method="post">
+        <form action="?action=login" method="post" id="loginForm">
             <label for="username">Nom d'utilisateur :</label>
             <input type="text" name="username" id="username" required>
             <br>
@@ -32,8 +32,9 @@ HTML;
             $password = $_POST['password'] ?? '';
 
             try {
+                $hash =password_verify($password, NrvRepository::getPassword($username));
                 // Authentifie l'utilisateur
-                AuthnProvider::login($username, $password);
+                AuthnProvider::login($username, $hash);
                 $html = "<div>Bonjour, $username!</div>";
             } catch (AuthnException $e) {
                 $html = "<div>Error: " . $e->getMessage() . "</div>";

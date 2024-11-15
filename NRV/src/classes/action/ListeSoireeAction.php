@@ -12,13 +12,15 @@ class ListeSoireeAction extends Action
     public function execute(): string
     {
         $soirees = NrvRepository::getInstance()->getAllSoirees();
-        $html = "<h2>Liste des soirées : </h2>";
+        $html = '<div id="liste-soirees">';
+        $html .= "<h2>Liste des soirées : </h2>";
         $html .= "<ul>";
         foreach ($soirees as $soiree) {
             $renderer = new SoireeRenderer($soiree);
             $html .= "<li>{$renderer->render(1)}</li>";
         }
         $html .= "</ul>";
+        $html .= "</div>";
         return $html;
     }
 }
