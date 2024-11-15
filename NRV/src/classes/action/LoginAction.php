@@ -44,16 +44,6 @@ HTML;
                 // Gère l'échec de l'authentification
                 $html = "<div>Error: " . $e->getMessage() . "</div>";
             }
-
-
-//            // Vérifie si l'utilisateur existe et si le mot de passe est correct mais n'encode pas le mot de passe
-//            // TODO: Utiliser password_hash() pour stocker les mots de passe de manière sécurisée
-//            if ($user && $password === $user['password']) {
-//                $_SESSION['user'] = $user;
-//                $html = "Connexion réussie !";
-//            } else {
-//                $html = "Nom d'utilisateur ou mot de passe incorrect.";
-//            }
         }
         return $html;
     }

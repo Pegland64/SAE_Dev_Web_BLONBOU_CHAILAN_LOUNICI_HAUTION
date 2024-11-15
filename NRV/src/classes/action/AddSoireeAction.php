@@ -8,21 +8,21 @@ use nrv\net\show\Soiree;
 
 class AddSoireeAction extends Action
 {
-
+    // Méthode principale pour exécuter l'action
     public function execute(): string
     {
-
-        if(!isset($_SESSION['user']) || (unserialize($_SESSION['user'])->role !== 2 && unserialize($_SESSION['user'])->role !== 3)){
+        // Vérifie si l'utilisateur est connecté et a le rôle approprié
+        if (!isset($_SESSION['user']) || (unserialize($_SESSION['user'])->role !== 2 && unserialize($_SESSION['user'])->role !== 3)) {
             return "<div>Accès refusé. Vous devez être un membre du staff ou un administrateur pour accéder à cette fonctionnalité.</div>";
         }
 
-
-
         $html = "";
 
+        // Affiche le formulaire si la méthode HTTP est GET
         if ($this->http_method === 'GET') {
             $html = $this->renderForm();
-        } else if ($this->http_method === 'POST') {
+        } // Traite les données du formulaire si la méthode HTTP est POST
+        else if ($this->http_method === 'POST') {
             $nom = $_POST['nom'] ?? '';
             $thematique = $_POST['thematique'] ?? '';
             $date = new \DateTime($_POST['date'] ?? '');
@@ -31,9 +31,11 @@ class AddSoireeAction extends Action
             $lieu = new Lieu($_POST['lieu'] ?? '', '', 0, 0, '');
             $tarif = (float)$_POST['tarif'] ?? 0.0;
 
+            // Crée une nouvelle soirée avec les données du formulaire
             $soiree = new Soiree($nom, $thematique, $date, $horaire, $lieu, $tarif);
             $soiree->setDuree($duree);
 
+            // Ajoute la soirée au dépôt
             NrvRepository::getInstance()->addSoiree($soiree);
 
             $html = "<p>Soirée ajoutée avec succès.</p>";
@@ -41,6 +43,7 @@ class AddSoireeAction extends Action
         return $html;
     }
 
+    // Méthode pour rendre le formulaire HTML
     private function renderForm(): string
     {
         $lieux = NrvRepository::getInstance()->getAllLieux();
