@@ -34,12 +34,12 @@ HTML;
             // Gère la requête POST pour traiter la connexion
             $username = $_POST['username'] ?? '';
             $password = $_POST['password'] ?? '';
-
+            
             try {
-                $hash =password_verify($password, NrvRepository::getPassword($username));
-                // Authentifie l'utilisateur
-                AuthnProvider::login($username, $hash);
-                $html = "<div>Bonjour, $username!</div>";
+                    // Authentifie l'utilisateur
+                    AuthnProvider::login($username, $password);
+                    $html = "<div>Bonjour, $username!</div>";
+                
             } catch (AuthnException $e) {
                 // Gère l'échec de l'authentification
                 $html = "<div>Error: " . $e->getMessage() . "</div>";

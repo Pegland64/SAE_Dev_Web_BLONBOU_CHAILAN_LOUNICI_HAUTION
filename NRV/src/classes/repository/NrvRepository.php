@@ -48,16 +48,30 @@ class NrvRepository
         return self::$instance;
     }
 
-    public function addUser(string $username,string $email, string $password): void
+    public function addUser(string $username, string $email, string $password): void
     {
-        $sql = "INSERT INTO users (username,email,password,role) VALUES (:username, :password, :email, 1)";
+        $sql = "INSERT INTO USERS (username, email, password, role) VALUES (:username, :email, :password, 1)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => $username, 'password' => $password, 'email' => $email]);
     }
 
+    public function updateRoleUser(User $user, string $role): void
+    {
+        $sql = "UPDATE users SET role = :role WHERE id_user = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['role' => $role, 'id' => $user->id]);
+    }
+
+    public function deleteUser(User $user): void
+    {
+        $sql = "DELETE FROM users WHERE id_user = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $user->id]);
+    }
+
     public function getHash(string $username): string
     {
-        $sql = "SELECT password FROM users WHERE username = :username";
+        $sql = "SELECT password FROM USERS WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => $username]);
         $row = $stmt->fetch();
@@ -72,12 +86,11 @@ class NrvRepository
      * @param int $id id de l'utilisateur
      * @return User objet utilisateur
      */
-    public function getUserByUsername(string $username) : User
+    public function getUserByUsername(string $username): User
     {
-        // Utilisation de `USERS` au lieu de `user` si la table est en majuscules
         $sql = "SELECT * FROM USERS WHERE username = :username";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['username'=>$username]);
+        $stmt->execute(['username' => $username]);
         $row = $stmt->fetch();
         if ($row === false) {
             throw new PDOException("Utilisateur non trouvé.");
@@ -86,15 +99,41 @@ class NrvRepository
         return new User($row['id_user'], $row['username'], $row['password'], $row['email'], (int)$row['role']);
     }
 
+    public function getUserbyId(int $id): User
+    {
+        $sql = "SELECT * FROM users WHERE id_user = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $row = $stmt->fetch();
+        if ($row === false) {
+            throw new PDOException("Utilisateur non trouvé.");
+        }
+
+        return new User($row['id_user'], $row['username'], $row['password'], $row['email'], (int)$row['role']);
+    }
+
+    public function getAllUsers(){
+        $sql = "SELECT * FROM USERS";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $users = [];
+        while ($row = $stmt->fetch()) {
+            $user = new User($row['id_user'], $row['username'], $row['password'], $row['email'], (int)$row['role']);
+            $users[] = $user;
+        }
+        return $users;
+    }
+
     /**
      * methode retourne tout les spectacles
      * @return array tableau de spectacles
      */
     public function getAllSpectacles(): array
     {
-        $sql = "SELECT * FROM spectacle";
+        $sql = "SELECT * FROM Spectacle";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
+        $spectacles = [];
         while ($row = $stmt->fetch()) {
             $id = $row['id_spectacle'];
             $titre = $row['titre'];
@@ -132,7 +171,7 @@ class NrvRepository
      */
     public function getArtistesBySpectacleId(int $id): array
     {
-        $sql = "SELECT * FROM artiste INNER JOIN participe on artiste.id_artiste = participe.id_artiste WHERE id_spectacle = :id";
+        $sql = "SELECT * FROM Artiste INNER JOIN Participe ON Artiste.id_artiste = Participe.id_artiste WHERE id_spectacle = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         $artistes = [];
@@ -151,7 +190,7 @@ class NrvRepository
      */
     public function getSpectacleById(int $idSpectacle): Spectacle
     {
-        $sql = "SELECT * FROM spectacle WHERE id_spectacle = :id";
+        $sql = "SELECT * FROM Spectacle WHERE id_spectacle = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $idSpectacle]);
         $row = $stmt->fetch();
@@ -193,7 +232,7 @@ class NrvRepository
      */
     public function getImagesByIdSpectacle(int $idSpectacle): array
     {
-        $sql = "SELECT * FROM imagespectacle WHERE id_spectacle = :idspectacle";
+        $sql = "SELECT * FROM ImageSpectacle WHERE id_spectacle = :idspectacle";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['idspectacle' => $idSpectacle]);
 
@@ -214,7 +253,7 @@ class NrvRepository
      */
     public function getSoireeById(int $id): Soiree
     {
-        $sql = "SELECT * FROM soiree WHERE id_soiree = :id";
+        $sql = "SELECT * FROM Soiree WHERE id_soiree = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch();
@@ -285,7 +324,7 @@ class NrvRepository
      */
     public function getAllSoirees(): array
     {
-        $sql = "SELECT * FROM soiree";
+        $sql = "SELECT * FROM Soiree";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         while ($row = $stmt->fetch()) {
@@ -320,7 +359,7 @@ class NrvRepository
      */
     public function getLieuByNom($nom): Lieu
     {
-        $sql = "SELECT * FROM lieu WHERE nom_lieu = :nom";
+        $sql = "SELECT * FROM Lieu WHERE nom_lieu = :nom";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['nom' => $nom]);
         $row = $stmt->fetch();
@@ -354,7 +393,7 @@ class NrvRepository
      */
     public function createSpectacle(string $titre = null, string $description = null, string $videoUrl = null, string $horairePrevisionnel = null): void
     {
-        $sql = "INSERT INTO spectacle (titre, description, video_url, horaire_previsionnel, etat) VALUES (:titre, :description, :video_url, :horaire_previsionnel, :etat)";
+        $sql = "INSERT INTO Spectacle (titre, description, video_url, horaire_previsionnel, etat) VALUES (:titre, :description, :video_url, :horaire_previsionnel, :etat)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['titre' => $titre, 'description' => $description, 'video_url' => $videoUrl, 'horaire_previsionnel' => $horairePrevisionnel, 'etat' => 'confirmé']);
     }
@@ -370,7 +409,7 @@ class NrvRepository
      */
     public function createSoiree(string $nomSoiree = null, string $thematique = null, string $dateSoiree = null, string $horaireDebut = null, string $nomLieu = null, float $soireeTarif = null): void
     {
-        $sql = "INSERT INTO soiree (nom_soiree, thematique, date_soiree, horaire_debut, nom_lieu, soiree_tarif) VALUES (:nom_soiree, :thematique, :date_soiree, :horaire_debut, :nom_lieu, :soiree_tarif)";
+        $sql = "INSERT INTO Soiree (nom_soiree, thematique, date_soiree, horaire_debut, nom_lieu, soiree_tarif) VALUES (:nom_soiree, :thematique, :date_soiree, :horaire_debut, :nom_lieu, :soiree_tarif)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['nom_soiree' => $nomSoiree, 'thematique' => $thematique, 'date_soiree' => $dateSoiree, 'horaire_debut' => $horaireDebut, 'nom_lieu' => $nomLieu, 'soiree_tarif' => $soireeTarif]);
     }
@@ -382,7 +421,7 @@ class NrvRepository
      */
     public function addSpectacleToSoiree(int $idSpectacle, int $idSoiree): void
     {
-        $sql = "UPDATE spectacle SET id_soiree = :id_soiree WHERE id_spectacle = :id_spectacle";
+        $sql = "UPDATE Spectacle SET id_soiree = :id_soiree WHERE id_spectacle = :id_spectacle";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id_soiree' => $idSoiree, 'id_spectacle' => $idSpectacle]);
     }
@@ -393,7 +432,7 @@ class NrvRepository
      */
     public function cancelSpectacle(int $idSpectacle): void
     {
-        $sql = "UPDATE spectacle SET etat = :etat WHERE id_spectacle = :id_spectacle";
+        $sql = "UPDATE Spectacle SET etat = :etat WHERE id_spectacle = :id_spectacle";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['etat' => 'annulé', 'id_spectacle' => $idSpectacle]);
     }
@@ -407,13 +446,13 @@ class NrvRepository
     {
         switch ($category) {
             case 'date':
-                $sql = "SELECT DISTINCT date_soiree FROM soiree";
+                $sql = "SELECT DISTINCT date_soiree FROM Soiree";
                 break;
             case 'lieu':
-                $sql = "SELECT DISTINCT nom_lieu FROM soiree";
+                $sql = "SELECT DISTINCT nom_lieu FROM Soiree";
                 break;
             case 'style':
-                $sql = "SELECT DISTINCT style FROM spectacle";
+                $sql = "SELECT DISTINCT style FROM Spectacle";
                 break;
             default:
                 return [];
@@ -431,8 +470,8 @@ class NrvRepository
      */
     public function getFilteredSpectaclesByCategory($category, $filter): array
     {
-        $sql = "SELECT s.* FROM spectacle s
-                JOIN soiree so ON s.id_soiree = so.id_soiree
+        $sql = "SELECT s.* FROM Spectacle s
+                JOIN Soiree so ON s.id_soiree = so.id_soiree
                 WHERE 1=1";
         $params = [];
 

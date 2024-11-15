@@ -27,7 +27,7 @@ class RegisterAction extends Action{
                     <input type="password" name="cpassword" id="password" required>
                     <br>
                     <button type="submit">S'inscrire</button>
-                </form>;
+                </form>
             HTML;
         }else if ($this->http_method === 'POST' && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['cpassword']) && isset($_POST['email']) && isset($_POST['cemail'])){
             $username = $_POST['username'];
