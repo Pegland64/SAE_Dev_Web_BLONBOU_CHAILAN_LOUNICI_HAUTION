@@ -53,6 +53,16 @@ class Dispatcher
                     $html = $action->execute();
                     break;
 
+                case 'register':
+                    $action = new act\RegisterAction();
+                    $html = $action->execute();
+                    break;
+
+                case 'logout':
+                    $action = new act\DeconnexionAction();
+                    $html = $action->execute();
+                    break;
+
                 case 'add-spectacle':
                     // Ajoute un spectacle
                     $action = new act\AddSpectacleAction();
@@ -95,17 +105,26 @@ class Dispatcher
 <head>
     <meta charset="UTF-8">
     <title>NRV</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>NRV.net</h1>
-    <ul>
-        <li><a href="?action=default">Accueil</a></li>
-        <li><a href="?action=login">Connexion</a></li>
-        <li><a href="?action=soirees">Liste des soirées</a></li>
-        <li><a href="?action=liste-spectacles">Liste des spectacles</a></li>
-        <li><a href="?action=add-spectacle">Ajouter un spectacle</a></li>
-        <li><a href="?action=listes-spectales-favoris">voir favoris</a></li>
-    </ul>
+    <nav>
+        <div id="separateur">
+            <h1>NRV.net</h1>
+            <ul>
+                <li><a href="?action=login">Connexion</a></li>
+                <li><a href="?action=register">S'enregistrer</a></li>
+                <li><a href="?action=logout">Déconnexion</a></li>
+            </ul>
+        </div>
+        <ul>
+            <li><a href="?action=default">Accueil</a></li>
+            <li><a href="?action=soirees">Liste des soirées</a></li>
+            <li><a href="?action=liste-spectacles">Liste des spectacles</a></li>
+            <li><a href="?action=add-spectacle">Ajouter un spectacle</a></li>
+            <li><a href="?action=listes-spectales-favoris">voir favoris</a></li>
+        </ul>
+    </nav>
     
 <!--    <nav>-->
 <!--        <div class="nav-links">-->

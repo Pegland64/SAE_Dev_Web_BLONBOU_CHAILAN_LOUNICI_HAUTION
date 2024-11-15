@@ -48,6 +48,25 @@ class NrvRepository
         return self::$instance;
     }
 
+    public function addUser(string $username,string $email, string $password): void
+    {
+        $sql = "INSERT INTO users (username,email,password,role) VALUES (:username, :password, :email, 1)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['username' => $username, 'password' => $password, 'email' => $email]);
+    }
+
+    public function getHash(string $username): string
+    {
+        $sql = "SELECT password FROM users WHERE username = :username";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['username' => $username]);
+        $row = $stmt->fetch();
+        if ($row === false) {
+            throw new PDOException("Utilisateur non trouvé.");
+        }
+        return $row['password'];
+    }
+
     /**
      * methode qui retourne un utilisateur par son id
      * @param int $id id de l'utilisateur
