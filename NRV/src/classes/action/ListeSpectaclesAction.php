@@ -59,7 +59,7 @@ class ListeSpectaclesAction extends Action
         // Si un filtre est sélectionné, récupère et affiche les spectacles filtrés
         if ($filter) {
             $spectacles = NrvRepository::getInstance()->getFilteredSpectaclesByCategory($category, $filter);
-            $html .= '<h2>Liste des spectacles :</h2><ul>';
+            $html .= "<h2><span class='listeTitre'>Liste des spectacles :</span></h2><ul>";
             foreach ($spectacles as $spectacle) {
                 $renderer = new SpectacleRenderer($spectacle);
                 $html .= '<li>' . $renderer->render(1) . '</li>';

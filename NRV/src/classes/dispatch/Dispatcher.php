@@ -129,7 +129,7 @@ class Dispatcher
 <head>
     <meta charset="UTF-8">
     <title>NRV</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
     <nav>
@@ -147,7 +147,7 @@ class Dispatcher
         <li><a href="?action=liste-spectacles">Liste des spectacles</a></li>
         <li><a href="?action=add-spectacle">Ajouter un spectacle</a></li>
         <li><a href="?action=add-soiree">Ajouter une soiree</a></li>
-        <li><a href="?action=listes-spectales-favoris">voir favoris</a></li>
+        <li><a href="?action=listes-spectales-favoris">Voir favoris</a></li>
     </ul>
     
 <!--    <nav>-->
