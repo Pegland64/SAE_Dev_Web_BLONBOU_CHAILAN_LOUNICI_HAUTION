@@ -24,6 +24,7 @@ HTML;
         } else if ($this->http_method === 'POST') {
             AuthnProvider::logout();
             $html = "<div>Vous avez été déconnecté.</div>";
+            header("Location: " . $_SERVER['REQUEST_URI']);
         }
 
         return $html;

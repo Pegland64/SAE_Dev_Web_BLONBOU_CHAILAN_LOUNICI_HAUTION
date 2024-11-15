@@ -22,7 +22,7 @@ class Authz
     public function checkRole(int $required) : void
     {
         $user = AuthnProvider::getSignedInUser();
-        if($user->role >= $required){
+        if($user->role < $required){
             echo "Vous n'avez pas les droits nécessaires pour accéder à cette ressource.";
             //throw new \AccessControlException("Vous n'avez pas les droits nécessaires pour accéder à cette ressource.");
         }

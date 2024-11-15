@@ -6,6 +6,7 @@ use nrv\net\action as act;
 use nrv\net\action\ListeSoireeAction;
 use nrv\net\action\SoireeAction;
 use nrv\net\auth\AuthnProvider;
+use nrv\net\auth\Authz;
 
 class Dispatcher
 {
@@ -75,6 +76,11 @@ class Dispatcher
                     $html = $action->execute();
                     break;
 
+                case 'afficher-users':
+                    $action = new act\ListesUser();
+                    $html = $action->execute();
+                    break;
+
                 case 'soirees':
                     // Affiche la liste des soirées
                     $action = new ListeSoireeAction();
@@ -98,7 +104,10 @@ class Dispatcher
 
 
     private function renderPage(string $html) : void
-    {
+    {   
+        $coDeco = isset($_SESSION['user']) ? '<li><a href="?action=logout">Déconnexion</a></li>' : '<li><a href="?action=login">Connexion</a></li><li><a href="?action=register">S\'enregistrer</a></li>';
+        if(isset($_SESSION['user'])){
+        }
         echo <<<HTML
 <!DOCTYPE html>
 <html lang="fr">
@@ -109,15 +118,13 @@ class Dispatcher
 </head>
 <body>
     <nav>
-        <div id="separateur">
+        <div id="topNav">
             <h1>NRV.net</h1>
             <ul>
-                <li><a href="?action=login">Connexion</a></li>
-                <li><a href="?action=register">S'enregistrer</a></li>
-                <li><a href="?action=logout">Déconnexion</a></li>
+                $coDeco
             </ul>
         </div>
-        <ul>
+        <ul id="bottomNav">
             <li><a href="?action=default">Accueil</a></li>
             <li><a href="?action=soirees">Liste des soirées</a></li>
             <li><a href="?action=liste-spectacles">Liste des spectacles</a></li>

@@ -50,7 +50,7 @@ class NrvRepository
 
     public function addUser(string $username,string $email, string $password): void
     {
-        $sql = "INSERT INTO users (username,email,password,role) VALUES (:username, :password, :email, 1)";
+        $sql = "INSERT INTO users (username,email,password,role) VALUES (:username,:email, :password, 1)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => $username, 'password' => $password, 'email' => $email]);
     }
@@ -84,6 +84,18 @@ class NrvRepository
         }
 
         return new User($row['id_user'], $row['username'], $row['password'], $row['email'], (int)$row['role']);
+    }
+
+    public function getAllUsers(){
+        $sql = "SELECT * FROM users";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $users = [];
+        while ($row = $stmt->fetch()) {
+            $user = new User($row['id_user'], $row['username'], $row['password'], $row['email'], (int)$row['role']);
+            $users[] = $user;
+        }
+        return $users;
     }
 
     /**
