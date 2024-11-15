@@ -6,9 +6,10 @@ use nrv\net\render\Renderer;
 use nrv\net\render\SpectacleRenderer;
 use nrv\net\repository\NrvRepository;
 
+// Classe pour afficher la liste des spectacles
 class ListeSpectaclesAction extends Action
 {
-
+    // Méthode principale pour exécuter l'action
     public function execute(): string
     {
         // permet l'ajout en favori
@@ -28,10 +29,11 @@ class ListeSpectaclesAction extends Action
         }
 
 
-
+        // Récupère la catégorie et le filtre des paramètres GET
         $category = $_GET['category'] ?? null;
         $filter = $_GET['filter'] ?? 'all';
 
+        // Génère le formulaire pour sélectionner la catégorie
         $html = <<<HTML
         <form method="GET" action="">
             <input type="hidden" name="action" value="liste-spectacles">
@@ -41,6 +43,7 @@ class ListeSpectaclesAction extends Action
         </form>
         HTML;
 
+        // Si une catégorie est sélectionnée, génère le formulaire pour sélectionner le filtre
         if ($category) {
             $options = NrvRepository::getInstance()->getOptionsByCategory($category);
             $html .= '<form method="GET" action="">
@@ -53,6 +56,7 @@ class ListeSpectaclesAction extends Action
             $html .= '</form>';
         }
 
+        // Si un filtre est sélectionné, récupère et affiche les spectacles filtrés
         if ($filter) {
             $spectacles = NrvRepository::getInstance()->getFilteredSpectaclesByCategory($category, $filter);
             $html .= '<h2>Liste des spectacles :</h2><ul>';
@@ -63,6 +67,7 @@ class ListeSpectaclesAction extends Action
             $html .= '</ul>';
         }
 
+        // Retourne le HTML généré
         return $html;
     }
 }

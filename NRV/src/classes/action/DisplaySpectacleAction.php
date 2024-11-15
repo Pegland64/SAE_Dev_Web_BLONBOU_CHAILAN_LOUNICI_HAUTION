@@ -5,11 +5,11 @@ namespace nrv\net\action;
 use nrv\net\render\SpectacleRenderer;
 use nrv\net\render\Renderer;
 use nrv\net\repository\NrvRepository;
-
+//classe pour afficher un spectacle
 class DisplaySpectacleAction extends Action{
-
     public function execute(): string
     {
+        // Vérifie si l'ID du spectacle est défini dans les paramètres GET
         if (!isset($_GET['id_spectacle'])) {
             return "Spectacle inconnu.";
         }
@@ -29,8 +29,11 @@ class DisplaySpectacleAction extends Action{
             header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         }
+        // Récupère le spectacle par son ID
         $spectacle = NrvRepository::getInstance()->getSpectacleById((int)$_GET['id_spectacle']);
+        // Crée un renderer pour le spectacle
         $renderer = new SpectacleRenderer($spectacle);
+        // Retourne le rendu du spectacle
         return $renderer->render(2);
     }
 }
