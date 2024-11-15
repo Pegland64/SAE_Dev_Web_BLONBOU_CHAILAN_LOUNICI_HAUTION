@@ -2,6 +2,6 @@
 
 Groupe :
 - Ilan Haution
-- Mathis Blombou
+- Mathys Blonbou
 - Ilyès Lounici
 - Cyprian Chailan

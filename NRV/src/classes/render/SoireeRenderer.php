@@ -84,6 +84,7 @@ HTML;
         foreach ($this->soiree->spectacles as $spectacle) {
             $renderer = new SpectacleRenderer($spectacle); // Utilisation de SpectacleRenderer pour rendre chaque spectacle
             $spectacles .= "<li>" . $renderer->render(Renderer::FULL) . "</li>";
+            $spectacles .= "<a href='?action=display-spectacle&id_spectacle={$spectacle->id_spectacle}'>Voir les détails du spectacle ></a></li>";
         }
         $spectacles .= '</ul>';
 
@@ -99,5 +100,6 @@ HTML;
     {$spectacles}
 </div>
 HTML;
+
     }
 }

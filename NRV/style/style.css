@@ -163,6 +163,12 @@ form{
     transform: scale(1.1);
 }
 
+#liste-soirees ul li p a{
+    text-decoration: none;
+    color: black;
+    border-bottom: 2px solid red;
+}
+
 #liste-spectacles{
     display: flex;
     flex-direction: column;
@@ -177,21 +183,23 @@ form{
     align-items: center;
 }
 
-#liste-spectacles #titleListeSpectacles{
+#liste-spectacles #ListeSpectacles{
     display: flex;
     flex-direction:row-reverse;
     width: 100%;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-around;
 }
 
-#liste-spectacles #titleListeSpectacles #form-filter-div{
+#liste-spectacles #ListeSpectacles #form-filter-div{
     display: flex;
     align-items: center;
     flex-direction: column;
+    position: sticky;
+    height: 100%;
+    top: 40px;
 }
 
-#liste-spectacles #titleListeSpectacles #form-filter-div #form-filter{
+#liste-spectacles #ListeSpectacles #form-filter-div #form-filter{
     margin: 10px;
     display: flex;
     flex-direction: row;
@@ -200,7 +208,7 @@ form{
     position: relative;
 }
 
-#liste-spectacles #titleListeSpectacles #form-filter-div #form-liste-2{
+#liste-spectacles #ListeSpectacles #form-filter-div #form-liste-2{
     margin: 10px;
     display: flex;
     flex-wrap: wrap;
@@ -211,7 +219,7 @@ form{
     height: 7rem;
 }
 
-#liste-spectacles #titleListeSpectacles #form-filter-div #form-liste-2 button{
+#liste-spectacles #ListeSpectacles #form-filter-div #form-liste-2 button{
     width: 100px;
 }
 
@@ -224,6 +232,8 @@ form{
 
 #liste-spectacles ul li{
     display: flex;
+    text-decoration: none;
+    list-style-type: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -232,6 +242,7 @@ form{
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
 }
+
 
 #liste-spectacles ul li:hover{
     transform: scale(1.1);
@@ -260,4 +271,8 @@ form{
 #img_spectacle{
     width: max(300px);
     height: max(200px);
+}
+#img_spectacle2{
+    width: max(600px);
+    height: max(600px);
 }
