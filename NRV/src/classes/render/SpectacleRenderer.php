@@ -77,6 +77,7 @@ class SpectacleRenderer implements Renderer
 
         $cookieName = "spectacle_id_$id";
         $buttonText = isset($_COOKIE[$cookieName]) ? 'Retirer des Favoris' : 'Ajouter aux Favoris';
+
         return <<<HTML
             <div>
                 <h3>
@@ -92,13 +93,11 @@ class SpectacleRenderer implements Renderer
                 <p>Le {$date} à {$horaire}</p>
                 <p>Durée : {$duree}</p>
                 {$images}
-                <video controls>
-                    <source src="{$this->spectacle->video}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <br>
-                <a href='?action=edit-spectacle&id_spectacle={$this->spectacle->id_spectacle}' class='btn btn-primary'>Modifier ce spectacle</a>
+                <iframe width="560" height="315" src="{$this->spectacle->video}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <br><a href='?action=edit-spectacle&id_spectacle={$this->spectacle->id_spectacle}' class='btn btn-primary'>Modifier ce spectacle</a>
             </div>
             HTML;
+
+        // <p><a href="?action=soiree&id_soiree={$this->spectacle->id_soiree}">Detail de la soirée></a></p>
     }
 }
