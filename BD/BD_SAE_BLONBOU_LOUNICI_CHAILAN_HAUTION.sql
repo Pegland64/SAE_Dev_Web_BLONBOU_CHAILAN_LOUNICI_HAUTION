@@ -72,7 +72,7 @@ CREATE TABLE Spectacle2User(
                                id_user INT,
                                id_spectacle INT,
                                FOREIGN KEY (id_user) REFERENCES USERS(id_user),
-                               FOREIGN KEY (id_spectacle) REFERENCES SPECTACLE(id_spectacle),
+                               FOREIGN KEY (id_spectacle) REFERENCES Spectacle(id_spectacle),
                                PRIMARY KEY (id_user, id_spectacle)
 );
 

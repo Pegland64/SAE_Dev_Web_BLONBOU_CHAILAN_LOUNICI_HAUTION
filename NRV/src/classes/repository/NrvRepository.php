@@ -25,7 +25,7 @@ class NrvRepository
      */
     private function __construct(array $conf)
     {
-        $dsn = 'mysql:host=' . $conf['host'] . ';dbname=' . $conf['dbname'];
+        $dsn = 'mysql:host=' . $conf['host'] . ';dbname=' . $conf['dbname'] . ';charset=utf8';
         $this->pdo = new PDO($dsn, $conf['user'], $conf['pass'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     }
 
